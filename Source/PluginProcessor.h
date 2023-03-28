@@ -57,9 +57,15 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     using APVTS = juce::AudioProcessorValueTreeState;
     static APVTS::ParameterLayout createParameterLayout();
-    APVTS apvts {*this, nullptr, "Parameters", createParameterLayout()};
+    APVTS apvts { *this, nullptr, "Parameters", createParameterLayout() };
     
     juce::dsp::Compressor<float> compressor;
+    
+    // these are just pointers to help optimize the lookup for parameter values on each processBlock
+    juce::AudioParameterFloat* attack { nullptr };
+    juce::AudioParameterFloat* release { nullptr };
+    juce::AudioParameterFloat* threshold { nullptr };
+    juce::AudioParameterChoice* ratio { nullptr };
     
 private:
     //==============================================================================

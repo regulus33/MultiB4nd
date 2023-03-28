@@ -22,6 +22,25 @@ SimpleMBCompAudioProcessor::SimpleMBCompAudioProcessor()
                   )
 #endif
 {
+    // We could just call this over and over again in the processBlock but this is supposed to be more efficient
+    
+    // in the PluginProcessor.h we set these variables to nullptr
+    
+    attack = dynamic_cast<juce::AudioParameterFloat*>(apvts.getParameter("Attack"));
+    jassert(attack != nullptr);
+    
+    release = dynamic_cast<juce::AudioParameterFloat*>(apvts.getParameter("Release"));
+    jassert(release != nullptr);
+    
+    threshold = dynamic_cast<juce::AudioParameterFloat*>(apvts.getParameter("Threshold"));
+    jassert(threshold != nullptr);
+    
+    ratio = dynamic_cast<juce::AudioParameterChoice*>(apvts.getParameter("Ratio"));
+    jassert(ratio != nullptr);
+    
+    
+    
+    
 }
 
 SimpleMBCompAudioProcessor::~SimpleMBCompAudioProcessor()
@@ -150,6 +169,12 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    // Set all these compressor properties to the values in our parameter pointers...
+    compressor.setAttack(attack->get());
+    compressor.setRelease(release->get());
+    compressor.setThreshold(threshold->get());
+    compressor.setRatio( ratio->getCurrentChoiceName().getFloatValue() );
     
     // Create our own block to manipulate. Blocks are basically the narrowed down version of the buffer.
     // focused -> channels, range etc.
