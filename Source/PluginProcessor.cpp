@@ -38,7 +38,8 @@ SimpleMBCompAudioProcessor::SimpleMBCompAudioProcessor()
     ratio = dynamic_cast<juce::AudioParameterChoice*>(apvts.getParameter("Ratio"));
     jassert(ratio != nullptr);
     
-    
+    bypassed = dynamic_cast<juce::AudioParameterBool*>(apvts.getParameter("Bypassed"));
+    jassert(bypassed != nullptr);
     
     
 }
@@ -185,6 +186,9 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // is the block plus the "context" which makes sense
     auto context = juce::dsp::ProcessContextReplacing<float>(block);
     
+    // Bypass the whole processBlock code (anything we would do is not done)
+    context.isBypassed = bypassed->get();
+    
     // We are just passing our context pointer to compressor and since this context is
     // already being fed through the output somehow, the compression is applied
     compressor.process(context);
@@ -258,6 +262,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SimpleMBCompAudioProcessor::
     
     layout.add(std::make_unique<AudioParameterChoice>(juce::ParameterID{"Ratio", 1}, "Ratio", sa, 3));
     
+    layout.add(std::make_unique<AudioParameterBool>(juce::ParameterID{"Bypassed", 1}, "Bypassed", false));
+    
+
     return layout;
 }
 
