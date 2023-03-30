@@ -186,7 +186,14 @@ private:
     
     // See the data class or "Struct" declared at top of file
     CompressorBand compressor;
-    //
+    using Filter = juce::dsp::LinkwitzRileyFilter<float>;
+    // We are using crossover filters to split the high and low range
+    Filter LP, HP;
+    
+    juce::AudioParameterFloat* lowCrossover;
+    
+    // We need at least 2 buffers, filtering 
+    std::array<juce::AudioBuffer<float>, 2> filterBuffers;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessor)
