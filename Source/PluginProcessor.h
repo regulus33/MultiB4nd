@@ -189,6 +189,9 @@ private:
     using Filter = juce::dsp::LinkwitzRileyFilter<float>;
     // We are using crossover filters to split the high and low range
     Filter LP, HP;
+    Filter AP;
+    
+    juce::AudioBuffer<float> apBuffer;
     
     juce::AudioParameterFloat* lowCrossover;
     

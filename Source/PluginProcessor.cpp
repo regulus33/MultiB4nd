@@ -62,6 +62,7 @@ SimpleMBCompAudioProcessor::SimpleMBCompAudioProcessor()
     
     LP.setType(juce::dsp::LinkwitzRileyFilterType::lowpass);
     HP.setType(juce::dsp::LinkwitzRileyFilterType::highpass);
+    AP.setType(juce::dsp::LinkwitzRileyFilterType::allpass);
 }
 
 SimpleMBCompAudioProcessor::~SimpleMBCompAudioProcessor()
@@ -146,6 +147,8 @@ void SimpleMBCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     LP.prepare(spec);
     HP.prepare(spec);
     
+    AP.prepare(spec);
+    
     // initialize the two buffers where we hold our low and high frequencies.
     for(auto& buffer : filterBuffers)
     {
@@ -200,11 +203,11 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-//    compressor.updateCompressorSettings();
-//    compressor.process(buffer);
+    //    compressor.updateCompressorSettings();
+    //    compressor.process(buffer);
     
     /*
-                NOTE
+     NOTE
      We are essentially creating 2 new buffers
      We duplicate the buffer received from the host into these new buffers
      We then wrap the buffers in context
@@ -220,7 +223,7 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     HP.setCutoffFrequency(cutoff);
     
     auto fb0Block = juce::dsp::AudioBlock<float>(filterBuffers[0]);
-    auto fb1Block = juce::dsp::AudioBlock<float>(filterBuffers[0]);
+    auto fb1Block = juce::dsp::AudioBlock<float>(filterBuffers[1]);
     
     auto fb0Ctx = juce::dsp::ProcessContextReplacing<float>(fb0Block);
     auto fb1Ctx = juce::dsp::ProcessContextReplacing<float>(fb1Block);
@@ -233,6 +236,14 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto numSamples = buffer.getNumSamples();
     auto numChannels = buffer.getNumChannels();
     
+    // Bypass guard
+    //    if(compressor.bypassed->get())
+        //        return;
+        apBuffer = buffer;
+    auto apBlock = juce::dsp::AudioBlock<float>(apBuffer);
+    auto apContext = juce::dsp::ProcessContextReplacing<float>(apBlock);
+    
+    AP.process(apContext);
     
     buffer.clear();
     
@@ -241,14 +252,22 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         for(auto i = 0; i < nc; ++i )
         {
-        
+            
             inputBuffer.addFrom(i, 0, source, i, 0, ns);
         }
     };
     
+    if( !compressor.bypassed->get() )
+    {
+        addFilterBand(buffer, filterBuffers[0]);
+//        addFilterBand(buffer, filterBuffers[1]);
+    }
+    else
+    {
+        addFilterBand(buffer, apBuffer);
+    }
     
-    addFilterBand(buffer, filterBuffers[0]);
-    addFilterBand(buffer, filterBuffers[1]);
+    
 }
 
 //==============================================================================
@@ -316,6 +335,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout SimpleMBCompAudioProcessor::
     
     auto choices = std::vector<double>{ 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 50, 100 };
     juce::StringArray sa;
+    
     for( auto choice : choices )
     {
         sa.add(juce::String(choice, 1));
