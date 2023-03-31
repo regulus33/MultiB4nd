@@ -219,8 +219,10 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     }
     
     auto cutoff = lowCrossover->get();
+    
     LP.setCutoffFrequency(cutoff);
     HP.setCutoffFrequency(cutoff);
+    AP.setCutoffFrequency(cutoff);
     
     auto fb0Block = juce::dsp::AudioBlock<float>(filterBuffers[0]);
     auto fb1Block = juce::dsp::AudioBlock<float>(filterBuffers[1]);
@@ -257,17 +259,31 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         }
     };
     
-    if( !compressor.bypassed->get() )
-    {
-        addFilterBand(buffer, filterBuffers[0]);
+//    if( !compressor.bypassed->get() )
+//    {
+//        addFilterBand(buffer, filterBuffers[0]);
 //        addFilterBand(buffer, filterBuffers[1]);
+//    }
+//    else
+//    {
+//        addFilterBand(buffer, apBuffer);
+//    }
+    
+    addFilterBand(buffer, filterBuffers[0]);
+    addFilterBand(buffer, filterBuffers[1]);
+    
+    if(compressor.bypassed->get())
+    {
+        for(auto ch = 0; ch < numChannels; ++ch)
+        {
+            juce::FloatVectorOperations::multiply(apBuffer.getWritePointer(ch), -1.f, numSamples);
+        }
+        addFilterBand(buffer, apBuffer);
     }
     else
     {
-        addFilterBand(buffer, apBuffer);
+        
     }
-    
-    
 }
 
 //==============================================================================
