@@ -226,6 +226,8 @@ private:
         auto ctx = juce::dsp::ProcessContextReplacing<float>(block);
         gain.process(ctx);
     }
+    void updateState();
+    void splitBands(juce::AudioBuffer<float>& inputBuffer);
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessor)
