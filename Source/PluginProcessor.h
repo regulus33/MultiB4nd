@@ -19,7 +19,7 @@
  7. add input and output gain to offset changes in output level
  8. cleanup
  
- Linkwitz - Riley
+ 3:00
  */
 
 #include <JuceHeader.h>
@@ -60,11 +60,8 @@ namespace Params
         Solo_High_Band,
     };
     
-    //https://stackoverflow.com/questions/17712001/how-is-meyers-implementation-of-a-singleton-actually-a-singleton
-    
     inline const std::map<Names, juce::String>& GetParams()
     {
-        // the static keyword guarantees that only one of this will exist per program
         static std::map<Names, juce::String> params = {
             {Low_Mid_Crossover_Freq, "Low-Mid Crossover Freq"},
             {Mid_High_Crossover_Freq, "Mid-High Crossover Freq"},
@@ -132,16 +129,13 @@ struct CompressorBand
         // focused -> channels, range etc.
         auto block = juce::dsp::AudioBlock<float>(buffer);
         
-        // this replaces the audio in the buffer I think its just more memory efficient
-        // context has like everything important in it like sample rate buffer size etc.
-        // is the block plus the "context" which makes sense
+        // context -> sample-rate buffer-size etc.
         auto context = juce::dsp::ProcessContextReplacing<float>(block);
         
         // Bypass the whole processBlock code (anything we would do is not done)
         context.isBypassed = bypassed->get();
         
-        // We are just passing our context pointer to compressor and since this context is
-        // already being fed through the output somehow, the compression is applied
+        // We are just passing our context pointer to compressor overwriting it and another process will read from the same buffer to the output
         compressor.process(context);
     }
 private:
@@ -203,24 +197,17 @@ private:
     CompressorBand& midBandComp = compressors[1];
     CompressorBand& highBandComp = compressors[2];
     
-    // See the data class or "Struct" declared at top of file
-    CompressorBand compressor;
+    juce::dsp::Compressor<float> compressor;
     using Filter = juce::dsp::LinkwitzRileyFilter<float>;
     //     fc0  fc1
     Filter LP1, AP2,
            HP1, LP2,
                 HP2;
     
-//    Filter invAP1, invAP2;
-//    juce::AudioBuffer<float> invAPBuffer;
-    
     juce::AudioParameterFloat* lowMidCrossover { nullptr };
     juce::AudioParameterFloat* midHighCrossover { nullptr };
     
-    // We need at least 2 buffers, filtering 
     std::array<juce::AudioBuffer<float>, 3> filterBuffers;
-    
-    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessor)
