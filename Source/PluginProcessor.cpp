@@ -45,6 +45,10 @@ SimpleMBCompAudioProcessor::SimpleMBCompAudioProcessor()
     floatHelper(highBandComp.release, Names::Release_High_Band);
     floatHelper(highBandComp.threshold, Names::Threshold_High_Band);
     
+    // Gain
+    floatHelper(inputGainParam, Names::Gain_In);
+    floatHelper(outputGainParam, Names::Gain_Out);
+    
     // Ratio
     auto choiceHelper = [&apvts = this->apvts, &params](auto& param, const auto& paramName)
     {
@@ -180,6 +184,11 @@ void SimpleMBCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     LP2.prepare(spec);
     HP2.prepare(spec);
     
+    inputGain.prepare(spec);
+    outputGain.prepare(spec);
+    
+    inputGain.setRampDurationSeconds(0.05);
+    outputGain.setRampDurationSeconds(0.05);
     
     for(auto& buffer : filterBuffers)
     {
@@ -240,6 +249,10 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         compressor.updateCompressorSettings();
     }
     
+    inputGain.setGainDecibels(inputGainParam->get());
+    outputGain.setGainDecibels(outputGainParam->get());
+    
+    applyGain(buffer, inputGain);
     
     for( auto& fb : filterBuffers )
     {
@@ -327,6 +340,8 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             }
         }
     }
+    
+    applyGain(buffer, outputGain);
 }
 
 //==============================================================================
@@ -372,6 +387,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout SimpleMBCompAudioProcessor::
     using namespace juce;
     using namespace Params;
     const auto& params = GetParams();
+    
+    // Gain
+    auto gainRange = NormalisableRange<float>(-24.f, 24.f, 0.5f, 1.5f);
+    layout.add(std::make_unique<AudioParameterFloat>(juce::ParameterID{params.at(Names::Gain_In), 1},
+                                                     params.at(Names::Gain_In),
+                                                     gainRange,
+                                                     0));
+    
+    layout.add(std::make_unique<AudioParameterFloat>(juce::ParameterID{params.at(Names::Gain_Out), 1},
+                                                     params.at(Names::Gain_Out),
+                                                     gainRange,
+                                                     0));
     
     // Thresh
     layout.add(std::make_unique<AudioParameterFloat>(juce::ParameterID{params.at(Names::Threshold_Low_Band), 1},
