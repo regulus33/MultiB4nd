@@ -26,7 +26,7 @@ GUI Roadmap
  12) Drawing gain reduction on top of the analyzer
  13) Analyzer bypass
  14) Global bypass button
- 3:43:00
+ 4:01:00
  */
 
 #include <JuceHeader.h>
@@ -202,6 +202,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     using APVTS = juce::AudioProcessorValueTreeState;
     static APVTS::ParameterLayout createParameterLayout();
+    // This needs to be public so UI components can access it in PluginEditor class
     APVTS apvts { *this, nullptr, "Parameters", createParameterLayout() };
     
 private:
