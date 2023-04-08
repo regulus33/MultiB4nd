@@ -9,6 +9,36 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+template<typename T>
+
+// TODO: how do you indicate that the method is destructive in c++? This has a side effect
+bool truncateKiloValue(T& value)
+{
+   if(value > static_cast<T>(999))
+   {
+       value /= static_cast<T>(1000);
+       return true;
+   }
+}
+
+// TODO: change the name of this to getSliderLabelString
+juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix)
+{
+    juce::String str;
+    
+    auto val = getLow ? param.getNormalisableRange().start : param.getNormalisableRange().end;
+    
+    bool useK = truncateKiloValue(val);
+    str << val;
+    
+    if( useK )
+        str << "k";
+    
+    str << suffix;
+    
+    return str;
+}
+
 void LookAndFeel::drawRotarySlider(juce::Graphics & g,
                                    int x,
                                    int y,
@@ -202,12 +232,12 @@ juce::String RotarySliderWithLabels::getDisplayString() const
     {
         float val = getValue();
         
-        if( val > 999.f )
-        {
-            val /= 1000.f; //1001 / 1000 = 1.001
-            addK = true;
-        }
-        
+//        if( val > 999.f )
+//        {
+//            val /= 1000.f; //1001 / 1000 = 1.001
+//            addK = true;
+//        }
+        addK = truncateKiloValue(val);
         str = juce::String(val, (addK ? 2 : 0));
     }
     else
@@ -268,6 +298,18 @@ GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
                          Names::Gain_Out,
                          *outGainSlider);
     
+    addLabelPairs(inGainSlider->labels,
+                  getParameterHelper(Names::Gain_In),
+                  "dB");
+    addLabelPairs(lowMidXoverSlider->labels, getParameterHelper(Names::Low_Mid_Crossover_Freq),
+                  "hz");
+    addLabelPairs(midHighXoverSlider->labels, getParameterHelper(Names::Mid_High_Crossover_Freq),
+                  "hz");
+    addLabelPairs(outGainSlider->labels, getParameterHelper(Names::Gain_Out),
+                  "dB");
+    
+    
+    
     addAndMakeVisible(*inGainSlider);
     addAndMakeVisible(*lowMidXoverSlider);
     addAndMakeVisible(*midHighXoverSlider);
@@ -276,16 +318,25 @@ GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
 
 void GlobalControls::resized()
 {
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().reduced(5);
     using namespace juce;
     FlexBox flexBox;
     flexBox.flexDirection = FlexBox::Direction::row;
     flexBox.flexWrap = FlexBox::Wrap::noWrap;
     
+    auto spacer = FlexItem().withWidth(4);
+    auto endCap = FlexItem().withWidth(6);
+    
+    // What you are seeing here is in practice something like html or jsx in that the order we add these in is the order in which they are displayed
+    flexBox.items.add(endCap);
     flexBox.items.add(FlexItem(*inGainSlider).withFlex(1.f));
+    flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(*lowMidXoverSlider).withFlex(1.f));
+    flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(*midHighXoverSlider).withFlex(1.f));
+    flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(*outGainSlider).withFlex(1.f));
+    flexBox.items.add(endCap);
     
     flexBox.performLayout(bounds);
 }
