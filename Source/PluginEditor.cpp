@@ -272,8 +272,36 @@ Placeholder::Placeholder()
     customColor = juce::Colour(r.nextInt(255), r.nextInt(255), r.nextInt(255));
 }
 
-CompressorBandControls::CompressorBandControls()
+CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeState& apvts)
 {
+    using namespace Params;
+    const auto& params = GetParams();
+    
+    auto getParameterHelper = [&params, &apvts](const auto& name) -> auto&
+    {
+        return getParam(apvts, params, name);
+    };
+    
+    auto makeAttachmentHelper = [&params, &apvts](auto& attachment,
+                                                  const auto& name,
+                                                  auto& slider)
+    {
+        makeAttachment(attachment, apvts, params, name, slider);
+    };
+    
+    makeAttachmentHelper(attackSliderAttachment,
+                         Names::Attack_Mid_Band,
+                         attackSlider);
+    makeAttachmentHelper(releaseSliderAttachment,
+                         Names::Release_Mid_Band,
+                         releaseSlider);
+    makeAttachmentHelper(thresholdSliderAttachment,
+                         Names::Threshold_Mid_Band,
+                         thresholdSlider);
+    makeAttachmentHelper(ratioSliderAttachment,
+                         Names::Ratio_Mid_Band,
+                         ratioSlider);
+    
     addAndMakeVisible(attackSlider);
     addAndMakeVisible(releaseSlider);
     addAndMakeVisible(thresholdSlider);
@@ -305,6 +333,32 @@ void CompressorBandControls::resized()
     flexBox.performLayout(bounds);
 }
 
+void drawModuleBackground(juce::Graphics &g, juce::Rectangle<int> bounds)
+{
+    using namespace juce;
+    // make whole rectangle violet
+    g.setColour(Colours::blueviolet);
+    g.fillAll();
+    
+    auto localBounds = bounds;
+    
+    // *This is like a way to make a border
+    //  1. you calculate a smaller rectangle within the larger rectangle
+    bounds.reduce(3,3);
+    g.setColour(Colours::black);
+    // 2. you fill the part of the rectangle what fits within your reduced bounds. Original fill remains as a border.
+    g.fillRoundedRectangle(bounds.toFloat(), 3);
+    
+    g.drawRect(localBounds);
+}
+
+void CompressorBandControls::paint(juce::Graphics &g)
+{
+    auto bounds = getLocalBounds();
+    drawModuleBackground(g, bounds);
+}
+
+
 GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
 {
     using namespace Params;
@@ -321,10 +375,10 @@ GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
     auto& midHighParam = getParameterHelper(Names::Mid_High_Crossover_Freq);
     auto& gainOutParam = getParameterHelper(Names::Gain_Out);
     
-    inGainSlider = std::make_unique<RSWL>(gainInParam, "dB", "INPUT TRIM");
-    lowMidXoverSlider = std::make_unique<RSWL>(getParameterHelper(Names::Low_Mid_Crossover_Freq), "Hz", "LOW-MID X-OVER");
-    midHighXoverSlider = std::make_unique<RSWL>(midHighParam, "Hz", "MID-HI X-OVER");
-    outGainSlider = std::make_unique<RSWL>(gainOutParam, "dB", "OUTPUT TRIM");
+    inGainSlider = std::make_unique<RSWL>(&gainInParam, "dB", "INPUT TRIM");
+    lowMidXoverSlider = std::make_unique<RSWL>(&lowMidParam, "Hz", "LOW-MID X-OVER");
+    midHighXoverSlider = std::make_unique<RSWL>(&midHighParam, "Hz", "MID-HI X-OVER");
+    outGainSlider = std::make_unique<RSWL>(&gainOutParam, "dB", "OUTPUT TRIM");
     
     auto makeAttachmentHelper = [&params, &apvts](auto& attachment,
                                                   const auto& name,
@@ -347,8 +401,11 @@ GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
                          *outGainSlider);
     
     addLabelPairs(inGainSlider->labels, gainInParam, "dB");
-    addLabelPairs(lowMidXoverSlider->labels, getParameterHelper(Names::Low_Mid_Crossover_Freq), "hz");
+    
+    addLabelPairs(lowMidXoverSlider->labels, lowMidParam, "hz");
+    
     addLabelPairs(midHighXoverSlider->labels, midHighParam, "hz");
+    
     addLabelPairs(outGainSlider->labels, gainOutParam, "dB");
     
     addAndMakeVisible(*inGainSlider);
@@ -384,28 +441,15 @@ void GlobalControls::resized()
 
 void GlobalControls::paint(juce::Graphics &g)
 {
-    using namespace juce;
     auto bounds = getLocalBounds();
-    // make whole rectangle violet
-    g.setColour(Colours::blueviolet);
-    g.fillAll();
-    
-    auto localBounds = bounds;
-    
-    // *This is like a way to make a border
-    //  1. you calculate a smaller rectangle within the larger rectangle
-    bounds.reduce(3,3);
-    g.setColour(Colours::black);
-    // 2. you fill the part of the rectangle what fits within your reduced bounds. Original fill remains as a border.
-    g.fillRoundedRectangle(bounds.toFloat(), 3);
-    
-    g.drawRect(localBounds);
+    drawModuleBackground(g, bounds);
 }
 
 //==============================================================================
 SimpleMBCompAudioProcessorEditor::SimpleMBCompAudioProcessorEditor (SimpleMBCompAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    setLookAndFeel(&lnf);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
 //    addAndMakeVisible(controlBar);
@@ -418,6 +462,7 @@ SimpleMBCompAudioProcessorEditor::SimpleMBCompAudioProcessorEditor (SimpleMBComp
 
 SimpleMBCompAudioProcessorEditor::~SimpleMBCompAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

@@ -32,23 +32,25 @@ struct LookAndFeel : juce::LookAndFeel_V4
 
 struct RotarySliderWithLabels : juce::Slider
 {
-    RotarySliderWithLabels(juce::RangedAudioParameter& rap,
+    // NOTE: the pointer here * is clever. If it were a & reference we would not be able
+    // to DYNAMICALLY switch which band we are pointing to. A pointer is just a memory address so its quite easy to just replace it with some other address without creating a new UI component or creating a new reference. G whiz!
+    RotarySliderWithLabels(juce::RangedAudioParameter* rap,
                            const juce::String& unitSuffix,
                            const juce::String& title
                            ) :
     juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,
                  juce::Slider::TextEntryBoxPosition::NoTextBox),
-    param(&rap),
+    param(rap),
     suffix(unitSuffix)
     {
         setName(title);
-        setLookAndFeel(&lnf);
+//        setLookAndFeel(&lnf);
     }
     
-    ~RotarySliderWithLabels()
-    {
-        setLookAndFeel(nullptr);
-    }
+//    ~RotarySliderWithLabels()
+//    {
+//        setLookAndFeel(nullptr);
+//    }
     
     struct LabelPos
     {
@@ -62,8 +64,10 @@ struct RotarySliderWithLabels : juce::Slider
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 14; }
     juce::String getDisplayString() const;
+    
+    void changeParam(juce::RangedAudioParameter* p);
 private:
-    LookAndFeel lnf;
+//    LookAndFeel lnf;
     
     juce::RangedAudioParameter* param;
     juce::String suffix;
@@ -151,10 +155,10 @@ juce::RangedAudioParameter& getParam(APVTS& apvts, const Params& params, const N
 juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix);
 
 template<
-    typename Labels,
-    typename ParamType,
-    typename SuffixType
-        >
+typename Labels,
+typename ParamType,
+typename SuffixType
+>
 void addLabelPairs(Labels& labels, const ParamType& param, const SuffixType& suffix)
 {
     labels.clear();
@@ -164,12 +168,19 @@ void addLabelPairs(Labels& labels, const ParamType& param, const SuffixType& suf
 
 struct CompressorBandControls : juce::Component
 {
-    CompressorBandControls();
+    CompressorBandControls(juce::AudioProcessorValueTreeState& apvts);
     
-
+    
     void resized() override;
+    void paint(juce::Graphics& g) override;
 private:
     RotarySlider attackSlider, releaseSlider, thresholdSlider, ratioSlider;
+    
+    using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    std::unique_ptr<Attachment> attackSliderAttachment,
+    releaseSliderAttachment,
+    thresholdSliderAttachment,
+    ratioSliderAttachment;
 };
 
 struct GlobalControls : juce::Component
@@ -202,14 +213,18 @@ public:
     void resized() override;
     
 private:
+    LookAndFeel lnf;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     SimpleMBCompAudioProcessor& audioProcessor;
     
     Placeholder controlBar, analyzer;
-    // This is like inline contructing this class with audioProcessor.apvts
+    // These {} are like little miniature blocks. They are passing in the arg to this
+    // class constructor. The objects we reference here must be member variables of this class (at least in this case... maybe there are some other available scope as well)
     GlobalControls globalControls { audioProcessor.apvts };
-    CompressorBandControls bandControls;
+    // TODO add a breakpoint in this block to see when exactly this block runs
+    CompressorBandControls bandControls { audioProcessor.apvts };
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessorEditor)
 };
