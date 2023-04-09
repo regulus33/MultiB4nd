@@ -162,6 +162,16 @@ void addLabelPairs(Labels& labels, const ParamType& param, const SuffixType& suf
     labels.add({1.f, getValString(param, false, suffix)});
 }
 
+struct CompressorBandControls : juce::Component
+{
+    CompressorBandControls();
+    
+
+    void resized() override;
+private:
+    RotarySlider attackSlider, releaseSlider, thresholdSlider, ratioSlider;
+};
+
 struct GlobalControls : juce::Component
 {
     GlobalControls(juce::AudioProcessorValueTreeState& apvts);
@@ -196,9 +206,10 @@ private:
     // access the processor object that created it.
     SimpleMBCompAudioProcessor& audioProcessor;
     
-    Placeholder controlBar, analyzer, bandControls;
+    Placeholder controlBar, analyzer;
     // This is like inline contructing this class with audioProcessor.apvts
     GlobalControls globalControls { audioProcessor.apvts };
+    CompressorBandControls bandControls;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessorEditor)
 };
