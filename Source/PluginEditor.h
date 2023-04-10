@@ -30,6 +30,8 @@ struct LookAndFeel : juce::LookAndFeel_V4
                            bool shouldDrawButtonAsDown) override;
 };
 
+// Because we dynamically switch between params with this knob (for multiband)
+// we store the param as a pointer and dereference them when we use them.
 struct RotarySliderWithLabels : juce::Slider
 {
     // NOTE: the pointer here * is clever. If it were a & reference we would not be able
@@ -174,7 +176,8 @@ struct CompressorBandControls : juce::Component
     void resized() override;
     void paint(juce::Graphics& g) override;
 private:
-    RotarySlider attackSlider, releaseSlider, thresholdSlider, ratioSlider;
+    juce::AudioProcessorValueTreeState&  apvts;
+    RotarySliderWithLabels attackSlider, releaseSlider, thresholdSlider, ratioSlider;
     
     using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     std::unique_ptr<Attachment> attackSliderAttachment,
