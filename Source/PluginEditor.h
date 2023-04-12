@@ -32,6 +32,7 @@ struct LookAndFeel : juce::LookAndFeel_V4
 
 // Because we dynamically switch between params with this knob (for multiband)
 // we store the param as a pointer and dereference them when we use them.
+// DOC: Super class, we inherit from this in at least 1 place
 struct RotarySliderWithLabels : juce::Slider
 {
     // NOTE: the pointer here * is clever. If it were a & reference we would not be able
@@ -65,14 +66,24 @@ struct RotarySliderWithLabels : juce::Slider
     void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 14; }
-    juce::String getDisplayString() const;
+    // DOC: virtual makes it overrideable
+    virtual juce::String getDisplayString() const;
     
     void changeParam(juce::RangedAudioParameter* p);
-private:
+    // DOC: we need to make private -> protected so the derrived class can access them.
+protected:
 //    LookAndFeel lnf;
-    
     juce::RangedAudioParameter* param;
     juce::String suffix;
+};
+
+struct RatioSlider : RotarySliderWithLabels
+{
+    RatioSlider(juce::RangedAudioParameter* rap,
+                const juce::String& unitSuffix) :
+    RotarySliderWithLabels(rap, unitSuffix, "RATIO") {}
+    
+    juce::String getDisplayString() const override;
 };
 
 struct PowerButton : juce::ToggleButton { };
@@ -152,8 +163,6 @@ juce::RangedAudioParameter& getParam(APVTS& apvts, const Params& params, const N
     return *param;
 }
 
-
-
 juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix);
 
 template<
@@ -177,13 +186,23 @@ struct CompressorBandControls : juce::Component
     void paint(juce::Graphics& g) override;
 private:
     juce::AudioProcessorValueTreeState&  apvts;
-    RotarySliderWithLabels attackSlider, releaseSlider, thresholdSlider, ratioSlider;
+    
+    RotarySliderWithLabels attackSlider, releaseSlider, thresholdSlider;
+    RatioSlider ratioSlider;
     
     using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     std::unique_ptr<Attachment> attackSliderAttachment,
-    releaseSliderAttachment,
-    thresholdSliderAttachment,
-    ratioSliderAttachment;
+                                releaseSliderAttachment,
+                                thresholdSliderAttachment,
+                                ratioSliderAttachment;
+    
+    juce::ToggleButton bypassButton, soloButton, muteButton, lowBand, midBand, highBand;
+    
+    using BtnAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+    std::unique_ptr<BtnAttachment> bypassButtonAttachment,
+                                   soloButtonAttachment,
+                                    muteButtonAttachment;
+    
 };
 
 struct GlobalControls : juce::Component

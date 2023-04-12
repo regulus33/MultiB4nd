@@ -11,17 +11,20 @@
 
 template<typename T>
 
-// TODO: how do you indicate that the method is destructive in c++? This has a side effect
+// TODO:
 bool truncateKiloValue(T& value)
 {
    if(value > static_cast<T>(999))
    {
        value /= static_cast<T>(1000);
        return true;
+   } else {
+       return false;
    }
 }
 
 // TODO: change the name of this to getSliderLabelString
+// DOC: Gets either the low or high value that appears on either side of a knob.
 juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix)
 {
     juce::String str;
@@ -97,6 +100,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics & g,
     }
 }
 
+// TODO: this is a little bit messy.
 void LookAndFeel::drawToggleButton(juce::Graphics &g,
                                    juce::ToggleButton &toggleButton,
                                    bool shouldDrawButtonAsHighlighted,
@@ -147,6 +151,20 @@ void LookAndFeel::drawToggleButton(juce::Graphics &g,
         g.drawRect(bounds);
         
         g.strokePath(analyzerButton->randomPath, PathStrokeType(1.f));
+    }
+    else
+    {
+        auto bounds = toggleButton.getLocalBounds().reduced(2);
+        auto buttonIsOn = toggleButton.getToggleState();
+        const int cornerSize = 4;
+        
+        //NOTE: g.setColour() function sets the color that is used for any subsequent drawing operations until a new color is set using g.setColour() with a different color.
+        g.setColour(buttonIsOn ? juce::Colours::white : juce::Colours::black);
+        g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
+        
+        g.setColour(buttonIsOn ? juce::Colours::black : juce::Colours::white);
+        g.drawRoundedRectangle(bounds.toFloat(), cornerSize, 1);
+        g.drawFittedText(toggleButton.getName(), bounds, juce::Justification::centred, 1);
     }
 }
 //==============================================================================
@@ -272,6 +290,24 @@ void RotarySliderWithLabels::changeParam(juce::RangedAudioParameter *p)
     // TODO: why do we need to repaint?
     repaint();
 }
+
+juce::String RatioSlider::getDisplayString() const
+{
+    auto choiceParam = dynamic_cast<juce::AudioParameterChoice*>(param);
+    jassert(choiceParam != nullptr);
+    
+    auto currentChoice = choiceParam->getCurrentChoiceName();
+    // clamp the substring that does not include .0 if
+    if(currentChoice.contains(".0"))
+    {
+        currentChoice = currentChoice.substring(0, currentChoice.indexOf("."));
+    }
+    
+    currentChoice << ":1";
+    
+    return currentChoice;
+}
+
 // ===============================================================================
 Placeholder::Placeholder()
 {
@@ -283,7 +319,7 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     attackSlider(nullptr, "ms", "ATTACK"),
     releaseSlider(nullptr, "ms", "RELEASE"),
     thresholdSlider(nullptr, "dB", "THRESH"),
-    ratioSlider(nullptr, "", "RATIO")
+    ratioSlider(nullptr, "")
 {
     using namespace Params;
     const auto& params = GetParams();
@@ -297,6 +333,21 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     releaseSlider.changeParam(&getParameterHelper(Names::Release_Mid_Band));
     thresholdSlider.changeParam(&getParameterHelper(Names::Threshold_Mid_Band));
     ratioSlider.changeParam(&getParameterHelper(Names::Ratio_Mid_Band));
+    
+    addLabelPairs(attackSlider.labels, getParameterHelper(Names::Attack_Mid_Band), "ms");
+    addLabelPairs(releaseSlider.labels, getParameterHelper(Names::Release_Mid_Band), "ms");
+    addLabelPairs(thresholdSlider.labels, getParameterHelper(Names::Threshold_Mid_Band), "dB");
+    ratioSlider.labels.add({0.f, "1:1"});
+    auto ratioParam = dynamic_cast<juce::AudioParameterChoice*>(&getParameterHelper(Names::Ratio_Mid_Band));
+    int choicesEndIndex = ratioParam->choices.size() - 1;
+    int finalRatioValue = ratioParam->choices.getReference(choicesEndIndex).getIntValue();
+    juce::String endRatioLabel = juce::String(finalRatioValue) + ":1";
+    
+    ratioSlider.labels.add({1.0f, endRatioLabel});
+    
+    
+    
+    
     
     auto makeAttachmentHelper = [&params, &apvts = this->apvts](auto& attachment,
                                                   const auto& name,
@@ -322,12 +373,59 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     addAndMakeVisible(releaseSlider);
     addAndMakeVisible(thresholdSlider);
     addAndMakeVisible(ratioSlider);
+    
+    bypassButton.setName("X");
+    soloButton.setName("S");
+    muteButton.setName("M");
+    
+    addAndMakeVisible(bypassButton);
+    addAndMakeVisible(soloButton);
+    addAndMakeVisible(muteButton);
+    
+    makeAttachmentHelper(bypassButtonAttachment, Names::Bypassed_Mid_Band, bypassButton);
+    makeAttachmentHelper(soloButtonAttachment, Names::Solo_Mid_Band, soloButton);
+    makeAttachmentHelper(muteButtonAttachment, Names::Mute_Mid_Band, muteButton);
+    
+    lowBand.setName("Low");
+    midBand.setName("Mid");
+    highBand.setName("High");
+    
+    lowBand.setRadioGroupId(1);
+    midBand.setRadioGroupId(1);
+    highBand.setRadioGroupId(1);
+    
+    addAndMakeVisible(lowBand);
+    addAndMakeVisible(midBand);
+    addAndMakeVisible(highBand);
 }
 
 void CompressorBandControls::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
     using namespace juce;
+    
+    std::function<FlexBox(std::vector<Component*>)> createButtonControlBox = [](std::vector<Component*> comps) -> FlexBox {
+        FlexBox flexBox;
+        flexBox.flexDirection = FlexBox::Direction::column;
+        flexBox.flexWrap = FlexBox::Wrap::noWrap;
+        
+        auto spacer = FlexItem().withHeight(4);
+        
+        for( auto* comp : comps)
+        {
+            flexBox.items.add(spacer);
+            flexBox.items.add(FlexItem(*comp).withFlex(1.f));
+        }
+        
+        flexBox.items.add(spacer);
+        
+        return flexBox;
+    };
+    
+    // pass vector of pointers to ui components, the lambda will organize them into a flexbox
+    auto bandButtonControlBox = createButtonControlBox({&bypassButton, &soloButton, &muteButton});
+    auto bandSelectControlBox = createButtonControlBox({&lowBand, &midBand, &highBand});
+    
     FlexBox flexBox;
     flexBox.flexDirection = FlexBox::Direction::row;
     flexBox.flexWrap = FlexBox::Wrap::noWrap;
@@ -336,7 +434,9 @@ void CompressorBandControls::resized()
     auto endCap = FlexItem().withWidth(6);
     
     // What you are seeing here is in practice something like html or jsx in that the order we add these in is the order in which they are displayed
-    flexBox.items.add(endCap);
+    flexBox.items.add(spacer);
+    flexBox.items.add(FlexItem(bandSelectControlBox).withWidth(50));
+    flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(attackSlider).withFlex(1.f));
     flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(releaseSlider).withFlex(1.f));
@@ -344,7 +444,9 @@ void CompressorBandControls::resized()
     flexBox.items.add(FlexItem(thresholdSlider).withFlex(1.f));
     flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(ratioSlider).withFlex(1.f));
-    flexBox.items.add(endCap);
+//    flexBox.items.add(endCap);
+    flexBox.items.add(spacer);
+    flexBox.items.add(FlexItem(bandButtonControlBox).withWidth(30));
     
     flexBox.performLayout(bounds);
 }
