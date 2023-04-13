@@ -327,6 +327,11 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     addAndMakeVisible(thresholdSlider);
     addAndMakeVisible(ratioSlider);
     
+    // For changing colors of low, mid, high based on mute, solo, bypass
+    bypassButton.addListener(this);
+    soloButton.addListener(this);
+    muteButton.addListener(this);
+    
     bypassButton.setName("X");
     soloButton.setName("S");
     muteButton.setName("M");
@@ -364,6 +369,14 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     addAndMakeVisible(lowBand);
     addAndMakeVisible(midBand);
     addAndMakeVisible(highBand);
+}
+
+CompressorBandControls::~CompressorBandControls()
+{
+    bypassButton.removeListener(this);
+    soloButton.removeListener(this);
+    muteButton.removeListener(this);
+    
 }
 
 void CompressorBandControls::resized()
@@ -441,6 +454,20 @@ void CompressorBandControls::paint(juce::Graphics &g)
 {
     auto bounds = getLocalBounds();
     drawModuleBackground(g, bounds);
+}
+
+void CompressorBandControls::buttonClicked(juce::Button* button)
+{
+    updateSliderEnabledMents();
+}
+
+void CompressorBandControls::updateSliderEnabledMents()
+{
+    auto disabled = muteButton.getToggleState() || bypassButton.getToggleState();
+    attackSlider.setEnabled(!disabled);
+    releaseSlider.setEnabled(!disabled);
+    thresholdSlider.setEnabled(!disabled);
+    ratioSlider.setEnabled(!disabled);
 }
 
 void CompressorBandControls::updateAttachments()
