@@ -207,6 +207,7 @@ private:
     
     void updateAttachments();
     void updateSliderEnabledMents();
+    void updateSoloMuteBypassToggleStates(juce::Button& button);
 };
 
 struct GlobalControls : juce::Component

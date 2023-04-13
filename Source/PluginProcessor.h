@@ -26,7 +26,7 @@ GUI Roadmap
  12) Drawing gain reduction on top of the analyzer
  13) Analyzer bypass
  14) Global bypass button
- 5:08:07
+ 5:33:32
  */
 
 #include <JuceHeader.h>
