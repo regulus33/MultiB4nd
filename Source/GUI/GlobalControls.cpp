@@ -10,7 +10,7 @@
 
 #include "GlobalControls.h"
 #include "RotarySliderWithLabels.h"
-#include "Params.h"
+#include "../DSP/Params.h"
 #include "Utils.h"
 #include "CustomButtons.h"
 

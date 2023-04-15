@@ -8,11 +8,11 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "LookAndFeel.h"
-#include "UtilityComponents.h"
-#include "GlobalControls.h"
-#include "CompressorBandControls.h"
-#include "Params.h"
+#include "GUI/LookAndFeel.h"
+#include "GUI/UtilityComponents.h"
+#include "GUI/GlobalControls.h"
+#include "GUI/CompressorBandControls.h"
+#include "DSP/Params.h"
 
 //==============================================================================
 

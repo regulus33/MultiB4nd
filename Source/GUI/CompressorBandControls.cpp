@@ -10,7 +10,7 @@
 
 #include "CompressorBandControls.h"
 #include "RotarySliderWithLabels.h"
-#include "Params.h"
+#include "../DSP/Params.h"
 #include "Utils.h"
 
 CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeState& apv) : apvts(apv),
