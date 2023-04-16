@@ -20,6 +20,8 @@ struct CompressorBandControls : juce::Component, juce::Button::Listener
     void paint(juce::Graphics& g) override;
     void buttonClicked(juce::Button* button) override;
 private:
+    static const juce::TextButton::ColourIds ButtonOnColorId { juce::TextButton::ColourIds::buttonOnColourId };
+    static const juce::TextButton::ColourIds ButtonOffColorId { juce::TextButton::ColourIds::buttonColourId };
     juce::AudioProcessorValueTreeState&  apvts;
     
     RotarySliderWithLabels attackSlider, releaseSlider, thresholdSlider;
@@ -40,7 +42,17 @@ private:
     
     juce::Component::SafePointer<CompressorBandControls> safePtr {this};
     
+    // NOTE: important
+    juce::ToggleButton* activeBand = {&lowBand};
+    
     void updateAttachments();
     void updateSliderEnabledMents();
     void updateSoloMuteBypassToggleStates(juce::Button& button);
+    void updateActiveBandFillColors(juce::Button& clickedButton);
+    void resetActiveBandColors();
+    static void refreshBandButtonColors(juce::Button& band, juce::Button& colorSource);
+    // TODO: we are making this called in constructor to update band button colors
+    // independent of clicking
+    // 6:00:55
+    void updateBandSelectButtonStates();
 };

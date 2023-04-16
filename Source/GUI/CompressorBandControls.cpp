@@ -30,17 +30,35 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     soloButton.addListener(this);
     muteButton.addListener(this);
     
+    using namespace juce::Colours;
+    
     bypassButton.setName("X");
+    bypassButton.setColour(ButtonOnColorId, yellow);
+    bypassButton.setColour(ButtonOffColorId, black);
+    
     soloButton.setName("S");
+    soloButton.setColour(ButtonOnColorId, limegreen);
+    soloButton.setColour(ButtonOffColorId, black);
+    
     muteButton.setName("M");
+    muteButton.setColour(ButtonOnColorId, red);
+    muteButton.setColour(ButtonOffColorId, black);
     
     addAndMakeVisible(bypassButton);
     addAndMakeVisible(soloButton);
     addAndMakeVisible(muteButton);
     
     lowBand.setName("Low");
+    lowBand.setColour(ButtonOnColorId, grey);
+    lowBand.setColour(ButtonOffColorId, black);
+    
     midBand.setName("Mid");
+    midBand.setColour(ButtonOnColorId, grey);
+    midBand.setColour(ButtonOffColorId, black);
+    
     highBand.setName("High");
+    highBand.setColour(ButtonOnColorId, grey);
+    highBand.setColour(ButtonOffColorId, black);
     
     lowBand.setRadioGroupId(1);
     midBand.setRadioGroupId(1);
@@ -137,10 +155,88 @@ void CompressorBandControls::paint(juce::Graphics &g)
     drawModuleBackground(g, bounds);
 }
 
+// ----
+void CompressorBandControls::refreshBandButtonColors(juce::Button& band, juce::Button& colorSource)
+{
+    band.setColour(ButtonOnColorId, colorSource.findColour(ButtonOnColorId));
+    band.setColour(ButtonOffColorId, colorSource.findColour(ButtonOnColorId));
+    band.repaint();
+}
+
+void CompressorBandControls::resetActiveBandColors()
+{
+    activeBand->setColour(ButtonOnColorId, juce::Colours::grey);
+    activeBand->setColour(ButtonOffColorId, juce::Colours::grey);
+    activeBand->repaint();
+}
+// -----
+
+// DOC: figure out which band is selected and then color it based on whether its muted, bypassed or soloed (only called on plugin startup, we spread this around in other callbacks later in plugin lifecycle
+void CompressorBandControls::updateBandSelectButtonStates()
+{
+    using namespace Params;
+    std::vector<std::array<Names, 3>> paramsToCheck
+    {
+        {Names::Solo_Low_Band, Names::Mute_Low_Band, Names::Bypassed_Low_Band},
+        {Names::Solo_Mid_Band, Names::Mute_Mid_Band, Names::Bypassed_Mid_Band},
+        {Names::Solo_High_Band, Names::Mute_High_Band, Names::Bypassed_High_Band},
+    };
+    
+    const auto& params = GetParams();
+    auto paramHelper = [&params, this](const auto& name)
+    {
+        return dynamic_cast<juce::AudioParameterBool*>(&getParam(apvts, params, name));
+    };
+    
+    for(size_t i = 0; i < paramsToCheck.size(); ++i)
+    {
+        auto& list = paramsToCheck[i];
+        
+        auto* bandButton = (i == 0) ? &lowBand :
+                           (i == 1) ? &midBand :
+                                      &highBand;
+        
+        if( auto* solo = paramHelper(list[0]);
+           solo->get() )
+        {
+            refreshBandButtonColors(*bandButton, soloButton);
+        }
+        
+        else if( auto* mute = paramHelper(list[1]);
+           mute->get() )
+        {
+            refreshBandButtonColors(*bandButton, muteButton);
+        }
+        
+        else if( auto* bypass = paramHelper(list[2]);
+           bypass->get() )
+        {
+            refreshBandButtonColors(*bandButton, bypassButton);
+        }
+        
+    }
+}
+
 void CompressorBandControls::buttonClicked(juce::Button* button)
 {
     updateSliderEnabledMents();
     updateSoloMuteBypassToggleStates(*button);
+    updateActiveBandFillColors(*button);
+}
+
+void CompressorBandControls::updateActiveBandFillColors(juce::Button& clickedButton)
+{
+    jassert(activeBand != nullptr);
+    DBG("Active band: " << activeBand->getName());
+    
+    if(clickedButton.getToggleState() == false)
+    {
+        resetActiveBandColors();
+    }
+    else
+    {
+        refreshBandButtonColors(*activeBand, clickedButton);
+    }
 }
 
 void CompressorBandControls::updateSliderEnabledMents()
@@ -223,6 +319,8 @@ void CompressorBandControls::updateAttachments()
                 Names::Solo_Low_Band,
                 Names::Bypassed_Low_Band
             };
+            activeBand = &lowBand;
+            
             break;
         case Mid:
             names = std::vector<Names>
@@ -235,6 +333,8 @@ void CompressorBandControls::updateAttachments()
                 Names::Solo_Mid_Band,
                 Names::Bypassed_Mid_Band
             };
+            activeBand = &midBand;
+            
             break;
         case High:
             names = std::vector<Names>
@@ -247,6 +347,8 @@ void CompressorBandControls::updateAttachments()
                 Names::Solo_High_Band,
                 Names::Bypassed_High_Band
             };
+            activeBand = &highBand;
+            
             break;
     }
     
