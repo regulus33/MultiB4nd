@@ -18,6 +18,13 @@ Templates are a kind of code generation technique, and the actual code is genera
  WARNING WARNING WARNING
  */
 
+enum FFTOrder
+{
+    order2048 = 11,
+    order4096 = 12,
+    order8192 = 13
+};
+
 template<
 typename Attachment,
 typename APVTS,
