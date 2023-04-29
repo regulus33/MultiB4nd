@@ -1,0 +1,89 @@
+\hypertarget{_single_channel_sample_fifo_8h_source}{}\doxysection{Single\+Channel\+Sample\+Fifo.\+h}
+\label{_single_channel_sample_fifo_8h_source}\index{Source/DSP/SingleChannelSampleFifo.h@{Source/DSP/SingleChannelSampleFifo.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ SingleChannelSampleFifo.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 17\ Apr\ 2023\ 6:57:27pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}Fifo.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{enum}\ Channel}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ Right,\ \textcolor{comment}{//effectively\ 0}}
+\DoxyCodeLine{00018\ \ \ \ \ Left\ \textcolor{comment}{//effectively\ 1}}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ BlockType>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo}}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo}}(Channel\ ch)\ :\ channelToUse(ch)}
+\DoxyCodeLine{00025\ \ \ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ prepared.set(\textcolor{keyword}{false});}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ update(\textcolor{keyword}{const}\ BlockType\&\ buffer)}
+\DoxyCodeLine{00030\ \ \ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ jassert(prepared.get());}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ jassert(buffer.getNumChannels()\ >\ channelToUse\ );}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ channelPtr\ =\ buffer.getReadPointer(channelToUse);}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ buffer.getNumSamples();\ ++i\ )}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ pushNextSampleIntoFifo(channelPtr[i]);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ prepare(\textcolor{keywordtype}{int}\ bufferSize)}
+\DoxyCodeLine{00042\ \ \ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ prepared.set(\textcolor{keyword}{false});}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ size.set(bufferSize);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ bufferToFill.setSize(1,\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//channel}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bufferSize,\ \ \ \ \textcolor{comment}{//num\ samples}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false},\ \ \ \ \ \ \ \ \ \textcolor{comment}{//keepExistingContent}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true},\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//clear\ extra\ space}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});\ \ \ \ \ \ \ \ \ \textcolor{comment}{//avoid\ reallocating}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ audioBufferFifo.\mbox{\hyperlink{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}{prepare}}(1,\ bufferSize);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ fifoIndex\ =\ 0;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ prepared.set(\textcolor{keyword}{true});}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{int}\ getNumCompleteBuffersAvailable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ audioBufferFifo.\mbox{\hyperlink{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}{getNumAvailableForReading}}();\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ isPrepared()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ prepared.get();\ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{int}\ getSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ size.get();\ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ getAudioBuffer(BlockType\&\ buf)\ \{\ \textcolor{keywordflow}{return}\ audioBufferFifo.\mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}}(buf);\ \}}
+\DoxyCodeLine{00061\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00062\ \ \ \ \ Channel\ channelToUse;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{int}\ fifoIndex\ =\ 0;}
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{struct_fifo}{Fifo<BlockType>}}\ audioBufferFifo;}
+\DoxyCodeLine{00065\ \ \ \ \ BlockType\ bufferToFill;}
+\DoxyCodeLine{00066\ \ \ \ \ juce::Atomic<bool>\ prepared\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00067\ \ \ \ \ juce::Atomic<int>\ size\ =\ 0;}
+\DoxyCodeLine{00068\ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ pushNextSampleIntoFifo(\textcolor{keywordtype}{float}\ sample)}
+\DoxyCodeLine{00070\ \ \ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fifoIndex\ ==\ bufferToFill.getNumSamples())}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ ok\ =\ audioBufferFifo.\mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}}(bufferToFill);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ juce::ignoreUnused(ok);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ fifoIndex\ =\ 0;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ bufferToFill.setSample(0,\ fifoIndex,\ sample);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ ++fifoIndex;}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \};}
+
+\end{DoxyCode}

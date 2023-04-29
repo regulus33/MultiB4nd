@@ -1,0 +1,53 @@
+\hypertarget{_plugin_editor_8h_source}{}\doxysection{Plugin\+Editor.\+h}
+\label{_plugin_editor_8h_source}\index{Source/PluginEditor.h@{Source/PluginEditor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ This\ file\ contains\ the\ basic\ framework\ code\ for\ a\ JUCE\ plugin\ editor.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}PluginProcessor.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}GUI/LookAndFeel.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}GUI/UtilityComponents.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}GUI/GlobalControls.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}GUI/CompressorBandControls.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}GUI/SpectrumAnalyzer.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor}{SimpleMBCompAudioProcessorEditor}}\ \ :\ \textcolor{keyword}{public}\ juce::AudioProcessorEditor}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor}{SimpleMBCompAudioProcessorEditor}}\ (\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}}\&);}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor_a0c3953d5b2af1e7132af0e646aa13989}{\string~SimpleMBCompAudioProcessorEditor}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00026\ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor_a18687731a87f8a6ac8e53fc26ad4a25c}{paint}}\ (juce::Graphics\&)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor_aa376595460c0dfb21a016dc4b2694932}{resized}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00030\ \ \ \ \ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{struct_look_and_feel}{LookAndFeel}}\ lnf;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ This\ reference\ is\ provided\ as\ a\ quick\ way\ for\ your\ editor\ to}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ access\ the\ processor\ object\ that\ created\ it.}}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}}\&\ audioProcessor;}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{struct_placeholder}{Placeholder}}\ controlBar;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ These\ \{\}\ are\ like\ little\ miniature\ blocks.\ They\ are\ passing\ in\ the\ arg\ to\ this}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ class\ constructor.\ The\ objects\ we\ reference\ here\ must\ be\ member\ variables\ of\ this\ class\ (at\ least\ in\ this\ case...\ maybe\ there\ are\ some\ other\ available\ scope\ as\ well)}}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{struct_global_controls}{GlobalControls}}\ globalControls\ \{\ audioProcessor.apvts\ \};}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ TODO\ add\ a\ breakpoint\ in\ this\ block\ to\ see\ when\ exactly\ this\ block\ runs}}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band_controls}{CompressorBandControls}}\ bandControls\ \{\ audioProcessor.apvts\ \};}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{struct_spectrum_analyzer}{SpectrumAnalyzer}}\ analyzer\ \{\ audioProcessor\ \};}
+\DoxyCodeLine{00044\ \ \ \ \ }
+\DoxyCodeLine{00045\ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ JUCE\_DECLARE\_NON\_COPYABLE\_WITH\_LEAK\_DETECTOR\ (\mbox{\hyperlink{class_simple_m_b_comp_audio_processor_editor}{SimpleMBCompAudioProcessorEditor}})}
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

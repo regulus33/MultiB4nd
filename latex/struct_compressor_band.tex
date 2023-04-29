@@ -1,0 +1,87 @@
+\hypertarget{struct_compressor_band}{}\doxysection{Compressor\+Band Class Reference}
+\label{struct_compressor_band}\index{CompressorBand@{CompressorBand}}
+
+
+\mbox{\hyperlink{struct_compressor_band}{Compressor\+Band}} class encapsulates all the audio parameters related to a band compressor and implements audio processing. This class holds the audio parameters such as attack, release, threshold, ratio, bypassed, mute, and solo. The prepare method sets up the compressor with the given process specification. The update\+Compressor\+Settings method updates the parameters of the compressor. The process method processes the audio buffer.  
+
+
+
+
+{\ttfamily \#include $<$Compressor\+Band.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_compressor_band_a45c53261a521cbcf475a9c3edccd4ffb}{prepare}} (const juce\+::dsp\+::\+Process\+Spec \&spec)
+\begin{DoxyCompactList}\small\item\em Prepares the compressor for processing by setting up its internal processing data based on the given audio processing specification. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_compressor_band_a7393dc4c0b44ae4ea51e358c9952ff14}\label{struct_compressor_band_a7393dc4c0b44ae4ea51e358c9952ff14}} 
+void {\bfseries update\+Compressor\+Settings} ()
+\begin{DoxyCompactList}\small\item\em Updates the compressor settings by setting the attack, release, threshold and ratio values from their corresponding audio parameters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_compressor_band_abde7a1210163bad8959350b75bfd5b58}{process}} (juce\+::\+Audio\+Buffer$<$ float $>$ \&buffer)
+\begin{DoxyCompactList}\small\item\em Processes the audio buffer by either bypassing the processing or by applying the compression based on the bypass status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_a68ba497cfd15539cf0accf1338449018}\label{struct_compressor_band_a68ba497cfd15539cf0accf1338449018}} 
+juce\+::\+Audio\+Parameter\+Float $\ast$ {\bfseries attack} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_a63d65779578e3c16d6115dbd629e2801}\label{struct_compressor_band_a63d65779578e3c16d6115dbd629e2801}} 
+juce\+::\+Audio\+Parameter\+Float $\ast$ {\bfseries release} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_a8f53eced935c2c0542926e0351982dca}\label{struct_compressor_band_a8f53eced935c2c0542926e0351982dca}} 
+juce\+::\+Audio\+Parameter\+Float $\ast$ {\bfseries threshold} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_af5da912e81936daa98b885678b2ec551}\label{struct_compressor_band_af5da912e81936daa98b885678b2ec551}} 
+juce\+::\+Audio\+Parameter\+Choice $\ast$ {\bfseries ratio} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_a29d2dafdb2f34ea12e4f018f1d228918}\label{struct_compressor_band_a29d2dafdb2f34ea12e4f018f1d228918}} 
+juce\+::\+Audio\+Parameter\+Bool $\ast$ {\bfseries bypassed} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_af38adf2a5b91e8ffce17d1d358290bbe}\label{struct_compressor_band_af38adf2a5b91e8ffce17d1d358290bbe}} 
+juce\+::\+Audio\+Parameter\+Bool $\ast$ {\bfseries mute} \{ nullptr \}
+\item 
+\mbox{\Hypertarget{struct_compressor_band_ad250f0f81c8d591514296b7bc96c3e1c}\label{struct_compressor_band_ad250f0f81c8d591514296b7bc96c3e1c}} 
+juce\+::\+Audio\+Parameter\+Bool $\ast$ {\bfseries solo} \{ nullptr \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{struct_compressor_band}{Compressor\+Band}} class encapsulates all the audio parameters related to a band compressor and implements audio processing. This class holds the audio parameters such as attack, release, threshold, ratio, bypassed, mute, and solo. The prepare method sets up the compressor with the given process specification. The update\+Compressor\+Settings method updates the parameters of the compressor. The process method processes the audio buffer. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_compressor_band_a45c53261a521cbcf475a9c3edccd4ffb}\label{struct_compressor_band_a45c53261a521cbcf475a9c3edccd4ffb}} 
+\index{CompressorBand@{CompressorBand}!prepare@{prepare}}
+\index{prepare@{prepare}!CompressorBand@{CompressorBand}}
+\doxysubsubsection{\texorpdfstring{prepare()}{prepare()}}
+{\footnotesize\ttfamily void Compressor\+Band\+::prepare (\begin{DoxyParamCaption}\item[{const juce\+::dsp\+::\+Process\+Spec \&}]{spec }\end{DoxyParamCaption})}
+
+
+
+Prepares the compressor for processing by setting up its internal processing data based on the given audio processing specification. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em spec} & The audio processing specification which contains the sample rate, buffer size and number of channels \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_compressor_band_abde7a1210163bad8959350b75bfd5b58}\label{struct_compressor_band_abde7a1210163bad8959350b75bfd5b58}} 
+\index{CompressorBand@{CompressorBand}!process@{process}}
+\index{process@{process}!CompressorBand@{CompressorBand}}
+\doxysubsubsection{\texorpdfstring{process()}{process()}}
+{\footnotesize\ttfamily void Compressor\+Band\+::process (\begin{DoxyParamCaption}\item[{juce\+::\+Audio\+Buffer$<$ float $>$ \&}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Processes the audio buffer by either bypassing the processing or by applying the compression based on the bypass status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & The audio buffer to be processed \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+DSP/Compressor\+Band.\+h\item 
+Source/\+DSP/Compressor\+Band.\+cpp\end{DoxyCompactItemize}

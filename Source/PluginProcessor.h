@@ -8,26 +8,24 @@
 
 #pragma once
 
-/*
-
- 6:19:48
- */
-
 #include <JuceHeader.h>
 #include "DSP/CompressorBand.h"
 #include "DSP/SingleChannelSampleFifo.h"
-
 #include <array>
 
-
-
-
-
-
-
-
-//==============================================================================
-/**
+/*!
+ @class SimpleMBCompAudioProcessor
+ @brief The main audio processing class for the Simple Multiband Compressor plugin.
+ This class is responsible for splitting the audio into 3 frequency bands using Linkwitz-Riley filters, applying
+ separate compressors to each band, and then summing the bands together to produce a compressed signal. The
+ parameters for the filters and compressors can be adjusted through the user interface created by the
+ SimpleMBCompAudioProcessorEditor class. The AudioProcessorValueTreeState (APVTS) object is used to manage the
+ plugin's parameters and their values.
+ @see SimpleMBCompAudioProcessorEditor
+ @see CompressorBand
+ @see SingleChannelSampleFifo
+ @see juce::AudioProcessor
+ @see juce::AudioProcessorValueTreeState
  */
 class SimpleMBCompAudioProcessor  : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
@@ -91,8 +89,8 @@ private:
     using Filter = juce::dsp::LinkwitzRileyFilter<float>;
     //     fc0  fc1
     Filter LP1, AP2,
-           HP1, LP2,
-                HP2;
+    HP1, LP2,
+    HP2;
     
     juce::AudioParameterFloat* lowMidCrossover { nullptr };
     juce::AudioParameterFloat* midHighCrossover { nullptr };

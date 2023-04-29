@@ -1,0 +1,54 @@
+\hypertarget{struct_path_producer}{}\doxysection{Path\+Producer Struct Reference}
+\label{struct_path_producer}\index{PathProducer@{PathProducer}}
+
+
+A class that processes FFT data and generates paths. \mbox{\hyperlink{struct_path_producer}{Path\+Producer}} class processes FFT data and generates paths that can be used to render audio data. It uses a Left\+Channel\+Fifo buffer to store incoming audio data, a mono\+Buffer to store the mono representation of the audio data, and Left\+Channel\+FFTData\+Generator to generate FFT data.  
+
+
+
+
+{\ttfamily \#include $<$Path\+Producer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_path_producer_affa21b1127872094a7aac0ce6eaacbf4}\label{struct_path_producer_affa21b1127872094a7aac0ce6eaacbf4}} 
+{\bfseries Path\+Producer} (\mbox{\hyperlink{struct_single_channel_sample_fifo}{Single\+Channel\+Sample\+Fifo}}$<$ Simple\+MBComp\+Audio\+Processor\+::\+Block\+Type $>$ \&scsf)
+\item 
+void \mbox{\hyperlink{struct_path_producer_a62f9cdcc8de2b5f8bf8320b1b3cd723a}{process}} (juce\+::\+Rectangle$<$ float $>$ fft\+Bounds, double sample\+Rate)
+\begin{DoxyCompactList}\small\item\em Processes FFT data and generates paths. This function processes FFT data and generates paths that can be used to render audio data. It uses a Left\+Channel\+Fifo buffer to store incoming audio data, a mono\+Buffer to store the mono representation of the audio data, and Left\+Channel\+FFTData\+Generator to generate FFT data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_path_producer_a216a2d654240347b3fefc093bf4fb1b1}\label{struct_path_producer_a216a2d654240347b3fefc093bf4fb1b1}} 
+juce\+::\+Path {\bfseries get\+Path} ()
+\item 
+\mbox{\Hypertarget{struct_path_producer_a65f1a75a14770ad753d7a3750327e2f8}\label{struct_path_producer_a65f1a75a14770ad753d7a3750327e2f8}} 
+void {\bfseries update\+Negative\+Infinity} (float nf)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class that processes FFT data and generates paths. \mbox{\hyperlink{struct_path_producer}{Path\+Producer}} class processes FFT data and generates paths that can be used to render audio data. It uses a Left\+Channel\+Fifo buffer to store incoming audio data, a mono\+Buffer to store the mono representation of the audio data, and Left\+Channel\+FFTData\+Generator to generate FFT data. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_path_producer_a62f9cdcc8de2b5f8bf8320b1b3cd723a}\label{struct_path_producer_a62f9cdcc8de2b5f8bf8320b1b3cd723a}} 
+\index{PathProducer@{PathProducer}!process@{process}}
+\index{process@{process}!PathProducer@{PathProducer}}
+\doxysubsubsection{\texorpdfstring{process()}{process()}}
+{\footnotesize\ttfamily void Path\+Producer\+::process (\begin{DoxyParamCaption}\item[{juce\+::\+Rectangle$<$ float $>$}]{fft\+Bounds,  }\item[{double}]{sample\+Rate }\end{DoxyParamCaption})}
+
+
+
+Processes FFT data and generates paths. This function processes FFT data and generates paths that can be used to render audio data. It uses a Left\+Channel\+Fifo buffer to store incoming audio data, a mono\+Buffer to store the mono representation of the audio data, and Left\+Channel\+FFTData\+Generator to generate FFT data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fft\+Bounds} & The bounds of the FFT data to be rendered. \\
+\hline
+{\em sample\+Rate} & The sample rate of the audio data. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Path\+Producer.\+h\item 
+Source/\+GUI/Path\+Producer.\+cpp\end{DoxyCompactItemize}

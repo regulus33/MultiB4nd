@@ -1,0 +1,141 @@
+\hypertarget{struct_fifo}{}\doxysection{Fifo\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{struct_fifo}\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+
+
+A template class that implements a First-\/\+In-\/\+First-\/\+Out (FIFO) queue. The \mbox{\hyperlink{struct_fifo}{Fifo}} class holds either std\+::vector$<$float$>$ or juce\+::\+Audio\+Buffer$<$float$>$ objects, and implements a FIFO queue to store and retrieve these objects. The capacity of the queue is fixed at 30.  
+
+
+
+
+{\ttfamily \#include $<$Fifo.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}{prepare}} (int num\+Channels, int num\+Samples)
+\begin{DoxyCompactList}\small\item\em Prepares the \mbox{\hyperlink{struct_fifo}{Fifo}} to hold juce\+::\+Audio\+Buffer$<$float$>$ objects. This method is only applicable when the \mbox{\hyperlink{struct_fifo}{Fifo}} is holding juce\+::\+Audio\+Buffer$<$float$>$ objects. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_fifo_a8ab498b0b4c68ac84f763b5e0fc1227e}{prepare}} (size\+\_\+t num\+Elements)
+\begin{DoxyCompactList}\small\item\em Prepares the \mbox{\hyperlink{struct_fifo}{Fifo}} to hold std\+::vector$<$float$>$ objects. This method is only applicable when the \mbox{\hyperlink{struct_fifo}{Fifo}} is holding std\+::vector$<$float$>$ objects. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}} (const T \&t)
+\begin{DoxyCompactList}\small\item\em Pushes an object of type T onto the end of the queue. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}} (T \&t)
+\begin{DoxyCompactList}\small\item\em Pulls an object of type T from the front of the queue. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}{get\+Num\+Available\+For\+Reading}} () const
+\begin{DoxyCompactList}\small\item\em Gets the number of objects in the queue that are available for reading. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Fifo$<$ T $>$}
+A template class that implements a First-\/\+In-\/\+First-\/\+Out (FIFO) queue. The \mbox{\hyperlink{struct_fifo}{Fifo}} class holds either std\+::vector$<$float$>$ or juce\+::\+Audio\+Buffer$<$float$>$ objects, and implements a FIFO queue to store and retrieve these objects. The capacity of the queue is fixed at 30. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of object to be held in the \mbox{\hyperlink{struct_fifo}{Fifo}}, either std\+::vector$<$float$>$ or juce\+::\+Audio\+Buffer$<$float$>$. Example usage\+: 
+\begin{DoxyCode}{1}
+\DoxyCodeLine{\mbox{\hyperlink{struct_fifo}{Fifo<std::vector<float>}}>\ floatFifo;}
+\DoxyCodeLine{floatFifo.\mbox{\hyperlink{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}{prepare}}(1024);}
+\DoxyCodeLine{std::vector<float>\ data;}
+\DoxyCodeLine{data.resize(1024,\ 0);}
+\DoxyCodeLine{floatFifo.\mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}}(data);}
+\DoxyCodeLine{std::vector<float>\ retrievedData;}
+\DoxyCodeLine{floatFifo.\mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}}(retrievedData);}
+
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}\label{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}} 
+\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}!getNumAvailableForReading@{getNumAvailableForReading}}
+\index{getNumAvailableForReading@{getNumAvailableForReading}!Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getNumAvailableForReading()}{getNumAvailableForReading()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{struct_fifo}{Fifo}}$<$ T $>$\+::get\+Num\+Available\+For\+Reading (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the number of objects in the queue that are available for reading. 
+
+\begin{DoxyReturn}{Returns}
+The number of objects in the queue that are available for reading. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}\label{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}} 
+\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}!prepare@{prepare}}
+\index{prepare@{prepare}!Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{prepare()}{prepare()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_fifo}{Fifo}}$<$ T $>$\+::prepare (\begin{DoxyParamCaption}\item[{int}]{num\+Channels,  }\item[{int}]{num\+Samples }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Prepares the \mbox{\hyperlink{struct_fifo}{Fifo}} to hold juce\+::\+Audio\+Buffer$<$float$>$ objects. This method is only applicable when the \mbox{\hyperlink{struct_fifo}{Fifo}} is holding juce\+::\+Audio\+Buffer$<$float$>$ objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Channels} & The number of channels to be stored in each buffer. \\
+\hline
+{\em num\+Samples} & The number of samples to be stored in each buffer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_fifo_a8ab498b0b4c68ac84f763b5e0fc1227e}\label{struct_fifo_a8ab498b0b4c68ac84f763b5e0fc1227e}} 
+\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}!prepare@{prepare}}
+\index{prepare@{prepare}!Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{prepare()}{prepare()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{struct_fifo}{Fifo}}$<$ T $>$\+::prepare (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{num\+Elements }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Prepares the \mbox{\hyperlink{struct_fifo}{Fifo}} to hold std\+::vector$<$float$>$ objects. This method is only applicable when the \mbox{\hyperlink{struct_fifo}{Fifo}} is holding std\+::vector$<$float$>$ objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Elements} & The number of elements to be stored in each vector. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}\label{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}} 
+\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}!pull@{pull}}
+\index{pull@{pull}!Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pull()}{pull()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{struct_fifo}{Fifo}}$<$ T $>$\+::pull (\begin{DoxyParamCaption}\item[{T \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pulls an object of type T from the front of the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & A reference to an object of type T that will be populated with the object from the front of the queue. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the pull was successful, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}\label{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}} 
+\index{Fifo$<$ T $>$@{Fifo$<$ T $>$}!push@{push}}
+\index{push@{push}!Fifo$<$ T $>$@{Fifo$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{struct_fifo}{Fifo}}$<$ T $>$\+::push (\begin{DoxyParamCaption}\item[{const T \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pushes an object of type T onto the end of the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & The object to be pushed onto the queue. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the push was successful, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+DSP/Fifo.\+h\end{DoxyCompactItemize}

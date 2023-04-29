@@ -1,0 +1,112 @@
+\hypertarget{_f_f_t_data_generator_8h_source}{}\doxysection{FFTData\+Generator.\+h}
+\label{_f_f_t_data_generator_8h_source}\index{Source/GUI/FFTDataGenerator.h@{Source/GUI/FFTDataGenerator.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ FFTDataGenerator.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ Created:\ 17\ Apr\ 2023\ 6:04:43pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}Utils.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../DSP/Fifo.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ AUDIO\ ANALYSIS\ OF\ FFT\ ARRAY\ WITH\ 58\ bands}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ |\ \ \ \ \ \ \ \ \ \ |\ \ \ ||\ \ \ \ |\ \ |\ \ |\ \ \ \ \ \ \ |\ \ |\ \ \ \ |\ \ \ \ |}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ ||\ \ \ \ \ \ \ \ \ |\ \ |||\ \ \ \ |\ \ |\ \ |\ \ \ \ \ \ \ |\ ||\ \ |\ |\ \ \ \ |\ |}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ ||||\ |\ |\ \ \ ||\ ||||\ |\ ||\ ||\ |\ |\ \ \ \ \ |\ |||\ |\ |\ |\ ||\ |\ \ \ \ |\ \ |}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ ||||\ |\ ||\ ||||||||\ ||||\ ||||||\ \ |\ ||\ |||||\ |\ |\ ||||\ \ \ \ |\ ||}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ ||||\ ||||\ |||||||||||||||||||||\ ||||\ |||||||||\ |||||\ |\ |\ ||}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ |||||||||||||||||||||||||||||||\ ||||||||||||||||||||\ |\ ||||}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ |0\ \ \ \ \ \ \ \ |10\ \ \ \ \ \ \ |20\ \ \ \ \ \ \ |30\ \ \ \ \ \ \ |40\ \ \ \ \ \ \ |50}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00056\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ BlockType>}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_f_f_t_data_generator}{FFTDataGenerator}}}
+\DoxyCodeLine{00063\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_f_f_t_data_generator_a04d7d41690a45854d43c5a50edea32b0}{produceFFTDataForRendering}}(\textcolor{keyword}{const}\ juce::AudioBuffer<float>\&\ audioData,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ negativeInfinity)}
+\DoxyCodeLine{00071\ \ \ \ \ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ fftSize\ =\ getFFTSize();}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ fftData.assign(fftData.size(),\ 0);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ readIndex\ =\ audioData.getReadPointer(0);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ std::copy(readIndex,\ readIndex\ +\ fftSize,\ fftData.begin());}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ window-\/>multiplyWithWindowingTable\ (fftData.data(),\ fftSize);\ \ \ \ \ \ \ \textcolor{comment}{//\ [1]}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ forwardFFT-\/>performFrequencyOnlyForwardTransform\ (fftData.data());\ \ \textcolor{comment}{//\ [2]}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numBins\ =\ (int)fftSize\ /\ 2;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{//normalize\ the\ fft\ values.}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numBins;\ ++i\ )}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ v\ =\ fftData[i];}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ fftData[i]\ /=\ (float)\ numBins;}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !std::isinf(v)\ \&\&\ !std::isnan(v)\ )}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ /=\ float(numBins);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ 0.f;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ fftData[i]\ =\ v;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{comment}{//convert\ them\ to\ decibels}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numBins;\ ++i\ )}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ fftData[i]\ =\ juce::Decibels::gainToDecibels(fftData[i],\ negativeInfinity);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ fftDataFifo.\mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}}(fftData);}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_f_f_t_data_generator_a297877f5ae73e282a27ca67bbfce6d0a}{changeOrder}}(FFTOrder\ newOrder)}
+\DoxyCodeLine{00121\ \ \ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{comment}{//when\ you\ change\ order,\ recreate\ the\ window,\ forwardFFT,\ fifo,\ fftData}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \textcolor{comment}{//also\ reset\ the\ fifoIndex}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//things\ that\ need\ recreating\ should\ be\ created\ on\ the\ heap\ via\ std::make\_unique<>}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ order\ =\ newOrder;}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ fftSize\ =\ getFFTSize();}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ forwardFFT\ =\ std::make\_unique<juce::dsp::FFT>(order);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ window\ =\ std::make\_unique<juce::dsp::WindowingFunction<float>>(fftSize,\ juce::dsp::WindowingFunction<float>::blackmanHarris);}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ fftData.clear();}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ fftData.resize(fftSize\ *\ 2,\ 0);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ fftDataFifo.\mbox{\hyperlink{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}{prepare}}(fftData.size());}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{int}\ getFFTSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1\ <<\ order;\ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{int}\ getNumAvailableFFTDataBlocks()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ fftDataFifo.\mbox{\hyperlink{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}{getNumAvailableForReading}}();\ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{bool}\ getFFTData(BlockType\&\ fftData)\ \{\ \textcolor{keywordflow}{return}\ fftDataFifo.\mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}}(fftData);\ \}}
+\DoxyCodeLine{00142\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00143\ \ \ \ \ FFTOrder\ order;}
+\DoxyCodeLine{00144\ \ \ \ \ BlockType\ fftData;}
+\DoxyCodeLine{00145\ \ \ \ \ std::unique\_ptr<juce::dsp::FFT>\ forwardFFT;}
+\DoxyCodeLine{00146\ \ \ \ \ std::unique\_ptr<juce::dsp::WindowingFunction<float>>\ window;}
+\DoxyCodeLine{00147\ \ \ \ \ }
+\DoxyCodeLine{00148\ \ \ \ \ \mbox{\hyperlink{struct_fifo}{Fifo<BlockType>}}\ fftDataFifo;}
+\DoxyCodeLine{00149\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,47 @@
+\hypertarget{_path_producer_8h_source}{}\doxysection{Path\+Producer.\+h}
+\label{_path_producer_8h_source}\index{Source/GUI/PathProducer.h@{Source/GUI/PathProducer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ PathProducer.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 17\ Apr\ 2023\ 6:15:19pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}FFTDataGenerator.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}AnalyzerPathGenerator.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../PluginProcessor.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_path_producer}{PathProducer}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_path_producer}{PathProducer}}(\mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo<SimpleMBCompAudioProcessor::BlockType>}}\&\ scsf)\ :}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ leftChannelFifo(\&scsf)}
+\DoxyCodeLine{00027\ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ leftChannelFFTDataGenerator.\mbox{\hyperlink{struct_f_f_t_data_generator_a297877f5ae73e282a27ca67bbfce6d0a}{changeOrder}}(FFTOrder::order2048);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ monoBuffer.setSize(1,\ leftChannelFFTDataGenerator.getFFTSize());}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_path_producer_a62f9cdcc8de2b5f8bf8320b1b3cd723a}{process}}(juce::Rectangle<float>\ fftBounds,\ \textcolor{keywordtype}{double}\ sampleRate);}
+\DoxyCodeLine{00032\ \ \ \ \ juce::Path\ getPath()\ \{\ \textcolor{keywordflow}{return}\ leftChannelFFTPath;\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ updateNegativeInfinity(\textcolor{keywordtype}{float}\ nf)\ \{\ negativeInfinity\ =\ nf;\ \}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo<SimpleMBCompAudioProcessor::BlockType>}}*\ leftChannelFifo;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ juce::AudioBuffer<float>\ monoBuffer;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{struct_f_f_t_data_generator}{FFTDataGenerator<std::vector<float>}}>\ leftChannelFFTDataGenerator;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{struct_analyzer_path_generator}{AnalyzerPathGenerator<juce::Path>}}\ pathProducer;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ juce::Path\ leftChannelFFTPath;}
+\DoxyCodeLine{00045\ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{float}\ negativeInfinity\ \{-\/48.f\};}
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

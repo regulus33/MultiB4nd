@@ -1,0 +1,92 @@
+\hypertarget{struct_look_and_feel}{}\doxysection{Look\+And\+Feel Struct Reference}
+\label{struct_look_and_feel}\index{LookAndFeel@{LookAndFeel}}
+
+
+A struct that extends the juce\+::\+Look\+And\+Feel\+\_\+\+V4 class. This struct provides custom implementations of the \mbox{\hyperlink{struct_look_and_feel_afa61b1f14bd10634df8cf626e54c93de}{draw\+Rotary\+Slider()}} and \mbox{\hyperlink{struct_look_and_feel_a872cb43ef9ff68d94b56d9bd2cda3de3}{draw\+Toggle\+Button()}} methods, which are used to display rotary sliders and toggle buttons in the graphical user interface.  
+
+
+
+
+{\ttfamily \#include $<$Look\+And\+Feel.\+h$>$}
+
+Inheritance diagram for Look\+And\+Feel\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_look_and_feel}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_look_and_feel_afa61b1f14bd10634df8cf626e54c93de}{draw\+Rotary\+Slider}} (juce\+::\+Graphics \&, int x, int y, int widt1h, int height, float slider\+Pos\+Proportional, float rotary\+Start\+Angle, float rotary\+End\+Angle, juce\+::\+Slider \&) override
+\begin{DoxyCompactList}\small\item\em Draws the rotary slider component. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_look_and_feel_a872cb43ef9ff68d94b56d9bd2cda3de3}{draw\+Toggle\+Button}} (juce\+::\+Graphics \&g, juce\+::\+Toggle\+Button \&toggle\+Button, bool should\+Draw\+Button\+As\+Highlighted, bool should\+Draw\+Button\+As\+Down) override
+\begin{DoxyCompactList}\small\item\em Draws the toggle button component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A struct that extends the juce\+::\+Look\+And\+Feel\+\_\+\+V4 class. This struct provides custom implementations of the \mbox{\hyperlink{struct_look_and_feel_afa61b1f14bd10634df8cf626e54c93de}{draw\+Rotary\+Slider()}} and \mbox{\hyperlink{struct_look_and_feel_a872cb43ef9ff68d94b56d9bd2cda3de3}{draw\+Toggle\+Button()}} methods, which are used to display rotary sliders and toggle buttons in the graphical user interface. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_look_and_feel_afa61b1f14bd10634df8cf626e54c93de}\label{struct_look_and_feel_afa61b1f14bd10634df8cf626e54c93de}} 
+\index{LookAndFeel@{LookAndFeel}!drawRotarySlider@{drawRotarySlider}}
+\index{drawRotarySlider@{drawRotarySlider}!LookAndFeel@{LookAndFeel}}
+\doxysubsubsection{\texorpdfstring{drawRotarySlider()}{drawRotarySlider()}}
+{\footnotesize\ttfamily void Look\+And\+Feel\+::draw\+Rotary\+Slider (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{width,  }\item[{int}]{height,  }\item[{float}]{slider\+Pos\+Proportional,  }\item[{float}]{rotary\+Start\+Angle,  }\item[{float}]{rotary\+End\+Angle,  }\item[{juce\+::\+Slider \&}]{slider }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Draws the rotary slider component. 
+
+This function is called by JUCE when it needs to draw the rotary slider component. It draws the rotary slider component with a custom appearance based on the input parameters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & The graphics context to draw on. \\
+\hline
+{\em x} & The x-\/coordinate of the component. \\
+\hline
+{\em y} & The y-\/coordinate of the component. \\
+\hline
+{\em width} & The width of the component. \\
+\hline
+{\em height} & The height of the component. \\
+\hline
+{\em slider\+Pos\+Proportional} & The position of the slider expressed as a value between 0.\+0 and 1.\+0. \\
+\hline
+{\em rotary\+Start\+Angle} & The start angle of the rotary slider in radians. \\
+\hline
+{\em rotary\+End\+Angle} & The end angle of the rotary slider in radians. \\
+\hline
+{\em slider} & The slider component to be drawn. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_look_and_feel_a872cb43ef9ff68d94b56d9bd2cda3de3}\label{struct_look_and_feel_a872cb43ef9ff68d94b56d9bd2cda3de3}} 
+\index{LookAndFeel@{LookAndFeel}!drawToggleButton@{drawToggleButton}}
+\index{drawToggleButton@{drawToggleButton}!LookAndFeel@{LookAndFeel}}
+\doxysubsubsection{\texorpdfstring{drawToggleButton()}{drawToggleButton()}}
+{\footnotesize\ttfamily void Look\+And\+Feel\+::draw\+Toggle\+Button (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g,  }\item[{juce\+::\+Toggle\+Button \&}]{toggle\+Button,  }\item[{bool}]{should\+Draw\+Button\+As\+Highlighted,  }\item[{bool}]{should\+Draw\+Button\+As\+Down }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Draws the toggle button component. 
+
+This function is called by JUCE when it needs to draw the toggle button component. It draws the toggle button component with a custom appearance based on the input parameters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & The graphics context to draw on. \\
+\hline
+{\em toggle\+Button} & The toggle button component to be drawn. \\
+\hline
+{\em should\+Draw\+Button\+As\+Highlighted} & Indicates whether the button should be drawn as highlighted. \\
+\hline
+{\em should\+Draw\+Button\+As\+Down} & Indicates whether the button should be drawn as pressed. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Look\+And\+Feel.\+h\item 
+Source/\+GUI/Look\+And\+Feel.\+cpp\end{DoxyCompactItemize}

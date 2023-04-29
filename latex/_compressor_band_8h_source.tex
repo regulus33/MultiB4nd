@@ -1,0 +1,36 @@
+\hypertarget{_compressor_band_8h_source}{}\doxysection{Compressor\+Band.\+h}
+\label{_compressor_band_8h_source}\index{Source/DSP/CompressorBand.h@{Source/DSP/CompressorBand.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ CompressorBand.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ Created:\ 14\ Apr\ 2023\ 7:58:06pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_compressor_band}{CompressorBand}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ juce::AudioParameterFloat*\ attack\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00023\ \ \ \ \ juce::AudioParameterFloat*\ release\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00024\ \ \ \ \ juce::AudioParameterFloat*\ threshold\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00025\ \ \ \ \ juce::AudioParameterChoice*\ ratio\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00026\ \ \ \ \ juce::AudioParameterBool*\ bypassed\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00027\ \ \ \ \ juce::AudioParameterBool*\ mute\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00028\ \ \ \ \ juce::AudioParameterBool*\ solo\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_a45c53261a521cbcf475a9c3edccd4ffb}{prepare}}(\textcolor{keyword}{const}\ juce::dsp::ProcessSpec\&\ spec);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_a7393dc4c0b44ae4ea51e358c9952ff14}{updateCompressorSettings}}();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_abde7a1210163bad8959350b75bfd5b58}{process}}(juce::AudioBuffer<float>\&\ buffer);}
+\DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ \ \ juce::dsp::Compressor<float>\ compressor;}
+\DoxyCodeLine{00035\ \};}
+
+\end{DoxyCode}

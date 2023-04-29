@@ -1,20 +1,21 @@
 /*
-  ==============================================================================
-
-    RotarySliderWithLabels.h
-    Created: 14 Apr 2023 7:26:34pm
-    Author:  zack
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ RotarySliderWithLabels.h
+ Created: 14 Apr 2023 7:26:34pm
+ Author:  zack
+ 
+ ==============================================================================
+ */
 
 #pragma once
 #include <JuceHeader.h>
 
-
-// Because we dynamically switch between params with this knob (for multiband)
-// we store the param as a pointer and dereference them when we use them.
-// DOC: Super class, we inherit from this in at least 1 place
+/*!
+ @struct RotarySliderWithLabels
+ @brief A rotary slider with labels.
+ RotarySliderWithLabels extends the JUCE Slider class to provide a rotary slider with labels. The labels can be customized and the slider can be associated with a JUCE audio parameter.
+ */
 struct RotarySliderWithLabels : juce::Slider
 {
     // NOTE: the pointer here * is clever. If it were a & reference we would not be able
@@ -29,13 +30,13 @@ struct RotarySliderWithLabels : juce::Slider
     suffix(unitSuffix)
     {
         setName(title);
-//        setLookAndFeel(&lnf);
+        //        setLookAndFeel(&lnf);
     }
     
-//    ~RotarySliderWithLabels()
-//    {
-//        setLookAndFeel(nullptr);
-//    }
+    //    ~RotarySliderWithLabels()
+    //    {
+    //        setLookAndFeel(nullptr);
+    //    }
     
     struct LabelPos
     {
@@ -54,11 +55,17 @@ struct RotarySliderWithLabels : juce::Slider
     void changeParam(juce::RangedAudioParameter* p);
     // DOC: we need to make private -> protected so the derrived class can access them.
 protected:
-//    LookAndFeel lnf;
+    //    LookAndFeel lnf;
     juce::RangedAudioParameter* param;
     juce::String suffix;
 };
 
+
+/*!
+ @struct RatioSlider
+ @brief A ratio slider.
+ RatioSlider extends the RotarySliderWithLabels class to provide a ratio slider. This slider is associated with a JUCE audio parameter and the display string is a ratio with a fixed 1:1 format.
+ */
 struct RatioSlider : RotarySliderWithLabels
 {
     RatioSlider(juce::RangedAudioParameter* rap,

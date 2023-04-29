@@ -1,0 +1,96 @@
+\hypertarget{_utils_8h_source}{}\doxysection{Utils.\+h}
+\label{_utils_8h_source}\index{Source/GUI/Utils.h@{Source/GUI/Utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Utils.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 14\ Apr\ 2023\ 7:42:44pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00016\ \textcolor{comment}{WARNING\ WARNING\ WARNING}}
+\DoxyCodeLine{00017\ \textcolor{comment}{Templates\ are\ a\ kind\ of\ code\ generation\ technique,\ and\ the\ actual\ code\ is\ generated\ by\ the\ compiler\ at\ compile-\/time\ based\ on\ the\ specific\ type(s)\ used\ to\ instantiate\ the\ template.\ Therefore,\ the\ entire\ implementation\ of\ a\ template\ function\ should\ be\ visible\ to\ the\ compiler\ at\ the\ point\ of\ instantiation.}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ WARNING\ WARNING\ WARNING}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{enum}\ FFTOrder}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ order2048\ =\ 11,}
+\DoxyCodeLine{00025\ \ \ \ \ order4096\ =\ 12,}
+\DoxyCodeLine{00026\ \ \ \ \ order8192\ =\ 13}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{template}<}
+\DoxyCodeLine{00043\ \textcolor{keyword}{typename}\ Attachment,}
+\DoxyCodeLine{00044\ \textcolor{keyword}{typename}\ APVTS,}
+\DoxyCodeLine{00045\ \textcolor{keyword}{typename}\ Params,}
+\DoxyCodeLine{00046\ \textcolor{keyword}{typename}\ ParamName,}
+\DoxyCodeLine{00047\ \textcolor{keyword}{typename}\ SliderType}
+\DoxyCodeLine{00048\ >}
+\DoxyCodeLine{00049\ \textcolor{keywordtype}{void}\ makeAttachment(std::unique\_ptr<Attachment>\&\ attachment,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ APVTS\&\ apvts,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Params\&\ params,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ParamName\&\ name,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SliderType\&\ slider)}
+\DoxyCodeLine{00054\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ attachment\ =\ std::make\_unique<Attachment>(apvts,\ params.at(name),\ slider);}
+\DoxyCodeLine{00056\ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}<}
+\DoxyCodeLine{00070\ \textcolor{keyword}{typename}\ APVTS,}
+\DoxyCodeLine{00071\ \textcolor{keyword}{typename}\ Params,}
+\DoxyCodeLine{00072\ \textcolor{keyword}{typename}\ Name}
+\DoxyCodeLine{00073\ >}
+\DoxyCodeLine{00074\ juce::RangedAudioParameter\&\ getParam(APVTS\&\ apvts,\ \textcolor{keyword}{const}\ Params\&\ params,\ \textcolor{keyword}{const}\ Name\&\ name)}
+\DoxyCodeLine{00075\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{auto}\ param\ =\ apvts.getParameter(params.at(name));}
+\DoxyCodeLine{00077\ \ \ \ \ jassert(param\ !=\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00078\ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ *param;}
+\DoxyCodeLine{00080\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00088\ \textcolor{keywordtype}{bool}\ truncateKiloValue(T\&\ value)}
+\DoxyCodeLine{00089\ \{}
+\DoxyCodeLine{00090\ \ \ \ \textcolor{keywordflow}{if}(value\ >\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(999))}
+\DoxyCodeLine{00091\ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ value\ /=\ \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(1000);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00094\ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00096\ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00098\ \ \ \ \}}
+\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ juce::String\ getValString(\textcolor{keyword}{const}\ juce::RangedAudioParameter\&\ param,\ \textcolor{keywordtype}{bool}\ getLow,\ juce::String\ suffix);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00110\ \textcolor{keyword}{template}<}
+\DoxyCodeLine{00111\ \textcolor{keyword}{typename}\ Labels,}
+\DoxyCodeLine{00112\ \textcolor{keyword}{typename}\ ParamType,}
+\DoxyCodeLine{00113\ \textcolor{keyword}{typename}\ SuffixType}
+\DoxyCodeLine{00114\ >}
+\DoxyCodeLine{00115\ \textcolor{keywordtype}{void}\ addLabelPairs(Labels\&\ labels,\ \textcolor{keyword}{const}\ ParamType\&\ param,\ \textcolor{keyword}{const}\ SuffixType\&\ suffix)}
+\DoxyCodeLine{00116\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ labels.clear();}
+\DoxyCodeLine{00118\ \ \ \ \ labels.add(\{0.f,\ getValString(param,\ \textcolor{keyword}{true},\ suffix)\});}
+\DoxyCodeLine{00119\ \ \ \ \ labels.add(\{1.f,\ getValString(param,\ \textcolor{keyword}{false},\ suffix)\});}
+\DoxyCodeLine{00120\ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{keywordtype}{void}\ drawModuleBackground(juce::Graphics\ \&g,\ juce::Rectangle<int>\ bounds);}
+\DoxyCodeLine{00123\ }
+
+\end{DoxyCode}

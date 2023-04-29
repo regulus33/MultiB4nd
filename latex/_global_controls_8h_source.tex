@@ -1,0 +1,38 @@
+\hypertarget{_global_controls_8h_source}{}\doxysection{Global\+Controls.\+h}
+\label{_global_controls_8h_source}\index{Source/GUI/GlobalControls.h@{Source/GUI/GlobalControls.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ GlobalControls.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 14\ Apr\ 2023\ 7:54:06pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}RotarySliderWithLabels.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_global_controls}{GlobalControls}}\ :\ juce::Component}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{struct_global_controls}{GlobalControls}}(juce::AudioProcessorValueTreeState\&\ apvts);}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_global_controls_ad6d0e44801206cfaf28174d940ecc732}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00020\ \ \ \ \ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_global_controls_a615589560d14099022edb93c5c4fa611}{resized}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00022\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{struct_rotary_slider_with_labels}{RSWL}}\ =\ \mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}};}
+\DoxyCodeLine{00024\ \ \ \ \ std::unique\_ptr<RSWL>\ inGainSlider,\ lowMidXoverSlider,\ midHighXoverSlider,\ outGainSlider;}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{using\ }Attachment\ =\ juce::AudioProcessorValueTreeState::SliderAttachment;}
+\DoxyCodeLine{00027\ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ std::unique\_ptr<Attachment>\ lowMidXoverSliderAttachment,}
+\DoxyCodeLine{00029\ \ \ \ \ midHighXoverSliderAttachment,}
+\DoxyCodeLine{00030\ \ \ \ \ inGainSliderAttachment,}
+\DoxyCodeLine{00031\ \ \ \ \ outGainSliderAttachment;}
+\DoxyCodeLine{00032\ \};}
+
+\end{DoxyCode}

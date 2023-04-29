@@ -1,0 +1,126 @@
+\hypertarget{struct_rotary_slider_with_labels}{}\doxysection{Rotary\+Slider\+With\+Labels Struct Reference}
+\label{struct_rotary_slider_with_labels}\index{RotarySliderWithLabels@{RotarySliderWithLabels}}
+
+
+A rotary slider with labels. \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} extends the JUCE Slider class to provide a rotary slider with labels. The labels can be customized and the slider can be associated with a JUCE audio parameter.  
+
+
+
+
+{\ttfamily \#include $<$Rotary\+Slider\+With\+Labels.\+h$>$}
+
+Inheritance diagram for Rotary\+Slider\+With\+Labels\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{struct_rotary_slider_with_labels}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_rotary_slider_with_labels_1_1_label_pos}{Label\+Pos}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a9f3c51c979c6e5f977b1c9f970bfccc3}\label{struct_rotary_slider_with_labels_a9f3c51c979c6e5f977b1c9f970bfccc3}} 
+{\bfseries Rotary\+Slider\+With\+Labels} (juce\+::\+Ranged\+Audio\+Parameter $\ast$rap, const juce\+::\+String \&unit\+Suffix, const juce\+::\+String \&title)
+\item 
+void \mbox{\hyperlink{struct_rotary_slider_with_labels_a8df5f672c159dd4f3b28f83f8a87e4d6}{paint}} (juce\+::\+Graphics \&g) override
+\begin{DoxyCompactList}\small\item\em Paint method for the \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} component. This method draws the rotary slider and the labels for the component. It uses the juce\+::\+Look\+And\+Feel\+\_\+\+V4 method draw\+Rotary\+Slider to render the slider, and draws the labels by calculating the position of each label and calling the juce\+::\+Graphics method draw\+Fitted\+Text to render each label. \end{DoxyCompactList}\item 
+juce\+::\+Rectangle$<$ int $>$ \mbox{\hyperlink{struct_rotary_slider_with_labels_a0e1b5c122604c3aa077370acb2fde9ce}{get\+Slider\+Bounds}} () const
+\begin{DoxyCompactList}\small\item\em Get the bounds of the slider component. This method returns a juce\+::\+Rectangle$<$int$>$ that represents the bounds of the slider component. It calculates the size of the slider component based on the size of the component\textquotesingle{}s bounds and the text height, and centers the slider component within the component\textquotesingle{}s bounds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a36a776e92eb07e5b3313d97d065565e1}\label{struct_rotary_slider_with_labels_a36a776e92eb07e5b3313d97d065565e1}} 
+int {\bfseries get\+Text\+Height} () const
+\item 
+virtual juce\+::\+String \mbox{\hyperlink{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}{get\+Display\+String}} () const
+\begin{DoxyCompactList}\small\item\em Get the display string for the component. This method returns a juce\+::\+String that represents the display string for the component. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Choice, the method returns the name of the current choice. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Float, the method returns a string representation of the float value, with a suffix if one is provided. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_rotary_slider_with_labels_a3d4148d69fde84b5439cb050db8c1ffd}{change\+Param}} (juce\+::\+Ranged\+Audio\+Parameter $\ast$p)
+\begin{DoxyCompactList}\small\item\em Change the parameter for the component. This method changes the parameter for the component to a new juce\+::\+Ranged\+Audio\+Parameter pointer. It then repaints the component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_ac27d43ca42ae9c164d1b37d25726145a}\label{struct_rotary_slider_with_labels_ac27d43ca42ae9c164d1b37d25726145a}} 
+juce\+::\+Array$<$ \mbox{\hyperlink{struct_rotary_slider_with_labels_1_1_label_pos}{Label\+Pos}} $>$ {\bfseries labels}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a8f2718e4e90f7997bc1a0f91e87a15ba}\label{struct_rotary_slider_with_labels_a8f2718e4e90f7997bc1a0f91e87a15ba}} 
+juce\+::\+Ranged\+Audio\+Parameter $\ast$ {\bfseries param}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_afa1f26c0ba54a749c4e15661a312bdb0}\label{struct_rotary_slider_with_labels_afa1f26c0ba54a749c4e15661a312bdb0}} 
+juce\+::\+String {\bfseries suffix}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A rotary slider with labels. \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} extends the JUCE Slider class to provide a rotary slider with labels. The labels can be customized and the slider can be associated with a JUCE audio parameter. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a3d4148d69fde84b5439cb050db8c1ffd}\label{struct_rotary_slider_with_labels_a3d4148d69fde84b5439cb050db8c1ffd}} 
+\index{RotarySliderWithLabels@{RotarySliderWithLabels}!changeParam@{changeParam}}
+\index{changeParam@{changeParam}!RotarySliderWithLabels@{RotarySliderWithLabels}}
+\doxysubsubsection{\texorpdfstring{changeParam()}{changeParam()}}
+{\footnotesize\ttfamily void Rotary\+Slider\+With\+Labels\+::change\+Param (\begin{DoxyParamCaption}\item[{juce\+::\+Ranged\+Audio\+Parameter $\ast$}]{p }\end{DoxyParamCaption})}
+
+
+
+Change the parameter for the component. This method changes the parameter for the component to a new juce\+::\+Ranged\+Audio\+Parameter pointer. It then repaints the component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & The new juce\+::\+Ranged\+Audio\+Parameter pointer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}\label{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}} 
+\index{RotarySliderWithLabels@{RotarySliderWithLabels}!getDisplayString@{getDisplayString}}
+\index{getDisplayString@{getDisplayString}!RotarySliderWithLabels@{RotarySliderWithLabels}}
+\doxysubsubsection{\texorpdfstring{getDisplayString()}{getDisplayString()}}
+{\footnotesize\ttfamily juce\+::\+String Rotary\+Slider\+With\+Labels\+::get\+Display\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get the display string for the component. This method returns a juce\+::\+String that represents the display string for the component. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Choice, the method returns the name of the current choice. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Float, the method returns a string representation of the float value, with a suffix if one is provided. 
+
+\begin{DoxyReturn}{Returns}
+The display string for the component. 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{struct_ratio_slider_ad4d0a5261170a1677c9c043d6505519d}{Ratio\+Slider}}.
+
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a0e1b5c122604c3aa077370acb2fde9ce}\label{struct_rotary_slider_with_labels_a0e1b5c122604c3aa077370acb2fde9ce}} 
+\index{RotarySliderWithLabels@{RotarySliderWithLabels}!getSliderBounds@{getSliderBounds}}
+\index{getSliderBounds@{getSliderBounds}!RotarySliderWithLabels@{RotarySliderWithLabels}}
+\doxysubsubsection{\texorpdfstring{getSliderBounds()}{getSliderBounds()}}
+{\footnotesize\ttfamily juce\+::\+Rectangle$<$ int $>$ Rotary\+Slider\+With\+Labels\+::get\+Slider\+Bounds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the bounds of the slider component. This method returns a juce\+::\+Rectangle$<$int$>$ that represents the bounds of the slider component. It calculates the size of the slider component based on the size of the component\textquotesingle{}s bounds and the text height, and centers the slider component within the component\textquotesingle{}s bounds. 
+
+\begin{DoxyReturn}{Returns}
+The bounds of the slider component. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a8df5f672c159dd4f3b28f83f8a87e4d6}\label{struct_rotary_slider_with_labels_a8df5f672c159dd4f3b28f83f8a87e4d6}} 
+\index{RotarySliderWithLabels@{RotarySliderWithLabels}!paint@{paint}}
+\index{paint@{paint}!RotarySliderWithLabels@{RotarySliderWithLabels}}
+\doxysubsubsection{\texorpdfstring{paint()}{paint()}}
+{\footnotesize\ttfamily void Rotary\+Slider\+With\+Labels\+::paint (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Paint method for the \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} component. This method draws the rotary slider and the labels for the component. It uses the juce\+::\+Look\+And\+Feel\+\_\+\+V4 method draw\+Rotary\+Slider to render the slider, and draws the labels by calculating the position of each label and calling the juce\+::\+Graphics method draw\+Fitted\+Text to render each label. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & The juce Graphics context in which to draw the component. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Rotary\+Slider\+With\+Labels.\+h\item 
+Source/\+GUI/Rotary\+Slider\+With\+Labels.\+cpp\end{DoxyCompactItemize}

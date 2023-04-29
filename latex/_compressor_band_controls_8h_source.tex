@@ -1,0 +1,64 @@
+\hypertarget{_compressor_band_controls_8h_source}{}\doxysection{Compressor\+Band\+Controls.\+h}
+\label{_compressor_band_controls_8h_source}\index{Source/GUI/CompressorBandControls.h@{Source/GUI/CompressorBandControls.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ CompressorBandControls.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 14\ Apr\ 2023\ 7:50:49pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}RotarySliderWithLabels.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_compressor_band_controls}{CompressorBandControls}}\ :\ juce::Component,\ juce::Button::Listener}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band_controls}{CompressorBandControls}}(juce::AudioProcessorValueTreeState\&\ apvts);}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band_controls_adda181e26beeb0b24e48262c2fee975b}{\string~CompressorBandControls}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_controls_a29d93e85e86c42d155d654c52d1c85c9}{resized}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_controls_a18627c160d2950fd3add8e80ef8c4b42}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_compressor_band_controls_a075a5593c6082cf4923da1be009e5780}{buttonClicked}}(juce::Button*\ button)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00025\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::TextButton::ColourIds\ ButtonOnColorId\ \{\ juce::TextButton::ColourIds::buttonOnColourId\ \};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::TextButton::ColourIds\ ButtonOffColorId\ \{\ juce::TextButton::ColourIds::buttonColourId\ \};}
+\DoxyCodeLine{00028\ \ \ \ \ juce::AudioProcessorValueTreeState\&\ \ apvts;}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}}\ attackSlider,\ releaseSlider,\ thresholdSlider;}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{struct_ratio_slider}{RatioSlider}}\ ratioSlider;}
+\DoxyCodeLine{00032\ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{using\ }Attachment\ =\ juce::AudioProcessorValueTreeState::SliderAttachment;}
+\DoxyCodeLine{00034\ \ \ \ \ std::unique\_ptr<Attachment>\ attackSliderAttachment,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ releaseSliderAttachment,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ thresholdSliderAttachment,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ratioSliderAttachment;}
+\DoxyCodeLine{00038\ \ \ \ \ }
+\DoxyCodeLine{00039\ \ \ \ \ juce::ToggleButton\ bypassButton,\ soloButton,\ muteButton,\ lowBand,\ midBand,\ highBand;}
+\DoxyCodeLine{00040\ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{using\ }BtnAttachment\ =\ juce::AudioProcessorValueTreeState::ButtonAttachment;}
+\DoxyCodeLine{00042\ \ \ \ \ std::unique\_ptr<BtnAttachment>\ bypassButtonAttachment,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ soloButtonAttachment,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ muteButtonAttachment;}
+\DoxyCodeLine{00045\ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ juce::Component::SafePointer<CompressorBandControls>\ safePtr\ \{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{00047\ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ NOTE:\ important}}
+\DoxyCodeLine{00049\ \ \ \ \ juce::ToggleButton*\ activeBand\ =\ \{\&lowBand\};}
+\DoxyCodeLine{00050\ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ updateAttachments();}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ updateSliderEnabledMents();}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ updateSoloMuteBypassToggleStates(juce::Button\&\ button);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ updateActiveBandFillColors(juce::Button\&\ clickedButton);}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ resetActiveBandColors();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ refreshBandButtonColors(juce::Button\&\ band,\ juce::Button\&\ colorSource);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ TODO:\ we\ are\ making\ this\ called\ in\ constructor\ to\ update\ band\ button\ colors}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ independent\ of\ clicking}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ 6:00:55}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ updateBandSelectButtonStates();}
+\DoxyCodeLine{00061\ \};}
+
+\end{DoxyCode}

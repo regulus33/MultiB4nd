@@ -1,0 +1,103 @@
+\hypertarget{struct_f_f_t_data_generator}{}\doxysection{FFTData\+Generator\texorpdfstring{$<$}{<} Block\+Type \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{struct_f_f_t_data_generator}\index{FFTDataGenerator$<$ BlockType $>$@{FFTDataGenerator$<$ BlockType $>$}}
+
+
+Lets look at a simple JS audio visualizer to understand FFT visualization There will be some FFTGenerator class that produces an array. Lets call it frequency\+Data.  
+
+
+
+
+{\ttfamily \#include $<$FFTData\+Generator.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_f_f_t_data_generator_a04d7d41690a45854d43c5a50edea32b0}{produce\+FFTData\+For\+Rendering}} (const juce\+::\+Audio\+Buffer$<$ float $>$ \&audio\+Data, const float negative\+Infinity)
+\begin{DoxyCompactList}\small\item\em This function produces FFT data for rendering purposes. The function takes in audio data as input and performs FFT transformation on it, after applying a windowing function and normalizing the FFT values. The values are then converted to decibels. The final FFT data is stored in the fft\+Data\+Fifo member variable. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_f_f_t_data_generator_a297877f5ae73e282a27ca67bbfce6d0a}{change\+Order}} (FFTOrder new\+Order)
+\begin{DoxyCompactList}\small\item\em Changes the FFT order to the specified value This function changes the order of the FFT calculation and updates the relevant objects accordingly. The new FFT order is specified by the new\+Order parameter. The function also recreates the windowing function, forward FFT object, FFT data buffer, and the FFT data FIFO buffer. Additionally, the FIFO index is reset. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_f_f_t_data_generator_a4c634e0ea4a4f39ac2c7a93a7997914b}\label{struct_f_f_t_data_generator_a4c634e0ea4a4f39ac2c7a93a7997914b}} 
+int {\bfseries get\+FFTSize} () const
+\item 
+\mbox{\Hypertarget{struct_f_f_t_data_generator_a966027c3e6cb5b5148a1956ea94f5f92}\label{struct_f_f_t_data_generator_a966027c3e6cb5b5148a1956ea94f5f92}} 
+int {\bfseries get\+Num\+Available\+FFTData\+Blocks} () const
+\item 
+\mbox{\Hypertarget{struct_f_f_t_data_generator_a49ee903d12c8627c042f6035d9a35739}\label{struct_f_f_t_data_generator_a49ee903d12c8627c042f6035d9a35739}} 
+bool {\bfseries get\+FFTData} (Block\+Type \&fft\+Data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Block\+Type$>$\newline
+struct FFTData\+Generator$<$ Block\+Type $>$}
+Lets look at a simple JS audio visualizer to understand FFT visualization There will be some FFTGenerator class that produces an array. Lets call it frequency\+Data. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{const}\ frequencyData\ =\ \textcolor{keyword}{new}\ Uint8Array(analyserNode.frequencyBinCount);}
+\DoxyCodeLine{analyserNode.getByteFrequencyData(frequencyData);}
+
+\end{DoxyCode}
+ Each value in the frequency\+Data array represents the amplitude of a particular frequency band in the audio signal at brief moment in time. The Analyser\+Node.\+frequency\+Bin\+Count property specifies the number of frequency bands used for analysis, and the frequency\+Data array has a length equal to Analyser\+Node.\+frequency\+Bin\+Count. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Frame\ 1\ `frequencyData\ =\ \ [\ 23,\ 45,\ 68,\ 90,\ 112,\ 134,\ 155,\ 177,\ 198,\ 220,\ 241,\ 255,\ 250,\ 236,\ 223,\ 210,\ 197,\ 184]`}
+\DoxyCodeLine{Frame\ 2\ `frequencyData\ =\ [\ 33,\ 55,\ 78,\ 100,\ 122,\ 144,\ 165,\ 187,\ 208,\ 230,\ 251,\ 265,\ 260,\ 246,\ 233,\ 220,\ 207,\ 194]`}
+\DoxyCodeLine{Frame\ 3\ `frequencyData\ =\ [\ 53,\ 75,\ 98,\ 120,\ 142,\ 164,\ 185,\ 207,\ 228,\ 250,\ 271,\ 285,\ 280,\ 266,\ 253,\ 240,\ 227,\ 214]`}
+\DoxyCodeLine{Frame\ 4\ `frequencyData\ =\ [\ 83,\ 105,\ 128,\ 150,\ 172,\ 194,\ 215,\ 237,\ 258,\ 280,\ 301,\ 315,\ 310,\ 296,\ 283,\ 270,\ 257,\ 244]`}
+\DoxyCodeLine{Frame\ 5\ `frequencyData\ =\ [\ 123,\ 145,\ 168,\ 190,\ 212,\ 234,\ 255,\ 277,\ 298,\ 320,\ 341,\ 355,\ 350,\ 336,\ 323,\ 310,\ 297,\ 284]`}
+
+\end{DoxyCode}
+ The array is the size of exactly the amount of {\itshape BANDS} that FFT determines are existing in the current signal source. Then frame by frame we iterate through our array
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{for(let\ band\ =\ 0;\ \ band\ <\ frequencyData.length;\ band++)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{drawBarWithHeight(band);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ Now look at graph below. X axis is index of array (band) and Y axis is the amplitude of that band. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_f_f_t_data_generator_a297877f5ae73e282a27ca67bbfce6d0a}\label{struct_f_f_t_data_generator_a297877f5ae73e282a27ca67bbfce6d0a}} 
+\index{FFTDataGenerator$<$ BlockType $>$@{FFTDataGenerator$<$ BlockType $>$}!changeOrder@{changeOrder}}
+\index{changeOrder@{changeOrder}!FFTDataGenerator$<$ BlockType $>$@{FFTDataGenerator$<$ BlockType $>$}}
+\doxysubsubsection{\texorpdfstring{changeOrder()}{changeOrder()}}
+{\footnotesize\ttfamily template$<$typename Block\+Type $>$ \\
+void \mbox{\hyperlink{struct_f_f_t_data_generator}{FFTData\+Generator}}$<$ Block\+Type $>$\+::change\+Order (\begin{DoxyParamCaption}\item[{FFTOrder}]{new\+Order }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Changes the FFT order to the specified value This function changes the order of the FFT calculation and updates the relevant objects accordingly. The new FFT order is specified by the new\+Order parameter. The function also recreates the windowing function, forward FFT object, FFT data buffer, and the FFT data FIFO buffer. Additionally, the FIFO index is reset. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Order} & New order of the FFT calculation example 2048 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_f_f_t_data_generator_a04d7d41690a45854d43c5a50edea32b0}\label{struct_f_f_t_data_generator_a04d7d41690a45854d43c5a50edea32b0}} 
+\index{FFTDataGenerator$<$ BlockType $>$@{FFTDataGenerator$<$ BlockType $>$}!produceFFTDataForRendering@{produceFFTDataForRendering}}
+\index{produceFFTDataForRendering@{produceFFTDataForRendering}!FFTDataGenerator$<$ BlockType $>$@{FFTDataGenerator$<$ BlockType $>$}}
+\doxysubsubsection{\texorpdfstring{produceFFTDataForRendering()}{produceFFTDataForRendering()}}
+{\footnotesize\ttfamily template$<$typename Block\+Type $>$ \\
+void \mbox{\hyperlink{struct_f_f_t_data_generator}{FFTData\+Generator}}$<$ Block\+Type $>$\+::produce\+FFTData\+For\+Rendering (\begin{DoxyParamCaption}\item[{const juce\+::\+Audio\+Buffer$<$ float $>$ \&}]{audio\+Data,  }\item[{const float}]{negative\+Infinity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This function produces FFT data for rendering purposes. The function takes in audio data as input and performs FFT transformation on it, after applying a windowing function and normalizing the FFT values. The values are then converted to decibels. The final FFT data is stored in the fft\+Data\+Fifo member variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em audio\+Data} & The input audio data on which FFT transformation is performed. \\
+\hline
+{\em negative\+Infinity} & The negative infinity value used for converting the values to decibels. \\
+\hline
+\end{DoxyParams}
+first apply a windowing function to our data
+
+render the data
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/FFTData\+Generator.\+h\end{DoxyCompactItemize}

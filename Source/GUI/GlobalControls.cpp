@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    GlobalControls.cpp
-    Created: 14 Apr 2023 7:54:06pm
-    Author:  zack
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ GlobalControls.cpp
+ Created: 14 Apr 2023 7:54:06pm
+ Author:  zack
+ 
+ ==============================================================================
+ */
 
 #include "GlobalControls.h"
 #include "RotarySliderWithLabels.h"
@@ -14,6 +14,13 @@
 #include "Utils.h"
 #include "CustomButtons.h"
 
+/*!
+ The constructor for the GlobalControls class.
+ This constructor creates 4 sliders (input gain, low-mid crossover frequency, mid-high crossover frequency, output gain) and attaches them to the corresponding parameters in the AudioProcessorValueTreeState object.
+ The sliders are also given labels and label values based on the AudioParameter objects they are attached to.
+ The sliders are added to the component and made visible.
+ @param apvts An AudioProcessorValueTreeState object that holds the parameters used by the sliders.
+ */
 GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
 {
     using namespace Params;
@@ -69,6 +76,15 @@ GlobalControls::GlobalControls(juce::AudioProcessorValueTreeState& apvts)
     addAndMakeVisible(*outGainSlider);
 }
 
+/*!
+ @brief Resizes the GlobalControls component
+ This method is responsible for laying out the child components of the GlobalControls component. The child components are sliders
+ for gain input, low-mid crossover frequency, mid-high crossover frequency, and gain output.
+ A FlexBox layout is used to arrange the sliders in a row. The order in which the sliders are added to the FlexBox determines the
+ order in which they are displayed. The layout is performed by calling the performLayout() method of the FlexBox with the bounds
+ of the GlobalControls component reduced by 5 pixels.
+
+ */
 void GlobalControls::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
@@ -94,6 +110,12 @@ void GlobalControls::resized()
     flexBox.performLayout(bounds);
 }
 
+/*!
+@brief Renders the background of the GlobalControls component
+This function is responsible for painting the background of the GlobalControls component.
+It draws a rectangle with a slightly rounded border and a gradient fill.
+@param g The Graphics object used for rendering
+*/
 void GlobalControls::paint(juce::Graphics &g)
 {
     auto bounds = getLocalBounds();

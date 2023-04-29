@@ -1,0 +1,83 @@
+\hypertarget{_fifo_8h_source}{}\doxysection{Fifo.\+h}
+\label{_fifo_8h_source}\index{Source/DSP/Fifo.h@{Source/DSP/Fifo.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ Fifo.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ Created:\ 17\ Apr\ 2023\ 6:57:04pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00034\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_fifo}{Fifo}}}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_fifo_a4699164f11fd49c9c56f2044091e2c21}{prepare}}(\textcolor{keywordtype}{int}\ numChannels,\ \textcolor{keywordtype}{int}\ numSamples)}
+\DoxyCodeLine{00045\ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(\ std::is\_same\_v<T,\ juce::AudioBuffer<float>>,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}prepare(numChannels,\ numSamples)\ should\ only\ be\ used\ when\ the\ Fifo\ is\ holding\ juce::AudioBuffer<float>"{}});}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keyword}{auto}\&\ buffer\ :\ buffers)}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ buffer.setSize(numChannels,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ numSamples,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{false},\ \ \ \textcolor{comment}{//clear\ everything?}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true},\ \ \ \ \textcolor{comment}{//including\ the\ extra\ space?}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});\ \ \ \textcolor{comment}{//avoid\ reallocating\ if\ you\ can?}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ buffer.clear();}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_fifo_a8ab498b0b4c68ac84f763b5e0fc1227e}{prepare}}(\textcolor{keywordtype}{size\_t}\ numElements)}
+\DoxyCodeLine{00065\ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(\ std::is\_same\_v<T,\ std::vector<float>>,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}prepare(numElements)\ should\ only\ be\ used\ when\ the\ Fifo\ is\ holding\ std::vector<float>"{}});}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keyword}{auto}\&\ buffer\ :\ buffers\ )}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ buffer.clear();}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ buffer.resize(numElements,\ 0);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}}(\textcolor{keyword}{const}\ T\&\ t)}
+\DoxyCodeLine{00081\ \ \ \ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ write\ =\ fifo.write(1);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ write.blockSize1\ >\ 0\ )}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ buffers[write.startIndex1]\ =\ t;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}}(T\&\ t)}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ read\ =\ fifo.read(1);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ read.blockSize1\ >\ 0\ )}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ t\ =\ buffers[read.startIndex1];}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}{getNumAvailableForReading}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fifo.getNumReady();}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ Capacity\ =\ 30;}
+\DoxyCodeLine{00122\ \ \ \ \ std::array<T,\ Capacity>\ buffers;}
+\DoxyCodeLine{00124\ \ \ \ \ juce::AbstractFifo\ fifo\ \{Capacity\};}
+\DoxyCodeLine{00125\ \};}
+
+\end{DoxyCode}

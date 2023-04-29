@@ -1,10 +1,10 @@
 /*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file contains the basic framework code for a JUCE plugin editor.
+ 
+ ==============================================================================
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -16,13 +16,16 @@
 
 //==============================================================================
 
+/*!
+ @brief Top level rendering function of the UI, this is where all the main components are rendered. LookAndFeel is also set.
+ */
 SimpleMBCompAudioProcessorEditor::SimpleMBCompAudioProcessorEditor (SimpleMBCompAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+: AudioProcessorEditor (&p), audioProcessor (p)
 {
     setLookAndFeel(&lnf);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-//    addAndMakeVisible(controlBar);
+    //    addAndMakeVisible(controlBar);
     addAndMakeVisible(analyzer);
     addAndMakeVisible(globalControls);
     addAndMakeVisible(bandControls);
@@ -30,24 +33,32 @@ SimpleMBCompAudioProcessorEditor::SimpleMBCompAudioProcessorEditor (SimpleMBComp
     setSize (600, 500);
 }
 
+/*!
+ @brief Destructor. It unsets LookAndFeel.
+ */
 SimpleMBCompAudioProcessorEditor::~SimpleMBCompAudioProcessorEditor()
 {
     setLookAndFeel(nullptr);
 }
 
-//==============================================================================
+/*!
+ @brief Sets font color, etc. for the main parent UI component.
+ */
 void SimpleMBCompAudioProcessorEditor::paint (juce::Graphics& g)
 {
-//    // (Our component is opaque, so we must completely fill the background with a solid colour)
-//    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-//
-//    g.setColour (juce::Colours::white);
-//    g.setFont (15.0f);
-//    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    //    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    //    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    //
+    //    g.setColour (juce::Colours::white);
+    //    g.setFont (15.0f);
+    //    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
     
     g.fillAll(juce::Colours::black);
 }
 
+/*!
+ @begin Sets boundaries for the child components and adds some padding.
+ */
 void SimpleMBCompAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds();

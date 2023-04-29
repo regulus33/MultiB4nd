@@ -11,6 +11,14 @@
 #include "RotarySliderWithLabels.h"
 #include "Utils.h"
 
+/*!
+@brief Paint method for the RotarySliderWithLabels component.
+This method draws the rotary slider and the labels for the component. It uses the
+juce::LookAndFeel_V4 method drawRotarySlider to render the slider, and draws the labels
+by calculating the position of each label and calling the juce::Graphics method
+drawFittedText to render each label.
+@param g The juce Graphics context in which to draw the component.
+*/
 void RotarySliderWithLabels::paint(juce::Graphics &g)
 {
     using namespace juce;
@@ -71,6 +79,13 @@ void RotarySliderWithLabels::paint(juce::Graphics &g)
     
 }
 
+/*!
+@brief Get the bounds of the slider component.
+This method returns a juce::Rectangle<int> that represents the bounds of the slider component.
+It calculates the size of the slider component based on the size of the component's bounds and
+the text height, and centers the slider component within the component's bounds.
+@return The bounds of the slider component.
+*/
 juce::Rectangle<int> RotarySliderWithLabels::getSliderBounds() const
 {
     auto bounds = getLocalBounds();
@@ -90,6 +105,14 @@ juce::Rectangle<int> RotarySliderWithLabels::getSliderBounds() const
     
 }
 
+/*!
+@brief Get the display string for the component.
+This method returns a juce::String that represents the display string for the component. If the
+component's parameter is a juce::AudioParameterChoice, the method returns the name of the
+current choice. If the component's parameter is a juce::AudioParameterFloat, the method
+returns a string representation of the float value, with a suffix if one is provided.
+@return The display string for the component.
+*/
 juce::String RotarySliderWithLabels::getDisplayString() const
 {
     if( auto* choiceParam = dynamic_cast<juce::AudioParameterChoice*>(param) )
@@ -127,13 +150,25 @@ juce::String RotarySliderWithLabels::getDisplayString() const
     return str;
 }
 
+/*!
+@brief Change the parameter for the component.
+This method changes the parameter for the component to a new juce::RangedAudioParameter
+pointer. It then repaints the component.
+@param p The new juce::RangedAudioParameter pointer.
+*/
 void RotarySliderWithLabels::changeParam(juce::RangedAudioParameter *p)
 {
     param = p;
-    // TODO: why do we need to repaint?
     repaint();
 }
 
+/*!
+@brief Get the display string for a RatioSlider component.
+This method returns a juce::String that represents the display string for a RatioSlider
+component. It casts the component's parameter to a juce::AudioParameterChoice and returns
+the current choice with ":1" appended to the end.
+@return The display string for the RatioSlider component.
+*/
 juce::String RatioSlider::getDisplayString() const
 {
     auto choiceParam = dynamic_cast<juce::AudioParameterChoice*>(param);

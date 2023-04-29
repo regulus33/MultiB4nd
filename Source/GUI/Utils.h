@@ -18,6 +18,7 @@ Templates are a kind of code generation technique, and the actual code is genera
  WARNING WARNING WARNING
  */
 
+
 enum FFTOrder
 {
     order2048 = 11,
@@ -25,6 +26,19 @@ enum FFTOrder
     order8192 = 13
 };
 
+/*!
+@brief Helper function to create an AudioProcessorValueTreeState attachment.
+@tparam Attachment Type of the attachment to be created.
+@tparam APVTS Type of the AudioProcessorValueTreeState.
+@tparam Params Type of the parameter map.
+@tparam ParamName Type of the parameter name.
+@tparam SliderType Type of the slider to be attached to the parameter.
+@param attachment [out] Pointer to the unique_ptr that holds the attachment.
+@param apvts Reference to the AudioProcessorValueTreeState.
+@param params Map of parameters.
+@param name Name of the parameter to be attached.
+@param slider Slider to be attached to the parameter.
+*/
 template<
 typename Attachment,
 typename APVTS,
@@ -41,6 +55,17 @@ void makeAttachment(std::unique_ptr<Attachment>& attachment,
     attachment = std::make_unique<Attachment>(apvts, params.at(name), slider);
 }
 
+
+/*!
+ @brief Gets parameters from the Params enum. Just gets the value from a key in a hashmap
+ @tparam APVTS APVTS
+ @tparam Params Just the params hashmap
+ @tparam Name Usually a string
+ @param APVts& apvts The APVTS
+ @param Params& params A reference to the params hash.
+ @param Name&  name A reference to the string name of the param
+ @return juce::RangedAudioParameter& A reference to the audio parameter associated with Name.
+ */
 template<
 typename APVTS,
 typename Params,
@@ -54,6 +79,11 @@ juce::RangedAudioParameter& getParam(APVTS& apvts, const Params& params, const N
     return *param;
 }
 
+/*!
+ @brief Just returns true if number is over 1000. Works for any number type.
+ @param T& value The number to check
+ @return bool
+ */
 template<typename T>
 bool truncateKiloValue(T& value)
 {
@@ -68,8 +98,15 @@ bool truncateKiloValue(T& value)
    }
 }
 
+
 juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, juce::String suffix);
 
+
+/*!
+ @brief Add
+ @tparam Labels Mostly ends up being RotarySliderWithLabels. Must have a labels member.
+ @tparam Type of the suffix. String `"dB"` for example
+ */
 template<
 typename Labels,
 typename ParamType,

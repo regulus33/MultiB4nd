@@ -1,0 +1,89 @@
+\hypertarget{_analyzer_path_generator_8h_source}{}\doxysection{Analyzer\+Path\+Generator.\+h}
+\label{_analyzer_path_generator_8h_source}\index{Source/GUI/AnalyzerPathGenerator.h@{Source/GUI/AnalyzerPathGenerator.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ AnalyzerPathGenerator.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ Created:\ 17\ Apr\ 2023\ 6:15:08pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../DSP/Fifo.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ PathType>}
+\DoxyCodeLine{00020\ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_analyzer_path_generator}{AnalyzerPathGenerator}}}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_analyzer_path_generator_a6ef1e07afb0c21220feaf2fccac489c3}{generatePath}}(\textcolor{keyword}{const}\ std::vector<float>\&\ renderData,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::Rectangle<float>\ fftBounds,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fftSize,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ binWidth,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ negativeInfinity)}
+\DoxyCodeLine{00035\ \ \ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ top\ =\ fftBounds.getY();}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bottom\ =\ fftBounds.getBottom();}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ auto\ bottom\ =\ fftBounds.getHeight();}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ width\ =\ fftBounds.getWidth();}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numBins\ =\ (int)fftSize\ /\ 2;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ PathType\ p;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ p.preallocateSpace(3\ *\ (\textcolor{keywordtype}{int})fftBounds.getWidth());}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ map\ =\ [bottom,\ top,\ negativeInfinity](\textcolor{keywordtype}{float}\ v)}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ juce::jmap(v,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ negativeInfinity,\ 0.f,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ float(bottom+10),}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bottom,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ top);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ y\ =\ map(renderData[0]);}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ jassert(\ !std::isnan(y)\ \&\&\ !std::isinf(y)\ );}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ std::isnan(y)\ ||\ std::isinf(y)\ )}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ y\ =\ bottom;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ p.startNewSubPath(0,\ y);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ pathResolution\ =\ 2;\ \textcolor{comment}{//you\ can\ draw\ line-\/to's\ every\ 'pathResolution'\ pixels.}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ binNum\ =\ 1;\ binNum\ <\ numBins;\ binNum\ +=\ pathResolution\ )}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ y\ =\ map(renderData[binNum]);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ jassert(\ !std::isnan(y)\ \&\&\ !std::isinf(y)\ );}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !std::isnan(y)\ \&\&\ !std::isinf(y)\ )}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ binFreq\ =\ binNum\ *\ binWidth;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ normalizedBinX\ =\ juce::mapFromLog10(binFreq,\ 20.f,\ 20000.f);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ binX\ =\ std::floor(normalizedBinX\ *\ width);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.lineTo(binX,\ y);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ pathFifo.\mbox{\hyperlink{struct_fifo_a6e454cb4d2cd15a04e2e884ba481999f}{push}}(p);}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{int}\ getNumPathsAvailable()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00085\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pathFifo.\mbox{\hyperlink{struct_fifo_a2bd742555ce9d7c4d7bf8a97b3718b8c}{getNumAvailableForReading}}();}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{bool}\ getPath(PathType\&\ path)}
+\DoxyCodeLine{00090\ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pathFifo.\mbox{\hyperlink{struct_fifo_a098f3923a35988ab1661ecbb6999e3e5}{pull}}(path);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{struct_fifo}{Fifo<PathType>}}\ pathFifo;}
+\DoxyCodeLine{00095\ \};}
+
+\end{DoxyCode}

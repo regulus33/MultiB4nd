@@ -1,0 +1,103 @@
+\hypertarget{struct_compressor_band_controls}{}\doxysection{Compressor\+Band\+Controls Struct Reference}
+\label{struct_compressor_band_controls}\index{CompressorBandControls@{CompressorBandControls}}
+
+
+UI Component for compressorband controls.  
+
+
+
+
+{\ttfamily \#include $<$Compressor\+Band\+Controls.\+h$>$}
+
+Inheritance diagram for Compressor\+Band\+Controls\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{struct_compressor_band_controls}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_compressor_band_controls_a0de22b03b703d345572c0900796e3552}{Compressor\+Band\+Controls}} (juce\+::\+Audio\+Processor\+Value\+Tree\+State \&apvts)
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_compressor_band_controls_adda181e26beeb0b24e48262c2fee975b}\label{struct_compressor_band_controls_adda181e26beeb0b24e48262c2fee975b}} 
+{\bfseries $\sim$\+Compressor\+Band\+Controls} () override
+\begin{DoxyCompactList}\small\item\em Destructor for \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}} Removes the listeners for bypass\+Button, solo\+Button, mute\+Button. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_compressor_band_controls_a29d93e85e86c42d155d654c52d1c85c9}{resized}} () override
+\begin{DoxyCompactList}\small\item\em Resizes the UI components of \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}} Calculates bounds and uses a flexbox to organize the components. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_compressor_band_controls_a18627c160d2950fd3add8e80ef8c4b42}{paint}} (juce\+::\+Graphics \&g) override
+\begin{DoxyCompactList}\small\item\em Paints the background of the \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}} UI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_compressor_band_controls_a075a5593c6082cf4923da1be009e5780}{button\+Clicked}} (juce\+::\+Button $\ast$button) override
+\begin{DoxyCompactList}\small\item\em Callback for when a button is clicked. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+UI Component for compressorband controls. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_compressor_band_controls_a0de22b03b703d345572c0900796e3552}\label{struct_compressor_band_controls_a0de22b03b703d345572c0900796e3552}} 
+\index{CompressorBandControls@{CompressorBandControls}!CompressorBandControls@{CompressorBandControls}}
+\index{CompressorBandControls@{CompressorBandControls}!CompressorBandControls@{CompressorBandControls}}
+\doxysubsubsection{\texorpdfstring{CompressorBandControls()}{CompressorBandControls()}}
+{\footnotesize\ttfamily Compressor\+Band\+Controls\+::\+Compressor\+Band\+Controls (\begin{DoxyParamCaption}\item[{juce\+::\+Audio\+Processor\+Value\+Tree\+State \&}]{apv }\end{DoxyParamCaption})}
+
+
+
+Constructor for \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em apv} & -\/ audio processor value tree state reference Initializes attack\+Slider, release\+Slider, threshold\+Slider, ratio\+Slider Adds and makes visible bypass\+Button, solo\+Button, mute\+Button, low\+Band, mid\+Band, high\+Band Adds a listener to bypass\+Button, solo\+Button, mute\+Button Sets colors for bypass\+Button, solo\+Button, mute\+Button, low\+Band, mid\+Band, high\+Band Sets radio group id for low\+Band, mid\+Band, high\+Band Adds a button switcher for low\+Band, mid\+Band, high\+Band Sets toggle state for low\+Band, triggers the update\+Attachments method \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_compressor_band_controls_a075a5593c6082cf4923da1be009e5780}\label{struct_compressor_band_controls_a075a5593c6082cf4923da1be009e5780}} 
+\index{CompressorBandControls@{CompressorBandControls}!buttonClicked@{buttonClicked}}
+\index{buttonClicked@{buttonClicked}!CompressorBandControls@{CompressorBandControls}}
+\doxysubsubsection{\texorpdfstring{buttonClicked()}{buttonClicked()}}
+{\footnotesize\ttfamily void Compressor\+Band\+Controls\+::button\+Clicked (\begin{DoxyParamCaption}\item[{juce\+::\+Button $\ast$}]{button }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Callback for when a button is clicked. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em button} & -\/ the button that was clicked Updates the enabled states of the sliders, the toggle states of the solo, mute, and bypass buttons, and the fill colors of the active band. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_compressor_band_controls_a18627c160d2950fd3add8e80ef8c4b42}\label{struct_compressor_band_controls_a18627c160d2950fd3add8e80ef8c4b42}} 
+\index{CompressorBandControls@{CompressorBandControls}!paint@{paint}}
+\index{paint@{paint}!CompressorBandControls@{CompressorBandControls}}
+\doxysubsubsection{\texorpdfstring{paint()}{paint()}}
+{\footnotesize\ttfamily void Compressor\+Band\+Controls\+::paint (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Paints the background of the \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}} UI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & -\/ the Graphics object to paint on Gets the bounds of the UI and uses it to draw the background with the draw\+Module\+Background method. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_compressor_band_controls_a29d93e85e86c42d155d654c52d1c85c9}\label{struct_compressor_band_controls_a29d93e85e86c42d155d654c52d1c85c9}} 
+\index{CompressorBandControls@{CompressorBandControls}!resized@{resized}}
+\index{resized@{resized}!CompressorBandControls@{CompressorBandControls}}
+\doxysubsubsection{\texorpdfstring{resized()}{resized()}}
+{\footnotesize\ttfamily void Compressor\+Band\+Controls\+::resized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Resizes the UI components of \mbox{\hyperlink{struct_compressor_band_controls}{Compressor\+Band\+Controls}} Calculates bounds and uses a flexbox to organize the components. 
+
+Pass vector of pointers to ui components, the lambda will organize them into a flexbox
+
+What you are seeing here is in practice something like html or jsx. the order we add these in is the order in which they are displayed
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Compressor\+Band\+Controls.\+h\item 
+Source/\+GUI/Compressor\+Band\+Controls.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,103 @@
+\hypertarget{struct_spectrum_analyzer}{}\doxysection{Spectrum\+Analyzer Class Reference}
+\label{struct_spectrum_analyzer}\index{SpectrumAnalyzer@{SpectrumAnalyzer}}
+
+
+A JUCE component that displays the audio spectrum analysis. The \mbox{\hyperlink{struct_spectrum_analyzer}{Spectrum\+Analyzer}} class is a component that listens to audio processing parameters and displays the audio spectrum analysis. It uses a \mbox{\hyperlink{struct_path_producer}{Path\+Producer}} to generate paths from the audio data, and draws these paths on the component. The component also handles redrawing the background grid and text labels as needed.  
+
+
+
+
+{\ttfamily \#include $<$Spectrum\+Analyzer.\+h$>$}
+
+Inheritance diagram for Spectrum\+Analyzer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.493333cm]{struct_spectrum_analyzer}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_spectrum_analyzer_a0da5113322b85811299422edb957c354}{Spectrum\+Analyzer}} (\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} \&)
+\begin{DoxyCompactList}\small\item\em Constructor for the \mbox{\hyperlink{struct_spectrum_analyzer}{Spectrum\+Analyzer}} class. The constructor initializes the left\+Path\+Producer and right\+Path\+Producer with the left\+Channel\+Fifo and right\+Channel\+Fifo of the \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} instance. It also adds a listener to each parameter of the audio processor. Finally, it starts a timer with a frequency of 60 times per second. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_spectrum_analyzer_ac05162e52d0474546d3bd89d8e0fbd44}\label{struct_spectrum_analyzer_ac05162e52d0474546d3bd89d8e0fbd44}} 
+{\bfseries $\sim$\+Spectrum\+Analyzer} ()
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_spectrum_analyzer}{Spectrum\+Analyzer}} destructor. Removes listener from all the parameters of the audio processor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_spectrum_analyzer_a09918cb03f7572601879fd611924b78c}{parameter\+Value\+Changed}} (int parameter\+Index, float new\+Value) override
+\begin{DoxyCompactList}\small\item\em Callback method that is triggered when a parameter value has changed. This method is called by Juce when a parameter value has changed. The method sets the parameters\+Changed flag to true so that the timer\+Callback method will update the visual representation of the parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_spectrum_analyzer_a3ef79cf71f433064b4941df261ed0d3a}\label{struct_spectrum_analyzer_a3ef79cf71f433064b4941df261ed0d3a}} 
+void {\bfseries parameter\+Gesture\+Changed} (int parameter\+Index, bool gesture\+Is\+Starting) override
+\item 
+\mbox{\Hypertarget{struct_spectrum_analyzer_a8248be6a0f4c820c33a3ac8a6dfb607a}\label{struct_spectrum_analyzer_a8248be6a0f4c820c33a3ac8a6dfb607a}} 
+void {\bfseries timer\+Callback} () override
+\begin{DoxyCompactList}\small\item\em Creates callback to frame by frame for the spectrum analyzer The timer\+Callback method is called at a frequency determined by start\+Timer\+Hz. It performs the following tasks\+: If should\+Show\+FFTAnalysis is true, it calls the process method on left\+Path\+Producer and right\+Path\+Producer, passing in the analysis area bounds and the sample rate of the audio processor. If parameters\+Changed is true, it sets it to false. It calls the repaint method to redraw the component. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_spectrum_analyzer_a8d10cc9db7739720094175772847cc0e}{paint}} (juce\+::\+Graphics \&g) override
+\begin{DoxyCompactList}\small\item\em Renders the graphical components on the GUI. This method is called whenever a repaint is needed. It\textquotesingle{}s responsible for rendering the background grid, the FFT analysis results, the response curve, the border and the text labels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_spectrum_analyzer_a54394f8d1cf3aac93595c2c7e58402df}\label{struct_spectrum_analyzer_a54394f8d1cf3aac93595c2c7e58402df}} 
+void {\bfseries resized} () override
+\item 
+\mbox{\Hypertarget{struct_spectrum_analyzer_a3c3ee9e3842d0a0baac9e187d87b0a37}\label{struct_spectrum_analyzer_a3c3ee9e3842d0a0baac9e187d87b0a37}} 
+void {\bfseries toggle\+Analysis\+Enablement} (bool enabled)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A JUCE component that displays the audio spectrum analysis. The \mbox{\hyperlink{struct_spectrum_analyzer}{Spectrum\+Analyzer}} class is a component that listens to audio processing parameters and displays the audio spectrum analysis. It uses a \mbox{\hyperlink{struct_path_producer}{Path\+Producer}} to generate paths from the audio data, and draws these paths on the component. The component also handles redrawing the background grid and text labels as needed. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_spectrum_analyzer_a0da5113322b85811299422edb957c354}\label{struct_spectrum_analyzer_a0da5113322b85811299422edb957c354}} 
+\index{SpectrumAnalyzer@{SpectrumAnalyzer}!SpectrumAnalyzer@{SpectrumAnalyzer}}
+\index{SpectrumAnalyzer@{SpectrumAnalyzer}!SpectrumAnalyzer@{SpectrumAnalyzer}}
+\doxysubsubsection{\texorpdfstring{SpectrumAnalyzer()}{SpectrumAnalyzer()}}
+{\footnotesize\ttfamily Spectrum\+Analyzer\+::\+Spectrum\+Analyzer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} \&}]{p }\end{DoxyParamCaption})}
+
+
+
+Constructor for the \mbox{\hyperlink{struct_spectrum_analyzer}{Spectrum\+Analyzer}} class. The constructor initializes the left\+Path\+Producer and right\+Path\+Producer with the left\+Channel\+Fifo and right\+Channel\+Fifo of the \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} instance. It also adds a listener to each parameter of the audio processor. Finally, it starts a timer with a frequency of 60 times per second. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & -\/ A reference to the \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} instance. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_spectrum_analyzer_a8d10cc9db7739720094175772847cc0e}\label{struct_spectrum_analyzer_a8d10cc9db7739720094175772847cc0e}} 
+\index{SpectrumAnalyzer@{SpectrumAnalyzer}!paint@{paint}}
+\index{paint@{paint}!SpectrumAnalyzer@{SpectrumAnalyzer}}
+\doxysubsubsection{\texorpdfstring{paint()}{paint()}}
+{\footnotesize\ttfamily void Spectrum\+Analyzer\+::paint (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Renders the graphical components on the GUI. This method is called whenever a repaint is needed. It\textquotesingle{}s responsible for rendering the background grid, the FFT analysis results, the response curve, the border and the text labels. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & The Graphics object used to render the components. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{struct_spectrum_analyzer_a09918cb03f7572601879fd611924b78c}\label{struct_spectrum_analyzer_a09918cb03f7572601879fd611924b78c}} 
+\index{SpectrumAnalyzer@{SpectrumAnalyzer}!parameterValueChanged@{parameterValueChanged}}
+\index{parameterValueChanged@{parameterValueChanged}!SpectrumAnalyzer@{SpectrumAnalyzer}}
+\doxysubsubsection{\texorpdfstring{parameterValueChanged()}{parameterValueChanged()}}
+{\footnotesize\ttfamily void Spectrum\+Analyzer\+::parameter\+Value\+Changed (\begin{DoxyParamCaption}\item[{int}]{parameter\+Index,  }\item[{float}]{new\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Callback method that is triggered when a parameter value has changed. This method is called by Juce when a parameter value has changed. The method sets the parameters\+Changed flag to true so that the timer\+Callback method will update the visual representation of the parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter\+Index} & Index of the parameter that has changed \\
+\hline
+{\em new\+Value} & The new value of the parameter \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Spectrum\+Analyzer.\+h\item 
+Source/\+GUI/Spectrum\+Analyzer.\+cpp\end{DoxyCompactItemize}

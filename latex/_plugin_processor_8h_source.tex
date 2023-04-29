@@ -1,0 +1,125 @@
+\hypertarget{_plugin_processor_8h_source}{}\doxysection{Plugin\+Processor.\+h}
+\label{_plugin_processor_8h_source}\index{Source/PluginProcessor.h@{Source/PluginProcessor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ This\ file\ contains\ the\ basic\ framework\ code\ for\ a\ JUCE\ plugin\ processor.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00012\ \textcolor{comment}{}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ 6:19:48}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}DSP/CompressorBand.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}DSP/SingleChannelSampleFifo.h"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00032\ \textcolor{comment}{}\textcolor{keyword}{class\ }\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}}\ \ :\ \textcolor{keyword}{public}\ juce::AudioProcessor}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#if\ JucePlugin\_Enable\_ARA}}
+\DoxyCodeLine{00034\ ,\ \textcolor{keyword}{public}\ juce::AudioProcessorARAExtension}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00036\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a77f8f6aa7a9dee28334b8f6d98d44a71}{SimpleMBCompAudioProcessor}}();}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{\string~SimpleMBCompAudioProcessor}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00041\ \ \ \ \ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a0ffaacfcf76220d6f0be44d8e086d836}{prepareToPlay}}\ (\textcolor{keywordtype}{double}\ sampleRate,\ \textcolor{keywordtype}{int}\ samplesPerBlock)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ releaseResources()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00045\ \ \ \ \ }
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#ifndef\ JucePlugin\_PreferredChannelConfigurations}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ isBusesLayoutSupported\ (\textcolor{keyword}{const}\ BusesLayout\&\ layouts)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00049\ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a8a92e7d3629c79baac5e4a4c55adf48d}{processBlock}}\ (juce::AudioBuffer<float>\&,\ juce::MidiBuffer\&)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00051\ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00053\ \ \ \ \ juce::AudioProcessorEditor*\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a68f1d0eb4a18c81a0e0467dd2dbb63e0}{createEditor}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a57d61c86b36c0afa5a083f22e44e7986}{hasEditor}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00055\ \ \ \ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ juce::String\ getName()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00058\ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{bool}\ acceptsMidi()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ producesMidi()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ isMidiEffect()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{double}\ getTailLengthSeconds()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00063\ \ \ \ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{int}\ getNumPrograms()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{int}\ getCurrentProgram()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurrentProgram\ (\textcolor{keywordtype}{int}\ index)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ juce::String\ getProgramName\ (\textcolor{keywordtype}{int}\ index)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ changeProgramName\ (\textcolor{keywordtype}{int}\ index,\ \textcolor{keyword}{const}\ juce::String\&\ newName)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00070\ \ \ \ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ getStateInformation\ (juce::MemoryBlock\&\ destData)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ setStateInformation\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ data,\ \textcolor{keywordtype}{int}\ sizeInBytes)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{using\ }APVTS\ =\ juce::AudioProcessorValueTreeState;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{static}\ APVTS::ParameterLayout\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}{createParameterLayout}}();}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\ This\ needs\ to\ be\ public\ so\ UI\ components\ can\ access\ it\ in\ PluginEditor\ class}}
+\DoxyCodeLine{00077\ \ \ \ \ APVTS\ apvts\ \{\ *\textcolor{keyword}{this},\ \textcolor{keyword}{nullptr},\ \textcolor{stringliteral}{"{}Parameters"{}},\ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}{createParameterLayout}}()\ \};}
+\DoxyCodeLine{00078\ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{using\ }BlockType\ =\ juce::AudioBuffer<float>;}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo<BlockType>}}\ leftChannelFifo\ \{\ Channel::Left\ \};}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{struct_single_channel_sample_fifo}{SingleChannelSampleFifo<BlockType>}}\ rightChannelFifo\ \{\ Channel::Right\ \};}
+\DoxyCodeLine{00082\ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ }
+\DoxyCodeLine{00084\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00085\ \ \ \ \ std::array<CompressorBand,\ 3>\ compressors;}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band}{CompressorBand}}\&\ lowBandComp\ =\ compressors[0];}
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band}{CompressorBand}}\&\ midBandComp\ =\ compressors[1];}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{struct_compressor_band}{CompressorBand}}\&\ highBandComp\ =\ compressors[2];}
+\DoxyCodeLine{00089\ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ juce::dsp::Compressor<float>\ compressor;}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{using\ }Filter\ =\ juce::dsp::LinkwitzRileyFilter<float>;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ fc0\ \ fc1}}
+\DoxyCodeLine{00093\ \ \ \ \ Filter\ LP1,\ AP2,}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ HP1,\ LP2,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ HP2;}
+\DoxyCodeLine{00096\ \ \ \ \ }
+\DoxyCodeLine{00097\ \ \ \ \ juce::AudioParameterFloat*\ lowMidCrossover\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00098\ \ \ \ \ juce::AudioParameterFloat*\ midHighCrossover\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00099\ \ \ \ \ }
+\DoxyCodeLine{00100\ \ \ \ \ std::array<juce::AudioBuffer<float>,\ 3>\ filterBuffers;}
+\DoxyCodeLine{00101\ \ \ \ \ juce::dsp::Gain<float>\ inputGain,\ outputGain;}
+\DoxyCodeLine{00102\ \ \ \ \ juce::AudioParameterFloat*\ inputGainParam\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00103\ \ \ \ \ juce::AudioParameterFloat*\ outputGainParam\ \{\ \textcolor{keyword}{nullptr}\ \};}
+\DoxyCodeLine{00104\ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{void}\ applyGain(T\&\ buffer,\ U\&\ gain)}
+\DoxyCodeLine{00108\ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ block\ =\ juce::dsp::AudioBlock<float>(buffer);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ ctx\ =\ juce::dsp::ProcessContextReplacing<float>(block);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ gain.process(ctx);}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ updateState();}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{void}\ splitBands(juce::AudioBuffer<float>\&\ inputBuffer);}
+\DoxyCodeLine{00115\ \ \ \ \ }
+\DoxyCodeLine{00116\ \ \ \ \ juce::dsp::Oscillator<float>\ osc;}
+\DoxyCodeLine{00117\ \ \ \ \ juce::dsp::Gain<float>\ gain;}
+\DoxyCodeLine{00118\ \ \ \ \ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00120\ \ \ \ \ JUCE\_DECLARE\_NON\_COPYABLE\_WITH\_LEAK\_DETECTOR\ (\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}})}
+\DoxyCodeLine{00121\ \};}
+
+\end{DoxyCode}

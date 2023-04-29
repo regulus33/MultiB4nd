@@ -1,25 +1,36 @@
 /*
-  ==============================================================================
-
-    CompressorBandControls.cpp
-    Created: 14 Apr 2023 7:50:49pm
-    Author:  zack
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ CompressorBandControls.cpp
+ Created: 14 Apr 2023 7:50:49pm
+ Author:  zack
+ 
+ ==============================================================================
+ */
 
 #include "CompressorBandControls.h"
 #include "RotarySliderWithLabels.h"
 #include "../DSP/Params.h"
 #include "Utils.h"
 
+/*!
+ @brief Constructor for CompressorBandControls
+ @param apv - audio processor value tree state reference
+ Initializes attackSlider, releaseSlider, thresholdSlider, ratioSlider
+ Adds and makes visible bypassButton, soloButton, muteButton, lowBand, midBand, highBand
+ Adds a listener to bypassButton, soloButton, muteButton
+ Sets colors for bypassButton, soloButton, muteButton, lowBand, midBand, highBand
+ Sets radio group id for lowBand, midBand, highBand
+ Adds a button switcher for lowBand, midBand, highBand
+ Sets toggle state for lowBand, triggers the updateAttachments method
+ */
 CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeState& apv) : apvts(apv),
-    attackSlider(nullptr, "ms", "ATTACK"),
-    releaseSlider(nullptr, "ms", "RELEASE"),
-    thresholdSlider(nullptr, "dB", "THRESH"),
-    ratioSlider(nullptr, "")
+attackSlider(nullptr, "ms", "ATTACK"),
+releaseSlider(nullptr, "ms", "RELEASE"),
+thresholdSlider(nullptr, "dB", "THRESH"),
+ratioSlider(nullptr, "")
 {
-
+    
     addAndMakeVisible(attackSlider);
     addAndMakeVisible(releaseSlider);
     addAndMakeVisible(thresholdSlider);
@@ -67,10 +78,10 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     // Switching global band =====================
     auto buttonSwitcher = [safePtr = this->safePtr]()
     {
-      if(auto* c = safePtr.getComponent())
-      {
-          c->updateAttachments();
-      }
+        if(auto* c = safePtr.getComponent())
+        {
+            c->updateAttachments();
+        }
     };
     
     lowBand.onClick = buttonSwitcher;
@@ -87,6 +98,10 @@ CompressorBandControls::CompressorBandControls(juce::AudioProcessorValueTreeStat
     addAndMakeVisible(highBand);
 }
 
+/*!
+ @brief Destructor for CompressorBandControls
+ Removes the listeners for bypassButton, soloButton, muteButton
+ */
 CompressorBandControls::~CompressorBandControls()
 {
     bypassButton.removeListener(this);
@@ -95,6 +110,10 @@ CompressorBandControls::~CompressorBandControls()
     
 }
 
+/*!
+ @brief Resizes the UI components of CompressorBandControls
+ Calculates bounds and uses a flexbox to organize the components.
+ */
 void CompressorBandControls::resized()
 {
     auto bounds = getLocalBounds().reduced(5);
@@ -118,7 +137,9 @@ void CompressorBandControls::resized()
         return flexBox;
     };
     
-    // pass vector of pointers to ui components, the lambda will organize them into a flexbox
+    /*!
+     Pass vector of pointers to ui components, the lambda will organize them into a flexbox
+     */
     auto bandButtonControlBox = createButtonControlBox({&bypassButton, &soloButton, &muteButton});
     auto bandSelectControlBox = createButtonControlBox({&lowBand, &midBand, &highBand});
     
@@ -127,9 +148,12 @@ void CompressorBandControls::resized()
     flexBox.flexWrap = FlexBox::Wrap::noWrap;
     
     auto spacer = FlexItem().withWidth(4);
-//    auto endCap = FlexItem().withWidth(6);
+    //    auto endCap = FlexItem().withWidth(6);
     
-    // What you are seeing here is in practice something like html or jsx in that the order we add these in is the order in which they are displayed
+    /*!
+     What you are seeing here is in practice something like html or jsx.
+     the order we add these in is the order in which they are displayed
+     */
     flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(bandSelectControlBox).withWidth(50));
     flexBox.items.add(spacer);
@@ -140,7 +164,7 @@ void CompressorBandControls::resized()
     flexBox.items.add(FlexItem(thresholdSlider).withFlex(1.f));
     flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(ratioSlider).withFlex(1.f));
-//    flexBox.items.add(endCap);
+    //    flexBox.items.add(endCap);
     flexBox.items.add(spacer);
     flexBox.items.add(FlexItem(bandButtonControlBox).withWidth(30));
     
@@ -148,14 +172,24 @@ void CompressorBandControls::resized()
 }
 
 
-
+/**
+ @brief Paints the background of the CompressorBandControls UI
+ @param g - the Graphics object to paint on
+ Gets the bounds of the UI and uses it to draw the background with the drawModuleBackground method.
+ */
 void CompressorBandControls::paint(juce::Graphics &g)
 {
     auto bounds = getLocalBounds();
     drawModuleBackground(g, bounds);
 }
 
-// ----
+/*!
+ @brief Refreshes the color of the band buttons based on a color source button
+ @param band - the band button to refresh
+ @param colorSource - the source button to use for the color
+ Sets the color of the band button based on the on color of the color source button
+ Repaints the band button
+ */
 void CompressorBandControls::refreshBandButtonColors(juce::Button& band, juce::Button& colorSource)
 {
     band.setColour(ButtonOnColorId, colorSource.findColour(ButtonOnColorId));
@@ -163,15 +197,25 @@ void CompressorBandControls::refreshBandButtonColors(juce::Button& band, juce::B
     band.repaint();
 }
 
+/*!
+ @brief Resets the color of the active band
+ Sets the color of the active band back to grey
+ Repaints the active band
+ */
 void CompressorBandControls::resetActiveBandColors()
 {
     activeBand->setColour(ButtonOnColorId, juce::Colours::grey);
     activeBand->setColour(ButtonOffColorId, juce::Colours::grey);
     activeBand->repaint();
 }
-// -----
 
-// DOC: figure out which band is selected and then color it based on whether its muted, bypassed or soloed (only called on plugin startup, we spread this around in other callbacks later in plugin lifecycle
+/*!
+ @brief Updates the states of the band select buttons based on the values of their respective parameters
+ Gets the necessary parameters and uses them to determine the states of the lowBand, midBand, highBand buttons.
+ If a band is soloed, its button color is set to the color of the solo button.
+ If a band is muted, its button color is set to the color of the mute button.
+ If a band is bypassed, its button color is set to the color of the bypass button.
+ */
 void CompressorBandControls::updateBandSelectButtonStates()
 {
     using namespace Params;
@@ -193,8 +237,8 @@ void CompressorBandControls::updateBandSelectButtonStates()
         auto& list = paramsToCheck[i];
         
         auto* bandButton = (i == 0) ? &lowBand :
-                           (i == 1) ? &midBand :
-                                      &highBand;
+        (i == 1) ? &midBand :
+        &highBand;
         
         if( auto* solo = paramHelper(list[0]);
            solo->get() )
@@ -203,13 +247,13 @@ void CompressorBandControls::updateBandSelectButtonStates()
         }
         
         else if( auto* mute = paramHelper(list[1]);
-           mute->get() )
+                mute->get() )
         {
             refreshBandButtonColors(*bandButton, muteButton);
         }
         
         else if( auto* bypass = paramHelper(list[2]);
-           bypass->get() )
+                bypass->get() )
         {
             refreshBandButtonColors(*bandButton, bypassButton);
         }
@@ -217,6 +261,12 @@ void CompressorBandControls::updateBandSelectButtonStates()
     }
 }
 
+/*!
+ @fn CompressorBandControls::buttonClicked
+ @brief Callback for when a button is clicked
+ @param button - the button that was clicked
+ Updates the enabled states of the sliders, the toggle states of the solo, mute, and bypass buttons, and the fill colors of the active band.
+ */
 void CompressorBandControls::buttonClicked(juce::Button* button)
 {
     updateSliderEnabledMents();
@@ -224,7 +274,13 @@ void CompressorBandControls::buttonClicked(juce::Button* button)
     updateActiveBandFillColors(*button);
 }
 
+
+/*!
+ @brief Updates the colors of the active band button.
+ This function updates the colors of the active band button based on the state of the clicked button. If the clicked button's toggle state is false, the colors of the active band are reset. Otherwise, the colors of the active band are refreshed based on the clicked button
+ */
 void CompressorBandControls::updateActiveBandFillColors(juce::Button& clickedButton)
+
 {
     jassert(activeBand != nullptr);
     DBG("Active band: " << activeBand->getName());
@@ -239,6 +295,11 @@ void CompressorBandControls::updateActiveBandFillColors(juce::Button& clickedBut
     }
 }
 
+
+/*!
+ @brief Updates the enabled state of the sliders.
+ This function updates the enabled state of the attack, release, threshold, and ratio sliders based on the state of the mute and bypass buttons. If either the mute or bypass button is selected, the sliders are disabled.
+ */
 void CompressorBandControls::updateSliderEnabledMents()
 {
     auto disabled = muteButton.getToggleState() || bypassButton.getToggleState();
@@ -248,6 +309,11 @@ void CompressorBandControls::updateSliderEnabledMents()
     ratioSlider.setEnabled(!disabled);
 }
 
+/*!
+ @brief Updates the toggle states of the solo, mute, and bypass buttons.
+ This function updates the toggle states of the solo, mute, and bypass buttons based on which button was clicked. If the solo button was clicked and is selected, the mute and bypass buttons are disabled. If the mute button was clicked and is selected, the bypass and solo buttons are disabled. If the bypass button was clicked and is selected, the mute and solo buttons are disabled.
+ @param clickedButton The button that was clicked.
+ */
 void CompressorBandControls::updateSoloMuteBypassToggleStates(juce::Button &clickedButton)
 {
     // disable bypass and mute if solo selected
@@ -272,6 +338,16 @@ void CompressorBandControls::updateSoloMuteBypassToggleStates(juce::Button &clic
     }
 }
 
+/**
+ 
+ @brief Updates the attachments for the compressor band controls.
+ This method updates the attachments for the different compressor band controls, such as the attack, release,
+ threshold, ratio, mute, solo, and bypass controls. The specific band (low, mid, or high) is determined by
+ checking the state of the toggle buttons for each band. The attachments are then reset and recreated for each
+ control based on the band that is selected. The parameters for each control are obtained using the getParam
+ helper method and the changeParam method is called on the corresponding control to update its parameter. The
+ makeAttachment helper method is used to create the attachments for each control.
+ */
 void CompressorBandControls::updateAttachments()
 {
     // Arbitrary band types
@@ -295,9 +371,11 @@ void CompressorBandControls::updateAttachments()
     
     using namespace Params;
     std::vector<Names> names;
-    
-    // NOTE: this is a little clunky. we are both getting the Names::thing and also using its index to
-    // determine the name AND the parameter itself since params all over this plugin can be predicted based on their order
+    /*!
+     This is a little clunky. we are both getting the Names::thing and also using its index to
+     determine the name AND the parameter itself since params all over this plugin can be predicted
+     based on their order in which they exist in an array-like structure.
+     */
     //    0 = attack
     //    1 = relase
     //    2 = threshold
@@ -378,7 +456,9 @@ void CompressorBandControls::updateAttachments()
     soloButtonAttachment.reset();
     muteButtonAttachment.reset();
     
-    // We call getParam and try to get Attack of whatever band (based on pos which is 0)
+    /*!
+     Call getParam and try to get Attack of whatever band (based on pos which is 0)
+     */
     auto& attackParam = getParameterHelper(Pos::Attack);
     addLabelPairs(attackSlider.labels, attackParam, "ms");
     attackSlider.changeParam(&attackParam);
@@ -391,9 +471,9 @@ void CompressorBandControls::updateAttachments()
     addLabelPairs(thresholdSlider.labels, thresholdParam, "dB");
     thresholdSlider.changeParam(&thresholdParam);
     
-//    auto& ratioParam = getParameterHelper(Pos::Ratio);
-//    addLabelPairs(ratioSlider.labels, &ratioParam, "?");
-//    ratioSlider.changeParam(&ratioParam);
+    //    auto& ratioParam = getParameterHelper(Pos::Ratio);
+    //    addLabelPairs(ratioSlider.labels, &ratioParam, "?");
+    //    ratioSlider.changeParam(&ratioParam);
     
     auto& ratioParamRap = getParameterHelper(Pos::Ratio);
     
@@ -407,8 +487,8 @@ void CompressorBandControls::updateAttachments()
     
     // TODO: this has been duplicated >= 3 times
     auto makeAttachmentHelper = [&params, &apvts = this->apvts](auto& attachment,
-                                                  const auto& name,
-                                                  auto& slider)
+                                                                const auto& name,
+                                                                auto& slider)
     {
         makeAttachment(attachment, apvts, params, name, slider);
     };

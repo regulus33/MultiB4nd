@@ -1,0 +1,99 @@
+\hypertarget{_params_8h_source}{}\doxysection{Params.\+h}
+\label{_params_8h_source}\index{Source/DSP/Params.h@{Source/DSP/Params.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ Params.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 14\ Apr\ 2023\ 7:56:40pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Params}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{enum}\ Names}
+\DoxyCodeLine{00017\ \ \ \ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ Low\_Mid\_Crossover\_Freq,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ Mid\_High\_Crossover\_Freq,}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ Threshold\_Low\_Band,}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ Threshold\_Mid\_Band,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ Threshold\_High\_Band,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ Attack\_Low\_Band,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ Attack\_Mid\_Band,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ Attack\_High\_Band,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ Release\_Low\_Band,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ Release\_Mid\_Band,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ Release\_High\_Band,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ Ratio\_Low\_Band,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ Ratio\_Mid\_Band,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ Ratio\_High\_Band,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ Bypassed\_Low\_Band,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ Bypassed\_Mid\_Band,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ Bypassed\_High\_Band,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ Mute\_Low\_Band,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ Mute\_Mid\_Band,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ Mute\_High\_Band,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ Solo\_Low\_Band,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ Solo\_Mid\_Band,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ Solo\_High\_Band,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ Gain\_In,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ Gain\_Out,}
+\DoxyCodeLine{00051\ \ \ \ \ \};}
+\DoxyCodeLine{00052\ \ \ \ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::map<Names,\ juce::String>\&\ GetParams()}
+\DoxyCodeLine{00054\ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ std::map<Names,\ juce::String>\ params\ =\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \{Low\_Mid\_Crossover\_Freq,\ \textcolor{stringliteral}{"{}Low-\/Mid\ Crossover\ Freq"{}}\},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \{Mid\_High\_Crossover\_Freq,\ \textcolor{stringliteral}{"{}Mid-\/High\ Crossover\ Freq"{}}\},}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \{Threshold\_Low\_Band,\ \textcolor{stringliteral}{"{}Threshold\ Low\ Band"{}}\},}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \{Threshold\_Mid\_Band,\ \textcolor{stringliteral}{"{}Threshold\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \{Threshold\_High\_Band,\ \textcolor{stringliteral}{"{}Threshold\ High\ Band"{}}\},}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \{Attack\_Low\_Band,\ \textcolor{stringliteral}{"{}Attack\ Low\ Band"{}}\},}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \{Attack\_Mid\_Band,\ \textcolor{stringliteral}{"{}Attack\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \{Attack\_High\_Band,\ \textcolor{stringliteral}{"{}Attack\ High\ Band"{}}\},}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \{Release\_Low\_Band,\ \textcolor{stringliteral}{"{}Release\ Low\ Band"{}}\},}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \{Release\_Mid\_Band,\ \textcolor{stringliteral}{"{}Release\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \{Release\_High\_Band,\ \textcolor{stringliteral}{"{}Release\ High\ Band"{}}\},}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \{Ratio\_Low\_Band,\ \textcolor{stringliteral}{"{}Ratio\ Low\ Band"{}}\},}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \{Ratio\_Mid\_Band,\ \textcolor{stringliteral}{"{}Ratio\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \{Ratio\_High\_Band,\ \textcolor{stringliteral}{"{}Ratio\ High\ Band"{}}\},}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \{Bypassed\_Low\_Band,\ \textcolor{stringliteral}{"{}Bypassed\ Low\ Band"{}}\},}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \{Bypassed\_Mid\_Band,\ \textcolor{stringliteral}{"{}Bypassed\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \{Bypassed\_High\_Band,\ \textcolor{stringliteral}{"{}Bypassed\ High\ Band"{}}\},}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \{Mute\_Low\_Band,\ \textcolor{stringliteral}{"{}Mute\ Low\ Band"{}}\},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \{Mute\_Mid\_Band,\ \textcolor{stringliteral}{"{}Mute\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \{Mute\_High\_Band,\ \textcolor{stringliteral}{"{}Mute\ High\ Band"{}}\},}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \{Solo\_Low\_Band,\ \textcolor{stringliteral}{"{}Solo\ Low\ Band"{}}\},}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \{Solo\_Mid\_Band,\ \textcolor{stringliteral}{"{}Solo\ Mid\ Band"{}}\},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \{Solo\_High\_Band,\ \textcolor{stringliteral}{"{}Solo\ High\ Band"{}}\},}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \{Gain\_In,\ \textcolor{stringliteral}{"{}Gain\ In"{}}\},}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \{Gain\_Out,\ \textcolor{stringliteral}{"{}Gain\ Out"{}}\},}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ params;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \}}
+
+\end{DoxyCode}

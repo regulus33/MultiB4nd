@@ -1,0 +1,87 @@
+\hypertarget{struct_ratio_slider}{}\doxysection{Ratio\+Slider Struct Reference}
+\label{struct_ratio_slider}\index{RatioSlider@{RatioSlider}}
+
+
+A ratio slider. \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} extends the \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} class to provide a ratio slider. This slider is associated with a JUCE audio parameter and the display string is a ratio with a fixed 1\+:1 format.  
+
+
+
+
+{\ttfamily \#include $<$Rotary\+Slider\+With\+Labels.\+h$>$}
+
+Inheritance diagram for Ratio\+Slider\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{struct_ratio_slider}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_ratio_slider_a6d37eed45f4aa5220f6193b2b50833c6}\label{struct_ratio_slider_a6d37eed45f4aa5220f6193b2b50833c6}} 
+{\bfseries Ratio\+Slider} (juce\+::\+Ranged\+Audio\+Parameter $\ast$rap, const juce\+::\+String \&unit\+Suffix)
+\item 
+juce\+::\+String \mbox{\hyperlink{struct_ratio_slider_ad4d0a5261170a1677c9c043d6505519d}{get\+Display\+String}} () const override
+\begin{DoxyCompactList}\small\item\em Get the display string for a \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} component. This method returns a juce\+::\+String that represents the display string for a \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} component. It casts the component\textquotesingle{}s parameter to a juce\+::\+Audio\+Parameter\+Choice and returns the current choice with \char`\"{}\+:1\char`\"{} appended to the end. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a9f3c51c979c6e5f977b1c9f970bfccc3}\label{struct_rotary_slider_with_labels_a9f3c51c979c6e5f977b1c9f970bfccc3}} 
+{\bfseries Rotary\+Slider\+With\+Labels} (juce\+::\+Ranged\+Audio\+Parameter $\ast$rap, const juce\+::\+String \&unit\+Suffix, const juce\+::\+String \&title)
+\item 
+void \mbox{\hyperlink{struct_rotary_slider_with_labels_a8df5f672c159dd4f3b28f83f8a87e4d6}{paint}} (juce\+::\+Graphics \&g) override
+\begin{DoxyCompactList}\small\item\em Paint method for the \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} component. This method draws the rotary slider and the labels for the component. It uses the juce\+::\+Look\+And\+Feel\+\_\+\+V4 method draw\+Rotary\+Slider to render the slider, and draws the labels by calculating the position of each label and calling the juce\+::\+Graphics method draw\+Fitted\+Text to render each label. \end{DoxyCompactList}\item 
+juce\+::\+Rectangle$<$ int $>$ \mbox{\hyperlink{struct_rotary_slider_with_labels_a0e1b5c122604c3aa077370acb2fde9ce}{get\+Slider\+Bounds}} () const
+\begin{DoxyCompactList}\small\item\em Get the bounds of the slider component. This method returns a juce\+::\+Rectangle$<$int$>$ that represents the bounds of the slider component. It calculates the size of the slider component based on the size of the component\textquotesingle{}s bounds and the text height, and centers the slider component within the component\textquotesingle{}s bounds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a36a776e92eb07e5b3313d97d065565e1}\label{struct_rotary_slider_with_labels_a36a776e92eb07e5b3313d97d065565e1}} 
+int {\bfseries get\+Text\+Height} () const
+\item 
+virtual juce\+::\+String \mbox{\hyperlink{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}{get\+Display\+String}} () const
+\begin{DoxyCompactList}\small\item\em Get the display string for the component. This method returns a juce\+::\+String that represents the display string for the component. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Choice, the method returns the name of the current choice. If the component\textquotesingle{}s parameter is a juce\+::\+Audio\+Parameter\+Float, the method returns a string representation of the float value, with a suffix if one is provided. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{struct_rotary_slider_with_labels_a3d4148d69fde84b5439cb050db8c1ffd}{change\+Param}} (juce\+::\+Ranged\+Audio\+Parameter $\ast$p)
+\begin{DoxyCompactList}\small\item\em Change the parameter for the component. This method changes the parameter for the component to a new juce\+::\+Ranged\+Audio\+Parameter pointer. It then repaints the component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_ac27d43ca42ae9c164d1b37d25726145a}\label{struct_rotary_slider_with_labels_ac27d43ca42ae9c164d1b37d25726145a}} 
+juce\+::\+Array$<$ \mbox{\hyperlink{struct_rotary_slider_with_labels_1_1_label_pos}{Label\+Pos}} $>$ {\bfseries labels}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_a8f2718e4e90f7997bc1a0f91e87a15ba}\label{struct_rotary_slider_with_labels_a8f2718e4e90f7997bc1a0f91e87a15ba}} 
+juce\+::\+Ranged\+Audio\+Parameter $\ast$ {\bfseries param}
+\item 
+\mbox{\Hypertarget{struct_rotary_slider_with_labels_afa1f26c0ba54a749c4e15661a312bdb0}\label{struct_rotary_slider_with_labels_afa1f26c0ba54a749c4e15661a312bdb0}} 
+juce\+::\+String {\bfseries suffix}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A ratio slider. \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} extends the \mbox{\hyperlink{struct_rotary_slider_with_labels}{Rotary\+Slider\+With\+Labels}} class to provide a ratio slider. This slider is associated with a JUCE audio parameter and the display string is a ratio with a fixed 1\+:1 format. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_ratio_slider_ad4d0a5261170a1677c9c043d6505519d}\label{struct_ratio_slider_ad4d0a5261170a1677c9c043d6505519d}} 
+\index{RatioSlider@{RatioSlider}!getDisplayString@{getDisplayString}}
+\index{getDisplayString@{getDisplayString}!RatioSlider@{RatioSlider}}
+\doxysubsubsection{\texorpdfstring{getDisplayString()}{getDisplayString()}}
+{\footnotesize\ttfamily juce\+::\+String Ratio\+Slider\+::get\+Display\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the display string for a \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} component. This method returns a juce\+::\+String that represents the display string for a \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} component. It casts the component\textquotesingle{}s parameter to a juce\+::\+Audio\+Parameter\+Choice and returns the current choice with \char`\"{}\+:1\char`\"{} appended to the end. 
+
+\begin{DoxyReturn}{Returns}
+The display string for the \mbox{\hyperlink{struct_ratio_slider}{Ratio\+Slider}} component. 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}{Rotary\+Slider\+With\+Labels}}.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Rotary\+Slider\+With\+Labels.\+h\item 
+Source/\+GUI/Rotary\+Slider\+With\+Labels.\+cpp\end{DoxyCompactItemize}

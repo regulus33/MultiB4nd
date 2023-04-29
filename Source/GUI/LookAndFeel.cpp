@@ -1,18 +1,34 @@
 /*
-  ==============================================================================
-
-    LookAndFeel.cpp
-    Created: 14 Apr 2023 7:10:37pm
-    Author:  zack
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ LookAndFeel.cpp
+ Created: 14 Apr 2023 7:10:37pm
+ Author:  zack
+ 
+ ==============================================================================
+ */
 
 #include "LookAndFeel.h"
 #include "RotarySliderWithLabels.h"
 #include "UtilityComponents.h"
 #include "CustomButtons.h"
 
+/*!
+ * @brief Draws the rotary slider component.
+ *
+ * This function is called by JUCE when it needs to draw the rotary slider component.
+ * It draws the rotary slider component with a custom appearance based on the input parameters.
+ *
+ * @param g The graphics context to draw on.
+ * @param x The x-coordinate of the component.
+ * @param y The y-coordinate of the component.
+ * @param width The width of the component.
+ * @param height The height of the component.
+ * @param sliderPosProportional The position of the slider expressed as a value between 0.0 and 1.0.
+ * @param rotaryStartAngle The start angle of the rotary slider in radians.
+ * @param rotaryEndAngle The end angle of the rotary slider in radians.
+ * @param slider The slider component to be drawn.
+ */
 void LookAndFeel::drawRotarySlider(juce::Graphics & g,
                                    int x,
                                    int y,
@@ -71,7 +87,17 @@ void LookAndFeel::drawRotarySlider(juce::Graphics & g,
     }
 }
 
-// TODO: this is a little bit messy.
+/*!
+ * @brief Draws the toggle button component.
+ *
+ * This function is called by JUCE when it needs to draw the toggle button component.
+ * It draws the toggle button component with a custom appearance based on the input parameters.
+ *
+ * @param g The graphics context to draw on.
+ * @param toggleButton The toggle button component to be drawn.
+ * @param shouldDrawButtonAsHighlighted Indicates whether the button should be drawn as highlighted.
+ * @param shouldDrawButtonAsDown Indicates whether the button should be drawn as pressed.
+ */
 void LookAndFeel::drawToggleButton(juce::Graphics &g,
                                    juce::ToggleButton &toggleButton,
                                    bool shouldDrawButtonAsHighlighted,

@@ -1,0 +1,55 @@
+\hypertarget{struct_analyzer_path_generator}{}\doxysection{Analyzer\+Path\+Generator\texorpdfstring{$<$}{<} Path\+Type \texorpdfstring{$>$}{>} Struct Template Reference}
+\label{struct_analyzer_path_generator}\index{AnalyzerPathGenerator$<$ PathType $>$@{AnalyzerPathGenerator$<$ PathType $>$}}
+
+
+A helper class that generates a juce\+::\+Path from an array of float data This class uses a \mbox{\hyperlink{struct_fifo}{Fifo}} to store the generated paths. The user can get the number of paths available and retrieve a path.  
+
+
+
+
+{\ttfamily \#include $<$Analyzer\+Path\+Generator.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{struct_analyzer_path_generator_a6ef1e07afb0c21220feaf2fccac489c3}{generate\+Path}} (const std\+::vector$<$ float $>$ \&render\+Data, juce\+::\+Rectangle$<$ float $>$ fft\+Bounds, int fft\+Size, float bin\+Width, float negative\+Infinity)
+\item 
+\mbox{\Hypertarget{struct_analyzer_path_generator_a35c128c2c71022819d9bba5cbff7d606}\label{struct_analyzer_path_generator_a35c128c2c71022819d9bba5cbff7d606}} 
+int {\bfseries get\+Num\+Paths\+Available} () const
+\item 
+\mbox{\Hypertarget{struct_analyzer_path_generator_a52ce1835ec7b7e9e85586d788864ac6e}\label{struct_analyzer_path_generator_a52ce1835ec7b7e9e85586d788864ac6e}} 
+bool {\bfseries get\+Path} (Path\+Type \&path)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Path\+Type$>$\newline
+struct Analyzer\+Path\+Generator$<$ Path\+Type $>$}
+A helper class that generates a juce\+::\+Path from an array of float data This class uses a \mbox{\hyperlink{struct_fifo}{Fifo}} to store the generated paths. The user can get the number of paths available and retrieve a path. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{struct_analyzer_path_generator_a6ef1e07afb0c21220feaf2fccac489c3}\label{struct_analyzer_path_generator_a6ef1e07afb0c21220feaf2fccac489c3}} 
+\index{AnalyzerPathGenerator$<$ PathType $>$@{AnalyzerPathGenerator$<$ PathType $>$}!generatePath@{generatePath}}
+\index{generatePath@{generatePath}!AnalyzerPathGenerator$<$ PathType $>$@{AnalyzerPathGenerator$<$ PathType $>$}}
+\doxysubsubsection{\texorpdfstring{generatePath()}{generatePath()}}
+{\footnotesize\ttfamily template$<$typename Path\+Type $>$ \\
+void \mbox{\hyperlink{struct_analyzer_path_generator}{Analyzer\+Path\+Generator}}$<$ Path\+Type $>$\+::generate\+Path (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{render\+Data,  }\item[{juce\+::\+Rectangle$<$ float $>$}]{fft\+Bounds,  }\item[{int}]{fft\+Size,  }\item[{float}]{bin\+Width,  }\item[{float}]{negative\+Infinity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Converts the render\+Data array into a juce\+::\+Path 
+\begin{DoxyParams}{Parameters}
+{\em render\+Data} & The array of float data to be converted into a path \\
+\hline
+{\em fft\+Bounds} & The bounds of the FFT \\
+\hline
+{\em fft\+Size} & The size of the FFT \\
+\hline
+{\em bin\+Width} & The width of each bin \\
+\hline
+{\em negative\+Infinity} & The negative infinity value \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+GUI/Analyzer\+Path\+Generator.\+h\end{DoxyCompactItemize}

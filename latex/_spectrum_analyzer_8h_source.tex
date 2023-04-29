@@ -1,0 +1,60 @@
+\hypertarget{_spectrum_analyzer_8h_source}{}\doxysection{Spectrum\+Analyzer.\+h}
+\label{_spectrum_analyzer_8h_source}\index{Source/GUI/SpectrumAnalyzer.h@{Source/GUI/SpectrumAnalyzer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ SpectrumAnalyzer.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 17\ Apr\ 2023\ 6:15:34pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}PathProducer.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_spectrum_analyzer}{SpectrumAnalyzer}}:\ juce::Component,}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::AudioProcessorParameter::Listener,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::Timer}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_spectrum_analyzer}{SpectrumAnalyzer}}(\mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}}\&);}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{struct_spectrum_analyzer_ac05162e52d0474546d3bd89d8e0fbd44}{\string~SpectrumAnalyzer}}();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_spectrum_analyzer_a09918cb03f7572601879fd611924b78c}{parameterValueChanged}}\ (\textcolor{keywordtype}{int}\ parameterIndex,\ \textcolor{keywordtype}{float}\ newValue)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ parameterGestureChanged\ (\textcolor{keywordtype}{int}\ parameterIndex,\ \textcolor{keywordtype}{bool}\ gestureIsStarting)\textcolor{keyword}{\ override\ }\{\ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_spectrum_analyzer_a8248be6a0f4c820c33a3ac8a6dfb607a}{timerCallback}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_spectrum_analyzer_a8d10cc9db7739720094175772847cc0e}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ resized()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ toggleAnalysisEnablement(\textcolor{keywordtype}{bool}\ enabled)}
+\DoxyCodeLine{00038\ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ shouldShowFFTAnalysis\ =\ enabled;}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{SimpleMBCompAudioProcessor}}\&\ audioProcessor;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ shouldShowFFTAnalysis\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ juce::Atomic<bool>\ parametersChanged\ \{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ drawBackgroundGrid(juce::Graphics\&\ g);}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ drawTextLabels(juce::Graphics\&\ g);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ std::vector<float>\ getFrequencies();}
+\DoxyCodeLine{00052\ \ \ \ \ std::vector<float>\ getGains();}
+\DoxyCodeLine{00053\ \ \ \ \ std::vector<float>\ getXs(\textcolor{keyword}{const}\ std::vector<float>\&\ freqs,\ \textcolor{keywordtype}{float}\ left,\ \textcolor{keywordtype}{float}\ width);}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ juce::Rectangle<int>\ getRenderArea();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ juce::Rectangle<int>\ getAnalysisArea();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{struct_path_producer}{PathProducer}}\ leftPathProducer,\ rightPathProducer;}
+\DoxyCodeLine{00060\ \};}
+
+\end{DoxyCode}

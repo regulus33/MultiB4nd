@@ -12,6 +12,9 @@
 #include <JuceHeader.h>
 #include "RotarySliderWithLabels.h"
 
+/*!
+ @brief UI Component for compressorband controls
+ */
 struct CompressorBandControls : juce::Component, juce::Button::Listener
 {
     CompressorBandControls(juce::AudioProcessorValueTreeState& apvts);

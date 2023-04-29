@@ -12,6 +12,15 @@
 #include "DSP/Params.h"
 
 //==============================================================================
+/**
+ 
+ 
+ @brief The SimpleMBCompAudioProcessor is a multiband compressor JUCE audio processor.
+ This class implements the multiband compressor audio processing logic. It initializes audio parameters
+ for attack, release, threshold, gain, ratio, bypass, mute, and solo for low, mid, and high bands.
+ It also initializes low-mid and mid-high crossover frequencies. The filter types for the low-pass,
+ high-pass, all-pass, and Linkwitz-Riley filters are also initialized.
+ */
 SimpleMBCompAudioProcessor::SimpleMBCompAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
 : AudioProcessor (BusesProperties()
@@ -162,6 +171,12 @@ void SimpleMBCompAudioProcessor::changeProgramName (int index, const juce::Strin
 }
 
 //==============================================================================
+/*!
+ @brief Prepares the audio processor to play by setting up audio processing specifications and initializing internal components
+ We also setup the filter buffers here. Each portion of the audio is fed into 3 different filter buffers.
+ @param sampleRate The sample rate of the audio signal
+ @param samplesPerBlock The number of samples per processing block
+ */
 void SimpleMBCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
@@ -202,7 +217,8 @@ void SimpleMBCompAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     
     osc.initialise([]( float x ){ return std::sin(x); });
     osc.prepare(spec);
-    osc.setFrequency(1000);
+    /* lines up with fftbin count*/
+    osc.setFrequency(getSampleRate() / ((2 << FFTOrder::order2048) - 1) * 50);
     
     gain.prepare(spec);
     gain.setGainDecibels(-12.f);
@@ -240,6 +256,10 @@ bool SimpleMBCompAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
+/*!
+ @brief Updates the state of the SimpleMBCompAudioProcessor.
+ This method updates the settings of the compressors, the cutoff frequencies of the crossover filters and the input / output gain decibels.
+ */
 void SimpleMBCompAudioProcessor::updateState()
 {
     // Important! auto& because we need to reference and call THE OBJECT ITSELF NOT A COPY
@@ -259,6 +279,16 @@ void SimpleMBCompAudioProcessor::updateState()
     outputGain.setGainDecibels(outputGainParam->get());
 }
 
+/**
+ 
+ @brief Splits the audio input into three bands, low, mid and high.
+ This function processes the audio input buffer and splits it into three bands.
+ The audio data for each band is stored in different audio buffers. The process
+ involves passing the audio input through a series of filters to separate the different bands.
+ Everything that gets done here is mutating current state. Its important to note that this is impacting the following variables:
+ LP1 AP2 HP1 LP2 HP2 and filterBuffers
+ @param inputBuffer The audio input buffer that is being processed.
+ */
 void SimpleMBCompAudioProcessor::splitBands(juce::AudioBuffer<float>& inputBuffer)
 {
     
@@ -276,7 +306,7 @@ void SimpleMBCompAudioProcessor::splitBands(juce::AudioBuffer<float>& inputBuffe
     // Band Splitting ---
     LP1.process(fb0Ctx);
     AP2.process(fb0Ctx);
-
+    
     HP1.process(fb1Ctx);
     filterBuffers[2] = filterBuffers[1];
     
@@ -284,6 +314,25 @@ void SimpleMBCompAudioProcessor::splitBands(juce::AudioBuffer<float>& inputBuffe
     HP2.process(fb2Ctx);
 }
 
+
+/**
+ 
+ @brief The function processBlock processes the audio buffer and midi messages.
+ This function processes the audio buffer and midi messages by performing the following steps:
+ Clears any output channel that did not contain input data.
+ Calls updateState to update the processor's state.
+ If the condition is true, processes the input audio and applies gain to the audio buffer.
+ Updates the left and right channel FIFO.
+ Calls splitBands to split the audio buffer into three bands.
+ Compresses each band by calling the process method of the compressors object.
+ Clears the buffer.
+ Adds or "sums" / "mixes" the 3 bands into the output buffer
+ If any of the bands are soloed, adds the soloed band to the buffer.
+ If none of the bands are soloed, adds the non-muted bands to the buffer.
+ Calls applyGain to apply gain to the buffer.
+ @param buffer The audio buffer to be processed.
+ @param midiMessages The midi messages to be processed.
+ */
 void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -376,15 +425,24 @@ void SimpleMBCompAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 }
 
 //==============================================================================
+/*!
+ @brief Returns whether the audio processor has an editor or not.
+ @return true If the audio processor has an editor.
+ @return false If the audio processor does not have an editor.
+ */
 bool SimpleMBCompAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
+/*!
+ @brief Creates and returns a pointer to the audio processor's editor.
+ @return juce::AudioProcessorEditor* Pointer to the audio processor's editor.
+ */
 juce::AudioProcessorEditor* SimpleMBCompAudioProcessor::createEditor()
 {
-        return new SimpleMBCompAudioProcessorEditor (*this);    
-//    return new juce::GenericAudioProcessorEditor(*this);
+    return new SimpleMBCompAudioProcessorEditor (*this);
+    //    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -411,6 +469,17 @@ void SimpleMBCompAudioProcessor::setStateInformation (const void* data, int size
     }
 }
 
+/*!
+ @brief Creates the parameter layout for the Simple MBComp audio processor.
+ This function creates the parameter layout for the Simple MBComp audio processor,
+ by adding various audio parameters such as gain, threshold, attack/release, ratio,
+ solo, mute, bypass, and crossover frequencies. The parameters are added using the
+ AudioParameterFloat, AudioParameterChoice, and AudioParameterBool classes
+ provided by the JUCE library. The parameters are populated using the GetParams
+ function and the Params::Names enumeration.
+ @return A juce::AudioProcessorValueTreeState::ParameterLayout object representing the
+ parameter layout for the Simple MBComp audio processor.
+ */
 juce::AudioProcessorValueTreeState::ParameterLayout SimpleMBCompAudioProcessor::createParameterLayout()
 {
     APVTS::ParameterLayout layout;
@@ -542,8 +611,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SimpleMBCompAudioProcessor::
     return layout;
 }
 
-//==============================================================================
-// This creates new instances of the plugin..
+/*!
+ @brief creates new instances of the plugin.
+ */
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SimpleMBCompAudioProcessor();

@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SingleChannelSampleFifo.h
-    Created: 17 Apr 2023 6:57:27pm
-    Author:  zack
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SingleChannelSampleFifo.h
+ Created: 17 Apr 2023 6:57:27pm
+ Author:  zack
+ 
+ ==============================================================================
+ */
 
 #pragma once
 #include <JuceHeader.h>
@@ -18,6 +18,12 @@ enum Channel
     Left //effectively 1
 };
 
+/*!
+ @class SingleChannelSampleFifo
+ @brief A templated class that handles single channel sample audio buffering and management.
+ This class is used to manage a single channel sample audio buffer and its corresponding Fifo. It has methods for updating the buffer, preparing the buffer, and checking the status of the buffer and Fifo.
+ @tparam BlockType The type of audio block being managed. This can either be juce::AudioBuffer<float> or std::vector<float>.
+ */
 template<typename BlockType>
 struct SingleChannelSampleFifo
 {
@@ -37,7 +43,7 @@ struct SingleChannelSampleFifo
             pushNextSampleIntoFifo(channelPtr[i]);
         }
     }
-
+    
     void prepare(int bufferSize)
     {
         prepared.set(false);
@@ -71,7 +77,7 @@ private:
         if (fifoIndex == bufferToFill.getNumSamples())
         {
             auto ok = audioBufferFifo.push(bufferToFill);
-
+            
             juce::ignoreUnused(ok);
             
             fifoIndex = 0;

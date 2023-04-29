@@ -1,0 +1,174 @@
+\hypertarget{class_simple_m_b_comp_audio_processor}{}\doxysection{Simple\+MBComp\+Audio\+Processor Class Reference}
+\label{class_simple_m_b_comp_audio_processor}\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+Inheritance diagram for Simple\+MBComp\+Audio\+Processor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_simple_m_b_comp_audio_processor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_ac5385fc91cf01296763348ffd674348c}\label{class_simple_m_b_comp_audio_processor_ac5385fc91cf01296763348ffd674348c}} 
+using {\bfseries APVTS} = juce\+::\+Audio\+Processor\+Value\+Tree\+State
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a3dbb0601d30d419790acd8d30742c8a2}\label{class_simple_m_b_comp_audio_processor_a3dbb0601d30d419790acd8d30742c8a2}} 
+using {\bfseries Block\+Type} = juce\+::\+Audio\+Buffer$<$ float $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a77f8f6aa7a9dee28334b8f6d98d44a71}\label{class_simple_m_b_comp_audio_processor_a77f8f6aa7a9dee28334b8f6d98d44a71}} 
+{\bfseries Simple\+MBComp\+Audio\+Processor} ()
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{class_simple_m_b_comp_audio_processor}{Simple\+MBComp\+Audio\+Processor}} is a multiband compressor JUCE audio processor. This class implements the multiband compressor audio processing logic. It initializes audio parameters for attack, release, threshold, gain, ratio, bypass, mute, and solo for low, mid, and high bands. It also initializes low-\/mid and mid-\/high crossover frequencies. The filter types for the low-\/pass, high-\/pass, all-\/pass, and Linkwitz-\/\+Riley filters are also initialized. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a0ffaacfcf76220d6f0be44d8e086d836}{prepare\+To\+Play}} (double sample\+Rate, int samples\+Per\+Block) override
+\begin{DoxyCompactList}\small\item\em Prepares the audio processor to play by setting up audio processing specifications and initializing internal components We also setup the filter buffers here. Each portion of the audio is fed into 3 different filter buffers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a10ad1e7c6809218cb7b877d3e40616ba}\label{class_simple_m_b_comp_audio_processor_a10ad1e7c6809218cb7b877d3e40616ba}} 
+void {\bfseries release\+Resources} () override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_ac0d31ccf4b2509f2503dfba5fb618786}\label{class_simple_m_b_comp_audio_processor_ac0d31ccf4b2509f2503dfba5fb618786}} 
+bool {\bfseries is\+Buses\+Layout\+Supported} (const Buses\+Layout \&layouts) const override
+\item 
+void \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a8a92e7d3629c79baac5e4a4c55adf48d}{process\+Block}} (juce\+::\+Audio\+Buffer$<$ float $>$ \&, juce\+::\+Midi\+Buffer \&) override
+\begin{DoxyCompactList}\small\item\em The function process\+Block processes the audio buffer and midi messages. This function processes the audio buffer and midi messages by performing the following steps\+: Clears any output channel that did not contain input data. Calls update\+State to update the processor\textquotesingle{}s state. If the condition is true, processes the input audio and applies gain to the audio buffer. Updates the left and right channel FIFO. Calls split\+Bands to split the audio buffer into three bands. Compresses each band by calling the process method of the compressors object. Clears the buffer. Adds or \char`\"{}sums\char`\"{} / \char`\"{}mixes\char`\"{} the 3 bands into the output buffer If any of the bands are soloed, adds the soloed band to the buffer. If none of the bands are soloed, adds the non-\/muted bands to the buffer. Calls apply\+Gain to apply gain to the buffer. \end{DoxyCompactList}\item 
+juce\+::\+Audio\+Processor\+Editor $\ast$ \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a68f1d0eb4a18c81a0e0467dd2dbb63e0}{create\+Editor}} () override
+\begin{DoxyCompactList}\small\item\em Creates and returns a pointer to the audio processor\textquotesingle{}s editor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a57d61c86b36c0afa5a083f22e44e7986}{has\+Editor}} () const override
+\begin{DoxyCompactList}\small\item\em Returns whether the audio processor has an editor or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a50d0ffea9a43b9c7eb201fc610be30ef}\label{class_simple_m_b_comp_audio_processor_a50d0ffea9a43b9c7eb201fc610be30ef}} 
+const juce\+::\+String {\bfseries get\+Name} () const override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_afe3257c489a0f6f0b4579fdf59df1b3d}\label{class_simple_m_b_comp_audio_processor_afe3257c489a0f6f0b4579fdf59df1b3d}} 
+bool {\bfseries accepts\+Midi} () const override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a87380dee9ee0d008ba3b9f9cab1ccae2}\label{class_simple_m_b_comp_audio_processor_a87380dee9ee0d008ba3b9f9cab1ccae2}} 
+bool {\bfseries produces\+Midi} () const override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a03436d34392f3eca7c70f175970684f2}\label{class_simple_m_b_comp_audio_processor_a03436d34392f3eca7c70f175970684f2}} 
+bool {\bfseries is\+Midi\+Effect} () const override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a0ae78728326d8049d0dd28e423449c6e}\label{class_simple_m_b_comp_audio_processor_a0ae78728326d8049d0dd28e423449c6e}} 
+double {\bfseries get\+Tail\+Length\+Seconds} () const override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a8f75fb8b18837d396d4d2a01a448a3a6}\label{class_simple_m_b_comp_audio_processor_a8f75fb8b18837d396d4d2a01a448a3a6}} 
+int {\bfseries get\+Num\+Programs} () override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a49d979e832131aa4a51faa1ea5000d82}\label{class_simple_m_b_comp_audio_processor_a49d979e832131aa4a51faa1ea5000d82}} 
+int {\bfseries get\+Current\+Program} () override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_aeb53238b8d7d1eedf5af28d8f989bf6c}\label{class_simple_m_b_comp_audio_processor_aeb53238b8d7d1eedf5af28d8f989bf6c}} 
+void {\bfseries set\+Current\+Program} (int index) override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a4f9f348846bc350abcefb065d796455d}\label{class_simple_m_b_comp_audio_processor_a4f9f348846bc350abcefb065d796455d}} 
+const juce\+::\+String {\bfseries get\+Program\+Name} (int index) override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a72aa6cce39b9fcf8f13ce9744f20bf7b}\label{class_simple_m_b_comp_audio_processor_a72aa6cce39b9fcf8f13ce9744f20bf7b}} 
+void {\bfseries change\+Program\+Name} (int index, const juce\+::\+String \&new\+Name) override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a1ad11d7ce6e3823c35f66fb0bfa1eb45}\label{class_simple_m_b_comp_audio_processor_a1ad11d7ce6e3823c35f66fb0bfa1eb45}} 
+void {\bfseries get\+State\+Information} (juce\+::\+Memory\+Block \&dest\+Data) override
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_ad515dd01a90ffa34922a1afe2be81c9c}\label{class_simple_m_b_comp_audio_processor_ad515dd01a90ffa34922a1afe2be81c9c}} 
+void {\bfseries set\+State\+Information} (const void $\ast$data, int size\+In\+Bytes) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static APVTS\+::\+Parameter\+Layout \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}{create\+Parameter\+Layout}} ()
+\begin{DoxyCompactList}\small\item\em Creates the parameter layout for the Simple MBComp audio processor. This function creates the parameter layout for the Simple MBComp audio processor, by adding various audio parameters such as gain, threshold, attack/release, ratio, solo, mute, bypass, and crossover frequencies. The parameters are added using the Audio\+Parameter\+Float, Audio\+Parameter\+Choice, and Audio\+Parameter\+Bool classes provided by the JUCE library. The parameters are populated using the Get\+Params function and the Params\+::\+Names enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_aa7772bb68d7992a59386e4043e649063}\label{class_simple_m_b_comp_audio_processor_aa7772bb68d7992a59386e4043e649063}} 
+APVTS {\bfseries apvts} \{ $\ast$this, nullptr, \char`\"{}Parameters\char`\"{}, \mbox{\hyperlink{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}{create\+Parameter\+Layout}}() \}
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_aeb74af83dd079a784bfd44922fafc82c}\label{class_simple_m_b_comp_audio_processor_aeb74af83dd079a784bfd44922fafc82c}} 
+\mbox{\hyperlink{struct_single_channel_sample_fifo}{Single\+Channel\+Sample\+Fifo}}$<$ Block\+Type $>$ {\bfseries left\+Channel\+Fifo} \{ Channel\+::\+Left \}
+\item 
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a38128530b4cf326c3af8f39d47696357}\label{class_simple_m_b_comp_audio_processor_a38128530b4cf326c3af8f39d47696357}} 
+\mbox{\hyperlink{struct_single_channel_sample_fifo}{Single\+Channel\+Sample\+Fifo}}$<$ Block\+Type $>$ {\bfseries right\+Channel\+Fifo} \{ Channel\+::\+Right \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a68f1d0eb4a18c81a0e0467dd2dbb63e0}\label{class_simple_m_b_comp_audio_processor_a68f1d0eb4a18c81a0e0467dd2dbb63e0}} 
+\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}!createEditor@{createEditor}}
+\index{createEditor@{createEditor}!SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+\doxysubsubsection{\texorpdfstring{createEditor()}{createEditor()}}
+{\footnotesize\ttfamily juce\+::\+Audio\+Processor\+Editor $\ast$ Simple\+MBComp\+Audio\+Processor\+::create\+Editor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Creates and returns a pointer to the audio processor\textquotesingle{}s editor. 
+
+\begin{DoxyReturn}{Returns}
+juce\+::\+Audio\+Processor\+Editor$\ast$ Pointer to the audio processor\textquotesingle{}s editor. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}\label{class_simple_m_b_comp_audio_processor_a207a5f5b0ef538128417075294638393}} 
+\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}!createParameterLayout@{createParameterLayout}}
+\index{createParameterLayout@{createParameterLayout}!SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+\doxysubsubsection{\texorpdfstring{createParameterLayout()}{createParameterLayout()}}
+{\footnotesize\ttfamily juce\+::\+Audio\+Processor\+Value\+Tree\+State\+::\+Parameter\+Layout Simple\+MBComp\+Audio\+Processor\+::create\+Parameter\+Layout (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Creates the parameter layout for the Simple MBComp audio processor. This function creates the parameter layout for the Simple MBComp audio processor, by adding various audio parameters such as gain, threshold, attack/release, ratio, solo, mute, bypass, and crossover frequencies. The parameters are added using the Audio\+Parameter\+Float, Audio\+Parameter\+Choice, and Audio\+Parameter\+Bool classes provided by the JUCE library. The parameters are populated using the Get\+Params function and the Params\+::\+Names enumeration. 
+
+\begin{DoxyReturn}{Returns}
+A juce\+::\+Audio\+Processor\+Value\+Tree\+State\+::\+Parameter\+Layout object representing the parameter layout for the Simple MBComp audio processor. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a57d61c86b36c0afa5a083f22e44e7986}\label{class_simple_m_b_comp_audio_processor_a57d61c86b36c0afa5a083f22e44e7986}} 
+\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}!hasEditor@{hasEditor}}
+\index{hasEditor@{hasEditor}!SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+\doxysubsubsection{\texorpdfstring{hasEditor()}{hasEditor()}}
+{\footnotesize\ttfamily bool Simple\+MBComp\+Audio\+Processor\+::has\+Editor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Returns whether the audio processor has an editor or not. 
+
+\begin{DoxyReturn}{Returns}
+true If the audio processor has an editor. 
+
+false If the audio processor does not have an editor. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a0ffaacfcf76220d6f0be44d8e086d836}\label{class_simple_m_b_comp_audio_processor_a0ffaacfcf76220d6f0be44d8e086d836}} 
+\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}!prepareToPlay@{prepareToPlay}}
+\index{prepareToPlay@{prepareToPlay}!SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+\doxysubsubsection{\texorpdfstring{prepareToPlay()}{prepareToPlay()}}
+{\footnotesize\ttfamily void Simple\+MBComp\+Audio\+Processor\+::prepare\+To\+Play (\begin{DoxyParamCaption}\item[{double}]{sample\+Rate,  }\item[{int}]{samples\+Per\+Block }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Prepares the audio processor to play by setting up audio processing specifications and initializing internal components We also setup the filter buffers here. Each portion of the audio is fed into 3 different filter buffers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sample\+Rate} & The sample rate of the audio signal \\
+\hline
+{\em samples\+Per\+Block} & The number of samples per processing block \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_simple_m_b_comp_audio_processor_a8a92e7d3629c79baac5e4a4c55adf48d}\label{class_simple_m_b_comp_audio_processor_a8a92e7d3629c79baac5e4a4c55adf48d}} 
+\index{SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}!processBlock@{processBlock}}
+\index{processBlock@{processBlock}!SimpleMBCompAudioProcessor@{SimpleMBCompAudioProcessor}}
+\doxysubsubsection{\texorpdfstring{processBlock()}{processBlock()}}
+{\footnotesize\ttfamily void Simple\+MBComp\+Audio\+Processor\+::process\+Block (\begin{DoxyParamCaption}\item[{juce\+::\+Audio\+Buffer$<$ float $>$ \&}]{buffer,  }\item[{juce\+::\+Midi\+Buffer \&}]{midi\+Messages }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+The function process\+Block processes the audio buffer and midi messages. This function processes the audio buffer and midi messages by performing the following steps\+: Clears any output channel that did not contain input data. Calls update\+State to update the processor\textquotesingle{}s state. If the condition is true, processes the input audio and applies gain to the audio buffer. Updates the left and right channel FIFO. Calls split\+Bands to split the audio buffer into three bands. Compresses each band by calling the process method of the compressors object. Clears the buffer. Adds or \char`\"{}sums\char`\"{} / \char`\"{}mixes\char`\"{} the 3 bands into the output buffer If any of the bands are soloed, adds the soloed band to the buffer. If none of the bands are soloed, adds the non-\/muted bands to the buffer. Calls apply\+Gain to apply gain to the buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & The audio buffer to be processed. \\
+\hline
+{\em midi\+Messages} & The midi messages to be processed. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/Plugin\+Processor.\+h\item 
+Source/Plugin\+Processor.\+cpp\end{DoxyCompactItemize}

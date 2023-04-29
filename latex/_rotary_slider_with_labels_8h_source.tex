@@ -1,0 +1,72 @@
+\hypertarget{_rotary_slider_with_labels_8h_source}{}\doxysection{Rotary\+Slider\+With\+Labels.\+h}
+\label{_rotary_slider_with_labels_8h_source}\index{Source/GUI/RotarySliderWithLabels.h@{Source/GUI/RotarySliderWithLabels.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ RotarySliderWithLabels.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ Created:\ 14\ Apr\ 2023\ 7:26:34pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ Author:\ \ zack}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ }}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}}\ :\ juce::Slider}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{//\ NOTE:\ the\ pointer\ here\ *\ is\ clever.\ If\ it\ were\ a\ \&\ reference\ we\ would\ not\ be\ able}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ to\ DYNAMICALLY\ switch\ which\ band\ we\ are\ pointing\ to.\ A\ pointer\ is\ just\ a\ memory\ address\ so\ its\ quite\ easy\ to\ just\ replace\ it\ with\ some\ other\ address\ without\ creating\ a\ new\ UI\ component\ or\ creating\ a\ new\ reference.\ G\ whiz!}}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}}(juce::RangedAudioParameter*\ rap,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ juce::String\&\ unitSuffix,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ juce::String\&\ title}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )\ :}
+\DoxyCodeLine{00027\ \ \ \ \ juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::Slider::TextEntryBoxPosition::NoTextBox),}
+\DoxyCodeLine{00029\ \ \ \ \ param(rap),}
+\DoxyCodeLine{00030\ \ \ \ \ suffix(unitSuffix)}
+\DoxyCodeLine{00031\ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ setName(title);}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ setLookAndFeel(\&lnf);}}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \string~RotarySliderWithLabels()}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \{}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ setLookAndFeel(nullptr);}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00040\ \ \ \ \ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_rotary_slider_with_labels_1_1_label_pos}{LabelPos}}}
+\DoxyCodeLine{00042\ \ \ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ pos;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ juce::String\ label;}
+\DoxyCodeLine{00045\ \ \ \ \ \};}
+\DoxyCodeLine{00046\ \ \ \ \ }
+\DoxyCodeLine{00047\ \ \ \ \ juce::Array<LabelPos>\ labels;}
+\DoxyCodeLine{00048\ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_rotary_slider_with_labels_a8df5f672c159dd4f3b28f83f8a87e4d6}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00050\ \ \ \ \ juce::Rectangle<int>\ \mbox{\hyperlink{struct_rotary_slider_with_labels_a0e1b5c122604c3aa077370acb2fde9ce}{getSliderBounds}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ getTextHeight()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 14;\ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{//\ DOC:\ virtual\ makes\ it\ overrideable}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{virtual}\ juce::String\ \mbox{\hyperlink{struct_rotary_slider_with_labels_a2e6c864fb4ab7bb18c049546be302f51}{getDisplayString}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00054\ \ \ \ \ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_rotary_slider_with_labels_a3d4148d69fde84b5439cb050db8c1ffd}{changeParam}}(juce::RangedAudioParameter*\ p);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ DOC:\ we\ need\ to\ make\ private\ -\/>\ protected\ so\ the\ derrived\ class\ can\ access\ them.}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ \ \ \ LookAndFeel\ lnf;}}
+\DoxyCodeLine{00059\ \ \ \ \ juce::RangedAudioParameter*\ param;}
+\DoxyCodeLine{00060\ \ \ \ \ juce::String\ suffix;}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_ratio_slider}{RatioSlider}}\ :\ \mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}}}
+\DoxyCodeLine{00070\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{struct_ratio_slider}{RatioSlider}}(juce::RangedAudioParameter*\ rap,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ juce::String\&\ unitSuffix)\ :}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{struct_rotary_slider_with_labels}{RotarySliderWithLabels}}(rap,\ unitSuffix,\ \textcolor{stringliteral}{"{}RATIO"{}})\ \{\}}
+\DoxyCodeLine{00074\ \ \ \ \ }
+\DoxyCodeLine{00075\ \ \ \ \ juce::String\ \mbox{\hyperlink{struct_ratio_slider_ad4d0a5261170a1677c9c043d6505519d}{getDisplayString}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00076\ \};}
+
+\end{DoxyCode}

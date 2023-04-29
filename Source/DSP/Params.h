@@ -11,6 +11,10 @@
 #pragma once
 #include <JuceHeader.h>
 
+/*!
+@file Params.h
+@brief This file holds the definition of the Params namespace which contains the enumeration of all the parameters of the audio processor and a function to get the parameters and their names.
+*/
 namespace Params
 {
     enum Names
