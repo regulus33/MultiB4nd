@@ -42,8 +42,9 @@ juce::String getValString(const juce::RangedAudioParameter& param, bool getLow, 
  Then it calculates a smaller rectangle within the larger rectangle by reducing the bounds by 3 pixels on each side.
  The color of the Graphics object is then set to Colours::black and the smaller rectangle is filled with rounded corners.
  Finally, the original rectangle is drawn. The result is a rectangle with a border.
+ @return juce::Rectangle<int> representing the bounds of the background.
  */
-void drawModuleBackground(juce::Graphics &g, juce::Rectangle<int> bounds)
+juce::Rectangle<int> drawModuleBackground(juce::Graphics &g, juce::Rectangle<int> bounds)
 {
     using namespace juce;
     // make whole rectangle violet
@@ -60,5 +61,7 @@ void drawModuleBackground(juce::Graphics &g, juce::Rectangle<int> bounds)
     g.fillRoundedRectangle(bounds.toFloat(), 3);
     
     g.drawRect(localBounds);
+    
+    return bounds;
 }
 
