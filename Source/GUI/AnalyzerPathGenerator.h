@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "../DSP/Fifo.h"
+#include "Utils.h"
 
 /*!
  @brief A helper class that generates a juce::Path from an array of float data
@@ -46,8 +47,8 @@
         auto map = [bottom, top, negativeInfinity](float v)
         {
             return juce::jmap(v,
-                              negativeInfinity, 0.f,
-                              //                            float(bottom+10),
+                              negativeInfinity,
+                              MAX_DECIBALS,
                               bottom,
                               top);
             
@@ -80,7 +81,7 @@
         
         pathFifo.push(p);
     }
-    
+     
     int getNumPathsAvailable() const
     {
         return pathFifo.getNumAvailableForReading();

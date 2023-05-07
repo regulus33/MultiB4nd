@@ -26,6 +26,15 @@ enum FFTOrder
     order8192 = 13
 };
 
+
+# define MIN_FREQUENCY 20.f
+# define MAX_FREQUENCY 20000.f
+
+# define NEGATIVE_INFINITY -72.f
+# define MAX_DECIBALS 12.f
+
+# define MIN_THRESHOLD -60.f
+
 /*!
 @brief Helper function to create an AudioProcessorValueTreeState attachment.
 @tparam Attachment Type of the attachment to be created.
