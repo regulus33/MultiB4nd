@@ -36,11 +36,8 @@ void CompressorBand::updateCompressorSettings()
 */
 void CompressorBand::process(juce::AudioBuffer<float>& buffer)
 {
-    // Create our own block to manipulate. Blocks are basically the narrowed down version of the buffer.
-    // focused -> channels, range etc.
+    auto preRMS = computeRMSLevel(buffer);
     auto block = juce::dsp::AudioBlock<float>(buffer);
-    
-    // context -> sample-rate buffer-size etc.
     auto context = juce::dsp::ProcessContextReplacing<float>(block);
     
     // Bypass the whole processBlock code (anything we would do is not done)
@@ -48,4 +45,14 @@ void CompressorBand::process(juce::AudioBuffer<float>& buffer)
     
     // We are just passing our context pointer to compressor overwriting it and another process will read from the same buffer to the output
     compressor.process(context);
+    
+    auto postRMS = computeRMSLevel(buffer);
+    
+    auto convertToDb = [](auto input)
+    {
+        return juce::Decibels::gainToDecibels(input);
+    };
+    
+    rmsLevelInputDb.store(convertToDb(preRMS));
+    rmsLevelOutputDb.store(convertToDb(postRMS));
 }

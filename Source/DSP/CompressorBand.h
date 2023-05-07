@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "../GUI/Utils.h"
 
 
 /*!
@@ -30,6 +31,33 @@ struct CompressorBand
     void prepare(const juce::dsp::ProcessSpec& spec);
     void updateCompressorSettings();
     void process(juce::AudioBuffer<float>& buffer);
+    
+    float getRmsLevelInputDb() const { return rmsLevelInputDb; }
+    float getRmsLevelOutputDb() const { return rmsLevelOutputDb; }
 private:
     juce::dsp::Compressor<float> compressor;
+    
+    std::atomic<float> rmsLevelInputDb { NEGATIVE_INFINITY };
+    std::atomic<float> rmsLevelOutputDb { NEGATIVE_INFINITY };
+    
+    /*!
+     @brief computes the RMS or "average energy / loudness calc thingy" of the buffer.
+     */
+    template<typename T>
+    float computeRMSLevel(const T& buffer)
+    {
+        // get num channels and samples
+        // compute rms of each channel and add all together
+        // divide by num channels
+        int numChannels = static_cast<int>(buffer.getNumChannels());
+        int numSamples = static_cast<int>(buffer.getNumSamples());
+        auto rms = 0.f;
+        for(int chan = 0; chan < numChannels; ++chan)
+        {
+            rms += buffer.getRMSLevel(chan, 0, numSamples);
+        }
+        
+        rms /= static_cast<float>(numChannels);
+        return rms;
+    }
 };

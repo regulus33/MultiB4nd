@@ -48,7 +48,7 @@ rightPathProducer(audioProcessor.rightChannelFifo)
     floatHelper(lowThresholdParam, Names::Threshold_Low_Band);
     floatHelper(midThresholdParam, Names::Threshold_Mid_Band);
     floatHelper(highThresholdParam, Names::Threshold_High_Band);
-
+    
     
     // starts the timer with a frequency of 60x per second
     startTimerHz(60);
@@ -118,27 +118,27 @@ void SpectrumAnalyzer::paint (juce::Graphics& g)
     if( shouldShowFFTAnalysis )
     {
         drawFFTAnalysis(g, bounds);
-
+        
     }
     
     g.setColour(Colours::white);
     //    g.strokePath(responseCurve, PathStrokeType(2.f));
     
-//    Path border;
-//
-//    border.setUsingNonZeroWinding(false);
-//
-//    border.addRoundedRectangle(getRenderArea(bounds), 4);
-//    border.addRectangle(getLocalBounds());
-//
-//    g.setColour(Colours::black);
+    //    Path border;
+    //
+    //    border.setUsingNonZeroWinding(false);
+    //
+    //    border.addRoundedRectangle(getRenderArea(bounds), 4);
+    //    border.addRectangle(getLocalBounds());
+    //
+    //    g.setColour(Colours::black);
     
-//    g.fillPath(border);
+    //    g.fillPath(border);
     
     drawCrossovers(g, bounds);
     drawTextLabels(g, bounds);
-//    g.setColour(Colours::orange);
-//    g.drawRoundedRectangle(getRenderArea(bounds).toFloat(), 4.f, 1.f);
+    //    g.setColour(Colours::orange);
+    //    g.drawRoundedRectangle(getRenderArea(bounds).toFloat(), 4.f, 1.f);
 }
 
 void SpectrumAnalyzer::drawCrossovers(juce::Graphics &g, juce::Rectangle<int> bounds)
@@ -171,11 +171,39 @@ void SpectrumAnalyzer::drawCrossovers(juce::Graphics &g, juce::Rectangle<int> bo
         return jmap(db, NEGATIVE_INFINITY, MAX_DECIBALS, (float)bottom, (float)top);
     };
     
-    g.setColour(Colours::yellow);
+    auto zerodB = mapY(0.f);
+    g.setColour(Colours::hotpink.withAlpha(0.3f));
     
+    /*! Gain reduction  */
+    g.fillRect(Rectangle<float>::leftTopRightBottom(left, zerodB, lowMidX, mapY(lowBandGR)));
+    g.fillRect(Rectangle<float>::leftTopRightBottom(lowMidX, zerodB, midHighX, mapY(midBandGR)));
+    g.fillRect(Rectangle<float>::leftTopRightBottom(midHighX, zerodB, right, mapY(highBandGR)));
+    
+    g.setColour(Colours::yellow);
     g.drawHorizontalLine(mapY(lowThresholdParam->get()), left, lowMidX);
     g.drawHorizontalLine(mapY(midThresholdParam->get()), lowMidX, midHighX);
     g.drawHorizontalLine(mapY(highThresholdParam->get()), midHighX, right);
+}
+
+void SpectrumAnalyzer::update(const std::vector<float> &values)
+{
+    jassert(values.size() == 6);
+    
+    enum
+    {
+        LowBandIn,
+        LowBandOut,
+        MidBandIn,
+        MidBandOut,
+        HighBandIn,
+        HighBandOut
+    };
+    
+    lowBandGR = values[LowBandOut] - values[LowBandIn];
+    midBandGR = values[MidBandOut] - values[MidBandIn];
+    highBandGR = values[HighBandOut] - values[HighBandIn];
+    
+    repaint();
 }
 
 
@@ -204,10 +232,10 @@ std::vector<float> SpectrumAnalyzer::getFrequencies()
  */
 std::vector<float> SpectrumAnalyzer::getGains()
 {
-//    return std::vector<float>
-//    {
-//        -24, -12, 0, 12, 24
-//    };
+    //    return std::vector<float>
+    //    {
+    //        -24, -12, 0, 12, 24
+    //    };
     std::vector<float> values;
     
     auto increment = MAX_DECIBALS; // 12db steps
@@ -270,7 +298,7 @@ void SpectrumAnalyzer::drawBackgroundGrid(juce::Graphics &g, juce::Rectangle<int
     
     for( auto gDb : gain )
     {
-//        auto y = jmap(gDb, -24.f, 24.f, float(bottom), float(top));
+        //        auto y = jmap(gDb, -24.f, 24.f, float(bottom), float(top));
         auto y = jmap(gDb, NEGATIVE_INFINITY, MAX_DECIBALS, (float)bottom, (float)top);
         
         g.setColour(gDb == 0.f ? Colour(0u, 172u, 1u) : Colours::darkgrey );
@@ -334,7 +362,7 @@ void SpectrumAnalyzer::drawTextLabels(juce::Graphics &g, juce::Rectangle<int> bo
     
     for( auto gDb : gain )
     {
-//        auto y = jmap(gDb, -24.f, 24.f, float(bottom), float(top));
+        //        auto y = jmap(gDb, -24.f, 24.f, float(bottom), float(top));
         auto y = jmap(gDb, NEGATIVE_INFINITY, MAX_DECIBALS, (float)bottom, (float)top);
         
         String str;
@@ -353,13 +381,13 @@ void SpectrumAnalyzer::drawTextLabels(juce::Graphics &g, juce::Rectangle<int> bo
         
         g.drawFittedText(str, r, juce::Justification::centredLeft, 1);
         
-//        str.clear();
-//        str << (gDb - 24.f);
+        //        str.clear();
+        //        str << (gDb - 24.f);
         
         r.setX(bounds.getX() + 1);
-//        textWidth = g.getCurrentFont().getStringWidth(str);
-//        r.setSize(textWidth, fontHeight);
-//        g.setColour(Colours::lightgrey);
+        //        textWidth = g.getCurrentFont().getStringWidth(str);
+        //        r.setSize(textWidth, fontHeight);
+        //        g.setColour(Colours::lightgrey);
         g.drawFittedText(str, r, juce::Justification::centredLeft, 1);
     }
 }
@@ -427,7 +455,7 @@ void SpectrumAnalyzer::timerCallback()
  */
 juce::Rectangle<int> SpectrumAnalyzer::getRenderArea(juce::Rectangle<int> bounds)
 {
-//    auto bounds = getLocalBounds();
+    //    auto bounds = getLocalBounds();
     bounds.removeFromTop(12);
     bounds.removeFromBottom(2);
     bounds.removeFromLeft(20);

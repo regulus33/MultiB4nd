@@ -31,6 +31,8 @@ SimpleMBCompAudioProcessorEditor::SimpleMBCompAudioProcessorEditor (SimpleMBComp
     addAndMakeVisible(bandControls);
     
     setSize (600, 500);
+    
+    startTimerHz(60);
 }
 
 /*!
@@ -76,4 +78,20 @@ void SimpleMBCompAudioProcessorEditor::resized()
     
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void SimpleMBCompAudioProcessorEditor::timerCallback()
+{
+    // TODO: this is suspicious... make sure its not bad practice to work with a dynamic structure in this callback
+    std::vector<float> values
+    {
+        audioProcessor.lowBandComp.getRmsLevelInputDb(),
+        audioProcessor.lowBandComp.getRmsLevelOutputDb(),
+        audioProcessor.midBandComp.getRmsLevelInputDb(),
+        audioProcessor.midBandComp.getRmsLevelOutputDb(),
+        audioProcessor.highBandComp.getRmsLevelInputDb(),
+        audioProcessor.highBandComp.getRmsLevelOutputDb(),
+    };
+    
+    analyzer.update(values);
 }
