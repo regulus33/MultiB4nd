@@ -22,6 +22,7 @@ struct CompressorBandControls : juce::Component, juce::Button::Listener
     void resized() override;
     void paint(juce::Graphics& g) override;
     void buttonClicked(juce::Button* button) override;
+    void toggleAllBands(bool shouldBeBypassed);
 private:
     static const juce::TextButton::ColourIds ButtonOnColorId { juce::TextButton::ColourIds::buttonOnColourId };
     static const juce::TextButton::ColourIds ButtonOffColorId { juce::TextButton::ColourIds::buttonColourId };

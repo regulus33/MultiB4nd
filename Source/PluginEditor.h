@@ -16,6 +16,18 @@
 #include "GUI/CompressorBandControls.h"
 #include "GUI/SpectrumAnalyzer.h"
 
+#include "GUI/SpectrumAnalyzer.h"
+#include "GUI/CustomButtons.h"
+
+struct ControlBar : juce::Component
+{
+    ControlBar();
+    void resized() override;
+    
+    AnalyzerButton analyzerButton;
+    PowerButton globalBypassButton;
+};
+
 /*!
 @class SimpleMBCompAudioProcessorEditor
 
@@ -48,14 +60,15 @@ private:
     // access the processor object that created it.
     SimpleMBCompAudioProcessor& audioProcessor;
     
-    Placeholder controlBar;
-    // These {} are like little miniature blocks. They are passing in the arg to this
-    // class constructor. The objects we reference here must be member variables of this class (at least in this case... maybe there are some other available scope as well)
+    ControlBar controlBar;
     GlobalControls globalControls { audioProcessor.apvts };
     // TODO add a breakpoint in this block to see when exactly this block runs
     CompressorBandControls bandControls { audioProcessor.apvts };
     SpectrumAnalyzer analyzer { audioProcessor };
     
+    void toggleGlobalBypassState();
+    std::array<juce::AudioParameterBool*, 3> getBypassParams();
+    void updateGlobalBypassButton();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleMBCompAudioProcessorEditor)
 };
