@@ -14,6 +14,30 @@
 #include "CustomButtons.h"
 
 /*!
+ allows you to pick the color of a given element.
+ NOTE you need to include ColorScheme to use this
+ NOTE there will always be one jassert, just skip past it
+ */
+#define USE_LIVE_CONSTANT true
+#if USE_LIVE_CONSTANT
+#define colorHelper(c) JUCE_LIVE_CONSTANT(c);
+#else
+#define colorHelper(c) c;
+#endif
+
+namespace ColorScheme
+{
+inline juce::Colour getSliderBorderColor()
+{
+    return colorHelper(juce::Colours::white);
+}
+inline juce::Colour getSliderFillColor()
+{
+    return colorHelper(juce::Colours::black);
+}
+}
+
+/*!
  * @brief Draws the rotary slider component.
  *
  * This function is called by JUCE when it needs to draw the rotary slider component.
@@ -40,29 +64,32 @@ void LookAndFeel::drawRotarySlider(juce::Graphics & g,
                                    juce::Slider & slider)
 {
     using namespace juce;
-    
+    /* create the boundary of the slider's area (its a rectangular zone) */
     auto bounds = Rectangle<float>(x, y, width, height);
     
     auto enabled = slider.isEnabled();
     
-    g.setColour(enabled ? Colour(97u, 18u, 167u) : Colours::darkgrey );
+    /* set the fill color of the circle */
+    g.setColour(enabled ?  ColorScheme::getSliderFillColor() : Colours::grey);
+    /* fit a circle whose diameter is exactly the width of the rectangular bounds */
     g.fillEllipse(bounds);
     
-    g.setColour(enabled ? Colour(255u, 154u, 1u) : Colours::grey);
+    g.setColour(enabled ? ColorScheme::getSliderBorderColor() : Colours::grey);
     g.drawEllipse(bounds, 1.f);
     
     if( auto* rswl = dynamic_cast<RotarySliderWithLabels*>(&slider))
     {
+        /*! get the center of the circle */
         auto center = bounds.getCentre();
         Path p;
         
-        Rectangle<float> r;
-        r.setLeft(center.getX() - 2);
-        r.setRight(center.getX() + 2);
-        r.setTop(bounds.getY());
-        r.setBottom(center.getY() - rswl->getTextHeight() * 1.5);
+        Rectangle<float> notch;
+        notch.setLeft(center.getX() - 2);
+        notch.setRight(center.getX() + 2);
+        notch.setTop(bounds.getY());
+        notch.setBottom(center.getY() - rswl->getTextHeight() * 1.5);
         
-        p.addRoundedRectangle(r, 2.f);
+        p.addRoundedRectangle(notch, 2.f);
         
         jassert(rotaryStartAngle < rotaryEndAngle);
         
@@ -76,14 +103,14 @@ void LookAndFeel::drawRotarySlider(juce::Graphics & g,
         auto text = rswl->getDisplayString();
         auto strWidth = g.getCurrentFont().getStringWidth(text);
         
-        r.setSize(strWidth + 4, rswl->getTextHeight() + 2);
-        r.setCentre(bounds.getCentre());
+        notch.setSize(strWidth + 4, rswl->getTextHeight() + 2);
+        notch.setCentre(bounds.getCentre());
         
         g.setColour(enabled ? Colours::black : Colours::darkgrey);
-        g.fillRect(r);
+        g.fillRect(notch);
         
         g.setColour(enabled ? Colours::white : Colours::lightgrey);
-        g.drawFittedText(text, r.toNearestInt(), juce::Justification::centred, 1);
+        g.drawFittedText(text, notch.toNearestInt(), juce::Justification::centred, 1);
     }
 }
 
